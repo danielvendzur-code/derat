@@ -22,11 +22,13 @@ Dizajn a UX sú inšpirované konfigurátorom **„Môj plot"**, prefarbené do 
   fotky na výberových kartách. Zdroje: oficiálne fotky derat.sk + Wikimedia Commons (voľná licencia).
 - 💶 **Živá cena** – počas vypĺňania vidíte priebežnú orientačnú sumu; na konci animovaný súčet + rozpis.
 - 📝 **Vysvetlenia presne podľa derat.sk** – info boxy a postup zásahu.
-- 🛡️ **Trust lišta** – certifikované prípravky, skúsenosti, garancia, celé Slovensko.
 - 📩 **Odoslanie dopytu** – funguje hneď (predvyplnený **e-mail** alebo **WhatsApp**),
   voliteľne cez **EmailJS** alebo vlastný backend.
 - ✨ Animácie (bublina, prechody krokov, count-up ceny) · rešpektuje `prefers-reduced-motion`.
 - 📱 Plne responzívne (na mobile fullscreen).
+
+- 🐭 **Maskot** – usmievavá myš ako ikona asistenta (bublina, hlavička, avatary).
+- 💰 **Logické ceny** – počíta sa *cena za 1 zásah × počet zásahov* (rozsah), takže väčší problém = výrazne vyššia cena.
 
 ## Vloženie do stránky
 Skopírujte blok medzi `<!-- WIDGET -->` (vrátane `<style>`, `<section>` a `<script>`)
