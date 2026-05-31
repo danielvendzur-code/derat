@@ -3,57 +3,569 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Vaša Sauna widget</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<title>DERAT.sk – asistent a kalkulačka</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--dark:#17120e;--brown:#5a341d;--copper:#c47a2c;--amber:#edb65d;--cream:#fff7ea;--line:#ead3b2;--muted:#806d5c;--font:'Inter',system-ui,-apple-system,Segoe UI,sans-serif}*{box-sizing:border-box}body{margin:0;background:transparent;font-family:var(--font)}
-#vs-teaser{position:fixed;right:16px;bottom:86px;z-index:99998;max-width:270px;padding:12px 38px 12px 14px;border-radius:16px;background:rgba(255,247,234,.96);border:1px solid rgba(196,122,44,.32);box-shadow:0 14px 34px rgba(23,18,14,.16);font:800 12.5px/1.35 var(--font);color:#241711;opacity:0;transform:translateY(8px);pointer-events:none;transition:.25s}#vs-teaser.show{opacity:1;transform:translateY(0);pointer-events:auto}#vs-teaser button{position:absolute;right:7px;top:7px;width:24px;height:24px;border:0;border-radius:50%;background:rgba(38,24,15,.08);cursor:pointer;color:#7c6a59}
-#vasasauna-bubble{position:fixed;right:16px;bottom:16px;z-index:100000;width:62px;height:62px;border:0;border-radius:50%;background:radial-gradient(circle at 32% 20%,#fff1c7 0,#f2a64a 42%,#8e421f 100%);box-shadow:0 16px 34px rgba(196,122,44,.34),0 0 0 8px rgba(196,122,44,.11);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.25s;overflow:hidden}#vasasauna-bubble:hover{transform:translateY(-2px) scale(1.04)}#vasasauna-bubble.open{opacity:0;pointer-events:none;transform:scale(.86)}.vs-notify{position:absolute;right:5px;top:5px;width:13px;height:13px;border-radius:50%;background:#ef5b35;border:3px solid #fff7ea}
-.vs-avatar,.vs-mini-av,.vs-bubble-mark{border-radius:50%;background:linear-gradient(145deg,#fff9ef,#ecd6b4);border:1px solid rgba(207,166,112,.5);display:flex;align-items:center;justify-content:center;overflow:hidden;flex:0 0 auto}.vs-bubble-mark{width:42px;height:42px}.vs-avatar{width:38px;height:38px}.vs-mini-av{width:30px;height:30px}.vs-bot-svg{width:100%;height:100%;display:block}
-#vasasauna-chat{position:fixed;right:16px;bottom:88px;z-index:99999;width:340px;height:min(80vh,590px);max-height:590px;border-radius:22px;background:linear-gradient(180deg,#fffdf9,#fff4e4);border:1px solid rgba(196,122,44,.25);box-shadow:0 22px 64px rgba(23,18,14,.24);display:flex;flex-direction:column;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(18px) scale(.95);transform-origin:bottom right;transition:.25s}#vasasauna-chat.visible{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
-.vs-header{padding:10px 11px;background:linear-gradient(135deg,#20140f,#71411f 55%,#d29a54);color:#fff;display:flex;align-items:center;gap:8px}.vs-head{min-width:0;flex:1}.vs-title{font-size:13.5px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.vs-sub{font-size:10.5px;font-weight:800;color:rgba(255,245,233,.83);display:flex;gap:6px;align-items:center}.vs-online{width:7px;height:7px;border-radius:50%;background:#39d37b;box-shadow:0 0 0 5px rgba(57,211,123,.15)}.vs-actions-head{display:flex;gap:6px}.vs-icon{width:32px;height:32px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.14);color:#fff;border-radius:11px;display:flex;align-items:center;justify-content:center;cursor:pointer}.vs-icon svg{width:17px;height:17px;fill:currentColor}
-.vs-top{padding:10px 11px 6px;background:#fffdf9;border-bottom:1px solid rgba(234,212,182,.7)}.vs-config-cta{width:100%;border:1px solid rgba(196,122,44,.34);border-radius:15px;background:linear-gradient(135deg,#fff,#f5e5ce);box-shadow:0 8px 20px rgba(80,44,18,.08);padding:9px 10px;display:grid;grid-template-columns:38px 1fr auto;gap:9px;align-items:center;text-align:left;cursor:pointer}.vs-config-ico,.vs-contact-ico{background:linear-gradient(135deg,#f9deb4,#cf843d);color:#2e180d;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(207,132,61,.2)}.vs-config-ico{width:38px;height:38px;border-radius:13px}.vs-config-ico svg{width:21px;height:21px;fill:currentColor}.vs-config-title{font-size:12.5px;font-weight:900;color:#271a12}.vs-config-sub{font-size:10.4px;font-weight:750;color:var(--muted);line-height:1.3}.vs-arrow{font-size:23px;color:var(--copper);font-weight:900}
-.vs-messages{flex:1;overflow:auto;padding:10px 11px 0;display:flex;flex-direction:column;gap:8px;background:radial-gradient(circle at 8% 0%,rgba(237,182,93,.14),transparent 30%),linear-gradient(180deg,#fffdf9,#fff8ec)}.vs-row{display:flex;gap:8px;align-items:flex-end}.vs-row.user{justify-content:flex-end}.vs-row.user .vs-mini-av{display:none}.vs-msg{max-width:82%;padding:9px 11px;border-radius:16px;font:650 12.5px/1.45 var(--font);box-shadow:0 7px 20px rgba(51,31,18,.06)}.vs-msg.bot{background:#fff;border:1px solid rgba(226,205,178,.86);color:#2c211a;border-bottom-left-radius:7px}.vs-msg.user{background:linear-gradient(135deg,#c1772c,#6a3b1f);color:#fff;border-bottom-right-radius:7px}
-.vs-chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 11px 8px;background:#fff8ec}.vs-chip{border:1px solid rgba(196,122,44,.25);background:#fff;border-radius:999px;color:#4e3423;padding:6px 9px;font:850 11px var(--font);cursor:pointer}.vs-inputbar{display:flex;gap:7px;align-items:center;margin:0 11px 9px;padding:7px;border:1px solid rgba(222,197,164,.8);border-radius:15px;background:#fff;box-shadow:0 8px 20px rgba(59,36,18,.07)}.vs-input{flex:1;height:38px;border:1.4px solid var(--line);border-radius:12px;background:#fff9ee;padding:0 11px;font:750 12.5px var(--font);outline:none}.vs-send{width:38px;height:38px;border:0;border-radius:12px;background:linear-gradient(135deg,#d08a43,#6a3a1f);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}.vs-send svg{width:17px;fill:currentColor}
-.vs-contactbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:8px 10px 10px;background:linear-gradient(180deg,#fffaf3,#f7ecdc);border-top:1px solid rgba(214,185,149,.55);order:9}.vs-contact{min-width:0;min-height:48px;text-decoration:none;color:#4f3422;border:1px solid rgba(205,161,110,.62);background:linear-gradient(180deg,#fffdf9,#f4e8d9);border-radius:13px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;font:900 11px/1.05 var(--font)}.vs-contact-ico{width:27px;height:27px;border-radius:10px}.vs-contact-ico svg{width:14px;height:14px;fill:currentColor}
-.vs-calc{display:none;flex:1;min-height:0;overflow:auto;padding:10px 11px 12px;background:linear-gradient(180deg,#fbf7f0,#f4ecdf);order:2}#vasasauna-chat.calc-open .vs-messages,#vasasauna-chat.calc-open .vs-chips,#vasasauna-chat.calc-open .vs-inputbar,#vasasauna-chat.calc-open .vs-top{display:none}#vasasauna-chat.calc-open .vs-calc{display:block}#vasasauna-chat.calc-open .vs-contactbar{display:grid}
-.vs-calc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.vs-calc-head h3{margin:0;font-size:14px;font-weight:950;color:#241711}.vs-calc-close{width:30px;height:30px;border-radius:11px;border:1px solid var(--line);background:#fff;color:#7c6a59;font-size:20px;cursor:pointer}.vs-progress{display:flex;gap:8px;align-items:center;padding:5px;margin-bottom:9px;border:1px solid rgba(232,210,180,.78);border-radius:999px;background:#fffaf4}.vs-back{width:29px;height:29px;border-radius:50%;border:1px solid var(--line);background:#fff;font-weight:900;cursor:pointer}.vs-back:disabled{opacity:.35}.vs-bar{height:7px;flex:1;background:#ecd4ad;border-radius:999px;overflow:hidden}.vs-bar-fill{height:100%;background:linear-gradient(90deg,#6b3b1f,#c47a2c,#edb65d)}.vs-count{font-size:10.5px;font-weight:900;color:var(--copper)}
-.vs-preview{border-radius:18px;background:#f6eee1;box-shadow:0 12px 24px rgba(60,36,20,.08);border:1px solid rgba(214,185,149,.44);overflow:hidden;margin-bottom:9px}.vs-scene{position:relative;aspect-ratio:16/10;overflow:hidden;background:linear-gradient(180deg,#d8d1c7,#9d9084)}.vs-scene:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 18% 55%,rgba(255,255,255,.7) 0 4px,transparent 5px),linear-gradient(90deg,rgba(255,255,255,.28),transparent 38%)}.vs-scene.interier{background:linear-gradient(180deg,#d7d0c7,#988c80)}.vs-scene.exterier{background:linear-gradient(180deg,#93b486 0 34%,#d6b37d 35%,#a6713b 100%)}.vs-scene.zabudovana{background:linear-gradient(180deg,#bfb7ad,#6b6259)}.vs-scene.zabudovana:after{content:"";position:absolute;left:3%;top:8%;width:31%;height:68%;border-radius:12px;background:linear-gradient(90deg,rgba(65,52,45,.62),rgba(255,255,255,.1));border:2px solid rgba(255,226,183,.25)}.vs-sauna{position:absolute;left:18%;right:8%;bottom:12%;height:64%;border-radius:10px;background:linear-gradient(90deg,#e9bc7d,#c78b4c);box-shadow:0 22px 38px rgba(32,18,10,.2),inset 0 0 0 2px rgba(90,52,25,.14)}.vs-sauna:before{content:"";position:absolute;left:5%;top:8%;width:43%;height:80%;border-radius:8px;background:repeating-linear-gradient(0deg,#d89c59 0 13px,#b87637 13px 15px)}.vs-sauna:after{content:"";position:absolute;right:5%;top:8%;width:43%;height:80%;border-radius:9px;background:linear-gradient(125deg,rgba(255,255,255,.55),rgba(105,74,48,.18));border:2px solid rgba(255,235,204,.62)}.vs-roof{position:absolute;left:15%;right:5%;bottom:76%;height:6%;border-radius:6px;background:#25211e}.vs-bench{position:absolute;left:28%;right:26%;bottom:31%;height:8px;border-radius:9px;background:#7c4725;box-shadow:0 18px 0 rgba(124,71,37,.9)}.vs-stove{position:absolute;right:13%;bottom:12%;width:30px;height:42px;border-radius:10px 10px 7px 7px;background:linear-gradient(180deg,#514b45,#211d19)}.vs-heat{display:none;position:absolute;left:24%;top:21%;width:18px;height:62px;border-radius:8px;background:#2b1b12;box-shadow:35px 0 0 #2b1b12,70px 0 0 #2b1b12}.vs-heat:before,.vs-heat:after{content:"";position:absolute;inset:6px;border-radius:7px;background:#d86a35;box-shadow:35px 0 0 #d86a35,70px 0 0 #d86a35}.vs-scene.infra .vs-stove{display:none}.vs-scene.infra .vs-heat,.vs-scene.combi .vs-heat{display:block}.vs-scene.combi .vs-heat{left:19%;transform:scale(.78);transform-origin:left top}.vs-scene.combi .vs-sauna{background:linear-gradient(90deg,#e2af70,#9f6235)}.vs-scene.infra .vs-sauna{background:linear-gradient(90deg,#f0c98e,#d59653)}.vs-scene.large .vs-sauna{left:10%;right:5%;height:69%}.vs-scene.compact .vs-sauna{left:30%;right:15%;height:58%}
-.vs-sample{position:relative;aspect-ratio:16/10;overflow:hidden}.wood-smrek{background:linear-gradient(90deg,#e7c391,#c9945d)}.wood-thermo{background:linear-gradient(90deg,#6b3e25,#3f2112)}.wood-osika{background:linear-gradient(90deg,#f3dfba,#dfc79c)}.wood-premium{background:repeating-linear-gradient(90deg,#e6c18a 0 80px,#8a512d 80px 160px,#f0deb7 160px 240px,#5a331b 240px 320px)}.vs-sample.wood:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0 4px,rgba(45,25,11,.08) 4px 7px),radial-gradient(ellipse at 30% 35%,rgba(73,38,15,.14),transparent 15%),radial-gradient(ellipse at 68% 60%,rgba(73,38,15,.10),transparent 14%)}.glass-standard{background:linear-gradient(125deg,rgba(255,255,255,.9),rgba(185,217,235,.42),rgba(255,255,255,.58))}.glass-panorama{background:linear-gradient(125deg,rgba(255,255,255,.9),rgba(154,205,235,.45),rgba(255,255,255,.55))}.glass-bronze{background:linear-gradient(125deg,rgba(255,244,222,.72),rgba(142,86,46,.55),rgba(255,237,205,.38))}.vs-sample.glass:after{content:"";position:absolute;inset:12% 10%;border-radius:18px;border:2px solid rgba(255,255,255,.72);box-shadow:inset 0 0 34px rgba(255,255,255,.22);background:linear-gradient(110deg,rgba(255,255,255,.42) 0 14%,transparent 15% 57%,rgba(255,255,255,.22) 58% 67%,transparent 68%)}
-.vs-step-title{font-size:15px;font-weight:950;color:#241711;margin-bottom:3px}.vs-step-sub{font-size:10.8px;font-weight:750;color:#7f6a5a;line-height:1.35;margin-bottom:8px}.vs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.vs-grid.two{grid-template-columns:repeat(2,1fr)}.vs-card,.vs-choice{border:1.4px solid var(--line);background:linear-gradient(180deg,#fffdfb,#f7efe5);border-radius:14px;cursor:pointer;text-align:left;transition:.15s}.vs-card{min-height:82px;padding:10px 9px;display:flex;flex-direction:column;justify-content:center;position:relative}.vs-card:hover,.vs-card.selected,.vs-choice:hover,.vs-choice.selected{border-color:var(--copper);box-shadow:0 0 0 3px rgba(196,122,44,.11)}.vs-card.selected:after{content:"✓";position:absolute;right:7px;top:7px;width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#c47a2c,#6b3b1f);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:950}.vs-card-name,.vs-choice-name{font-size:11.8px;font-weight:950;color:#241711;line-height:1.16}.vs-card-desc,.vs-choice-desc{font-size:10px;font-weight:700;color:var(--muted);line-height:1.25;margin-top:4px}.vs-card-price,.vs-choice-price{font-size:10px;font-weight:950;color:var(--copper);margin-top:6px}.vs-choice-list{display:flex;flex-direction:column;gap:6px}.vs-choice{display:flex;gap:8px;align-items:flex-start;padding:8px}.vs-check{width:18px;height:18px;border-radius:6px;border:2px solid #c8a77e;flex:0 0 18px;margin-top:1px}.vs-choice.selected .vs-check{background:var(--copper);border-color:var(--copper)}.vs-choice.selected .vs-check:after{content:"";display:block;width:8px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(-1px,4px)}.vs-choice-main{flex:1;min-width:0}.vs-choice-price{white-space:nowrap;margin-top:1px;text-align:right}.vs-swatch{width:18px;height:18px;border-radius:50%;border:1px solid rgba(23,18,14,.12);flex:0 0 18px;margin-top:1px}
-.vs-summary{border:1px solid rgba(196,122,44,.28);border-radius:16px;background:linear-gradient(145deg,#fff9ee,#fff);padding:10px;box-shadow:0 8px 20px rgba(23,18,14,.05)}.vs-price-label{font-size:9.5px;text-transform:uppercase;letter-spacing:.6px;font-weight:950;color:var(--copper)}.vs-price{font-size:24px;font-weight:950;color:#241711;line-height:1;margin-top:4px}.vs-note{font-size:10.5px;line-height:1.35;color:var(--muted);font-weight:700;margin-top:6px}.vs-breakdown{border-top:1px dashed var(--line);margin-top:9px;padding-top:7px}.vs-breakrow{display:flex;justify-content:space-between;gap:8px;font-size:10.8px;color:var(--muted);font-weight:700;padding:2px 0}.vs-breakrow b{color:#241711}.vs-lead-card{margin-top:9px;border:1px solid rgba(199,125,55,.35);border-radius:16px;background:linear-gradient(145deg,#fffaf3,#f3dfc3);padding:10px}.vs-lead-head{display:flex;align-items:center;gap:9px;margin-bottom:9px;color:#2c1b12}.vs-final-ico{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#d8974f,#704120);display:flex;align-items:center;justify-content:center;color:#fff;flex:0 0 36px}.vs-lead-head b{font-size:13px;display:block}.vs-lead-head small{font-size:11px;color:#776150;font-weight:700;line-height:1.3}.vs-lead-form{display:grid;gap:7px}.vs-lead-row{display:grid;grid-template-columns:1fr 1fr;gap:7px}.vs-lead-form input,.vs-lead-form textarea{width:100%;border:1.4px solid rgba(214,185,149,.72);background:#fff;border-radius:12px;padding:9px 10px;font:700 12px var(--font);outline:none;color:#2d2018}.vs-lead-form textarea{min-height:56px;resize:vertical}.vs-consent{display:flex;align-items:flex-start;gap:7px;font-size:10.8px;line-height:1.25;color:#6d5948;font-weight:700}.vs-consent input{width:16px!important;height:16px!important;flex:0 0 16px;accent-color:#b46b2d}.vs-lead-status{display:none;border-radius:11px;padding:8px 9px;font-size:11px;font-weight:800}.vs-lead-status.show{display:block}.vs-lead-status.err{background:#fff1ec;color:#9a3418;border:1px solid #ffc9b8}.vs-lead-status.ok{background:#edf9ef;color:#126b2f;border:1px solid #bdeac7}.vs-send-lead{border:0;border-radius:13px;background:linear-gradient(135deg,#d08a43,#6a3a1f);color:#fff;font:900 12.5px var(--font);padding:11px;cursor:pointer}.vs-actions{display:flex;gap:8px;margin-top:9px}.vs-btn{flex:1;border:0;border-radius:13px;background:linear-gradient(135deg,#d08a43,#6a3a1f);color:#fff;font:900 12px var(--font);padding:10px;cursor:pointer}.vs-btn.secondary{flex:0 0 auto;background:#fff;color:#4e3423;border:1px solid var(--line);box-shadow:none}.vs-btn:disabled{opacity:.4;cursor:not-allowed}
-@media(max-width:520px){#vasasauna-chat{inset:0!important;width:100%!important;height:100dvh!important;max-height:100dvh!important;border-radius:0;bottom:auto;right:auto;transform:translateY(100%);transform-origin:bottom center}#vasasauna-chat.visible{transform:translateY(0)}#vasasauna-bubble{right:16px;bottom:16px}.vs-header{padding-top:calc(10px + env(safe-area-inset-top))}.vs-grid{grid-template-columns:repeat(2,1fr)}.vs-contactbar{padding-bottom:calc(10px + env(safe-area-inset-bottom))}.vs-lead-row{grid-template-columns:1fr}}
+/* ===== DERAT.sk widget – farby podľa derat.sk (zelená #406618, červená #c63a27) ===== */
+:root{
+  --green:#406618;--green-dk:#2e4a11;--green-lt:#5a8a24;--green-soft:#eef3e6;
+  --red:#c63a27;--red-dk:#9e2a1a;
+  --ink:#1f1f1f;--muted:#6b7363;--line:#e1e7d8;--paper:#ffffff;--bg:#f6f8f2;
+  --font:'Poppins',system-ui,-apple-system,Segoe UI,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;font-family:var(--font);color:var(--ink)}
+
+/* Demo pozadie stránky (mimo widgetu) */
+.demo{min-height:100vh;background:linear-gradient(180deg,#fbfdf7,#eef3e6);padding:48px 20px 120px;text-align:center}
+.demo h1{font-size:clamp(26px,5vw,46px);font-weight:900;margin:0 0 10px;color:var(--green-dk)}
+.demo h1 span{color:var(--red)}
+.demo p{max-width:560px;margin:0 auto;color:var(--muted);font-weight:500;line-height:1.6}
+.demo .hint{margin-top:26px;display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-weight:700;font-size:13px;color:var(--green)}
+
+/* ===== Bublina + teaser ===== */
+#dr-teaser{position:fixed;right:18px;bottom:90px;z-index:99998;max-width:264px;padding:13px 40px 13px 15px;border-radius:16px;background:#fff;border:1px solid var(--line);box-shadow:0 16px 38px rgba(31,31,31,.16);font:700 13px/1.4 var(--font);color:var(--ink);opacity:0;transform:translateY(8px);pointer-events:none;transition:.25s}
+#dr-teaser.show{opacity:1;transform:translateY(0);pointer-events:auto}
+#dr-teaser b{color:var(--green)}
+#dr-teaser button{position:absolute;right:7px;top:7px;width:24px;height:24px;border:0;border-radius:50%;background:#eef1ea;cursor:pointer;color:#7c857a;font-size:15px;line-height:1}
+#derat-bubble{position:fixed;right:18px;bottom:18px;z-index:100000;width:64px;height:64px;border:0;border-radius:50%;background:radial-gradient(circle at 32% 24%,#6fa530 0,#406618 60%,#2e4a11 100%);box-shadow:0 16px 34px rgba(64,102,24,.40),0 0 0 8px rgba(64,102,24,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.25s;overflow:hidden}
+#derat-bubble:hover{transform:translateY(-2px) scale(1.04)}
+#derat-bubble.open{opacity:0;pointer-events:none;transform:scale(.86)}
+#derat-bubble svg{width:34px;height:34px}
+.dr-notify{position:absolute;right:6px;top:6px;width:13px;height:13px;border-radius:50%;background:var(--red);border:3px solid #fff}
+
+/* ===== Okno chatu ===== */
+#derat-chat{position:fixed;right:18px;bottom:90px;z-index:99999;width:360px;height:min(82vh,620px);max-height:620px;border-radius:22px;background:#fff;border:1px solid var(--line);box-shadow:0 26px 70px rgba(31,40,18,.26);display:flex;flex-direction:column;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(18px) scale(.96);transform-origin:bottom right;transition:.25s}
+#derat-chat.visible{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
+
+.dr-header{padding:12px 13px;background:linear-gradient(135deg,#2e4a11,#406618 60%,#5a8a24);color:#fff;display:flex;align-items:center;gap:10px}
+.dr-logo{width:40px;height:40px;border-radius:13px;background:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 6px 14px rgba(0,0,0,.18)}
+.dr-logo svg{width:24px;height:24px}
+.dr-head{min-width:0;flex:1}
+.dr-title{font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dr-sub{font-size:11px;font-weight:600;color:rgba(255,255,255,.85);display:flex;gap:6px;align-items:center}
+.dr-online{width:7px;height:7px;border-radius:50%;background:#9fe870;box-shadow:0 0 0 5px rgba(159,232,112,.22)}
+.dr-actions-head{display:flex;gap:6px}
+.dr-icon{width:34px;height:34px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.16);color:#fff;border-radius:11px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.dr-icon svg{width:18px;height:18px;fill:currentColor}
+
+/* CTA na kalkulačku */
+.dr-top{padding:11px 12px 7px;background:#fff;border-bottom:1px solid var(--line)}
+.dr-cta{width:100%;border:1px solid rgba(64,102,24,.30);border-radius:15px;background:linear-gradient(135deg,#f3f8ea,#e7f0d6);box-shadow:0 8px 18px rgba(64,102,24,.10);padding:11px;display:grid;grid-template-columns:42px 1fr auto;gap:11px;align-items:center;text-align:left;cursor:pointer}
+.dr-cta-ico{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#5a8a24,#2e4a11);color:#fff;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.dr-cta-ico svg{width:23px;height:23px;fill:currentColor}
+.dr-cta-title{font-size:13px;font-weight:800;color:var(--green-dk)}
+.dr-cta-sub{font-size:11px;font-weight:500;color:var(--muted);line-height:1.3}
+.dr-arrow{font-size:24px;color:var(--green);font-weight:900}
+
+/* Správy */
+.dr-messages{flex:1;overflow:auto;padding:12px 12px 0;display:flex;flex-direction:column;gap:9px;background:linear-gradient(180deg,#fff,#f6f8f2)}
+.dr-row{display:flex;gap:8px;align-items:flex-end}
+.dr-row.user{justify-content:flex-end}
+.dr-mini-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#5a8a24,#2e4a11);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.dr-mini-av svg{width:18px;height:18px}
+.dr-row.user .dr-mini-av{display:none}
+.dr-msg{max-width:82%;padding:10px 12px;border-radius:16px;font:500 13px/1.5 var(--font);box-shadow:0 6px 16px rgba(31,40,18,.06)}
+.dr-msg.bot{background:#fff;border:1px solid var(--line);color:var(--ink);border-bottom-left-radius:7px}
+.dr-msg.bot b{color:var(--green)}
+.dr-msg.user{background:linear-gradient(135deg,#5a8a24,#2e4a11);color:#fff;border-bottom-right-radius:7px}
+
+/* Rýchle tlačidlá + vstup */
+.dr-chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 9px;background:#f6f8f2}
+.dr-chip{border:1px solid rgba(64,102,24,.28);background:#fff;border-radius:999px;color:var(--green-dk);padding:7px 11px;font:700 11.5px var(--font);cursor:pointer}
+.dr-chip:hover{background:var(--green-soft)}
+.dr-inputbar{display:flex;gap:8px;align-items:center;margin:0 12px 10px;padding:7px;border:1px solid var(--line);border-radius:15px;background:#fff;box-shadow:0 8px 18px rgba(31,40,18,.06)}
+.dr-input{flex:1;height:40px;border:1.4px solid var(--line);border-radius:12px;background:#f9fbf5;padding:0 12px;font:600 13px var(--font);outline:none}
+.dr-input:focus{border-color:var(--green-lt)}
+.dr-send{width:40px;height:40px;border:0;border-radius:12px;background:linear-gradient(135deg,#5a8a24,#2e4a11);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.dr-send svg{width:18px;fill:currentColor}
+
+/* Kontaktná lišta */
+.dr-contactbar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:8px 11px 11px;background:linear-gradient(180deg,#fff,#eef3e6);border-top:1px solid var(--line);order:9}
+.dr-contact{min-width:0;min-height:50px;text-decoration:none;color:var(--green-dk);border:1px solid rgba(64,102,24,.30);background:#fff;border-radius:13px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;font:800 11px/1.05 var(--font)}
+.dr-contact:hover{background:var(--green-soft)}
+.dr-contact-ico{width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,#5a8a24,#2e4a11);color:#fff;display:flex;align-items:center;justify-content:center}
+.dr-contact-ico svg{width:15px;height:15px;fill:currentColor}
+
+/* ===== Kalkulačka ===== */
+.dr-calc{display:none;flex:1;min-height:0;overflow:auto;padding:11px 12px 14px;background:linear-gradient(180deg,#fff,#f6f8f2);order:2}
+#derat-chat.calc-open .dr-messages,#derat-chat.calc-open .dr-chips,#derat-chat.calc-open .dr-inputbar,#derat-chat.calc-open .dr-top{display:none}
+#derat-chat.calc-open .dr-calc{display:block}
+#derat-chat.calc-open .dr-contactbar{display:grid}
+
+.dr-calc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.dr-calc-head h3{margin:0;font-size:15px;font-weight:900;color:var(--green-dk)}
+.dr-calc-close{width:31px;height:31px;border-radius:11px;border:1px solid var(--line);background:#fff;color:#7c857a;font-size:20px;cursor:pointer}
+.dr-progress{display:flex;gap:9px;align-items:center;padding:5px;margin-bottom:11px;border:1px solid var(--line);border-radius:999px;background:#fff}
+.dr-back{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;font-weight:900;color:var(--green-dk);cursor:pointer}
+.dr-back:disabled{opacity:.35;cursor:default}
+.dr-bar{height:7px;flex:1;background:#e3ebd6;border-radius:999px;overflow:hidden}
+.dr-bar-fill{height:100%;background:linear-gradient(90deg,#406618,#5a8a24,#9fe870);transition:width .25s}
+.dr-count{font-size:11px;font-weight:900;color:var(--green);padding-right:6px}
+
+/* Vizuál / "foto" preview */
+.dr-preview{position:relative;border-radius:18px;overflow:hidden;margin-bottom:11px;border:1px solid var(--line);background:#eef3e6;box-shadow:0 12px 24px rgba(46,74,17,.10)}
+.dr-scene{position:relative;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center}
+.dr-scene svg{width:100%;height:100%;display:block}
+.dr-scene-tag{position:absolute;left:10px;bottom:10px;background:rgba(31,31,31,.78);color:#fff;font:800 11px var(--font);padding:5px 10px;border-radius:8px;backdrop-filter:blur(3px)}
+
+.dr-step-title{font-size:15px;font-weight:900;color:var(--green-dk);margin-bottom:3px}
+.dr-step-sub{font-size:11px;font-weight:500;color:var(--muted);line-height:1.35;margin-bottom:10px}
+
+.dr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.dr-grid.three{grid-template-columns:repeat(3,1fr)}
+.dr-card{border:1.6px solid var(--line);background:#fff;border-radius:14px;cursor:pointer;text-align:left;transition:.15s;padding:11px 10px;display:flex;flex-direction:column;gap:5px;position:relative;min-height:84px}
+.dr-card:hover{border-color:var(--green-lt)}
+.dr-card.selected{border-color:var(--green);box-shadow:0 0 0 3px rgba(64,102,24,.13);background:var(--green-soft)}
+.dr-card.selected:after{content:"✓";position:absolute;right:8px;top:8px;width:21px;height:21px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900}
+.dr-card-ico{width:34px;height:34px}
+.dr-card-ico svg{width:34px;height:34px;display:block}
+.dr-card-name{font-size:12.5px;font-weight:800;color:var(--ink);line-height:1.18}
+.dr-card-desc{font-size:10.5px;font-weight:500;color:var(--muted);line-height:1.3}
+.dr-card-price{font-size:10.5px;font-weight:900;color:var(--green);margin-top:auto}
+
+/* Zoznam volieb (severity / doplnky) */
+.dr-list{display:flex;flex-direction:column;gap:7px}
+.dr-choice{border:1.6px solid var(--line);background:#fff;border-radius:13px;cursor:pointer;display:flex;gap:9px;align-items:center;padding:10px;transition:.15s}
+.dr-choice:hover{border-color:var(--green-lt)}
+.dr-choice.selected{border-color:var(--green);background:var(--green-soft)}
+.dr-check{width:20px;height:20px;border-radius:6px;border:2px solid #b9c4a8;flex:0 0 20px;display:flex;align-items:center;justify-content:center}
+.dr-choice.selected .dr-check{background:var(--green);border-color:var(--green)}
+.dr-choice.selected .dr-check:after{content:"";width:8px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px)}
+.dr-choice-main{flex:1;min-width:0}
+.dr-choice-name{font-size:12.5px;font-weight:800;color:var(--ink)}
+.dr-choice-desc{font-size:10.5px;font-weight:500;color:var(--muted);line-height:1.3}
+.dr-choice-price{font-size:11px;font-weight:900;color:var(--green);white-space:nowrap}
+
+/* Plocha – slider */
+.dr-area{border:1.6px solid var(--line);background:#fff;border-radius:14px;padding:13px 12px}
+.dr-area-val{font-size:30px;font-weight:900;color:var(--green-dk);line-height:1;text-align:center}
+.dr-area-val small{font-size:14px;color:var(--muted);font-weight:700}
+.dr-range{width:100%;margin:14px 0 6px;-webkit-appearance:none;appearance:none;height:8px;border-radius:999px;background:#e3ebd6;outline:none}
+.dr-range::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--green);border:4px solid #fff;box-shadow:0 3px 8px rgba(46,74,17,.35);cursor:pointer}
+.dr-range::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--green);border:4px solid #fff;cursor:pointer}
+.dr-range-scale{display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:var(--muted)}
+.dr-area-quick{display:flex;gap:6px;margin-top:11px;flex-wrap:wrap}
+.dr-area-quick button{flex:1;min-width:60px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px 4px;font:800 11px var(--font);color:var(--green-dk);cursor:pointer}
+.dr-area-quick button:hover{background:var(--green-soft);border-color:var(--green-lt)}
+
+/* Zhrnutie + cena */
+.dr-summary{border:1px solid rgba(64,102,24,.26);border-radius:16px;background:linear-gradient(145deg,#f3f8ea,#fff);padding:12px;box-shadow:0 8px 20px rgba(46,74,17,.06)}
+.dr-price-label{font-size:9.5px;text-transform:uppercase;letter-spacing:.6px;font-weight:900;color:var(--green)}
+.dr-price{font-size:27px;font-weight:900;color:var(--green-dk);line-height:1;margin-top:5px}
+.dr-price small{font-size:13px;color:var(--muted);font-weight:700}
+.dr-price-range{font-size:11px;font-weight:700;color:var(--muted);margin-top:5px}
+.dr-note{font-size:10.5px;line-height:1.4;color:var(--muted);font-weight:500;margin-top:7px}
+.dr-breakdown{border-top:1px dashed var(--line);margin-top:10px;padding-top:8px}
+.dr-breakrow{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:var(--muted);font-weight:600;padding:2px 0}
+.dr-breakrow b{color:var(--ink)}
+.dr-breakrow.tot{border-top:1px solid var(--line);margin-top:5px;padding-top:6px;font-size:12px}
+.dr-breakrow.tot b{color:var(--green-dk)}
+
+/* Lead formulár */
+.dr-lead{margin-top:11px;border:1px solid rgba(198,58,39,.30);border-radius:16px;background:linear-gradient(145deg,#fff,#fdeeeb);padding:12px}
+.dr-lead-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;color:var(--ink)}
+.dr-lead-ico{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#c63a27,#9e2a1a);display:flex;align-items:center;justify-content:center;color:#fff;flex:0 0 38px}
+.dr-lead-ico svg{width:21px;height:21px;fill:currentColor}
+.dr-lead-head b{font-size:13.5px;display:block}
+.dr-lead-head small{font-size:11px;color:var(--muted);font-weight:500;line-height:1.3}
+.dr-lead-form{display:grid;gap:8px}
+.dr-lead-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dr-lead-form input,.dr-lead-form textarea{width:100%;border:1.4px solid var(--line);background:#fff;border-radius:12px;padding:10px 11px;font:600 12.5px var(--font);outline:none;color:var(--ink)}
+.dr-lead-form input:focus,.dr-lead-form textarea:focus{border-color:var(--green-lt)}
+.dr-lead-form textarea{min-height:58px;resize:vertical}
+.dr-consent{display:flex;align-items:flex-start;gap:8px;font-size:10.5px;line-height:1.3;color:var(--muted);font-weight:500}
+.dr-consent input{width:17px!important;height:17px!important;flex:0 0 17px;accent-color:var(--green)}
+.dr-lead-status{display:none;border-radius:11px;padding:9px 10px;font-size:11.5px;font-weight:700}
+.dr-lead-status.show{display:block}
+.dr-lead-status.err{background:#fdeeeb;color:var(--red-dk);border:1px solid #f3c4bb}
+.dr-lead-status.ok{background:#eef7e6;color:#2e6b16;border:1px solid #c6e4b0}
+.dr-send-lead{border:0;border-radius:13px;background:linear-gradient(135deg,#c63a27,#9e2a1a);color:#fff;font:900 13px var(--font);padding:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.dr-send-lead svg{width:17px;fill:currentColor}
+
+.dr-actions{display:flex;gap:8px;margin-top:11px}
+.dr-btn{flex:1;border:0;border-radius:13px;background:linear-gradient(135deg,#406618,#2e4a11);color:#fff;font:900 12.5px var(--font);padding:12px;cursor:pointer}
+.dr-btn.secondary{flex:0 0 auto;background:#fff;color:var(--green-dk);border:1px solid var(--line)}
+.dr-btn:disabled{opacity:.4;cursor:not-allowed}
+
+@media(max-width:520px){
+  #derat-chat{inset:0!important;width:100%!important;height:100dvh!important;max-height:100dvh!important;border-radius:0;bottom:auto;right:auto;transform:translateY(100%);transform-origin:bottom center}
+  #derat-chat.visible{transform:translateY(0)}
+  #derat-bubble{right:16px;bottom:16px}
+  .dr-header{padding-top:calc(12px + env(safe-area-inset-top))}
+  .dr-contactbar{padding-bottom:calc(11px + env(safe-area-inset-bottom))}
+  .dr-lead-row{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
-<div id="vs-teaser">Vypočítajte si orientačnú cenu sauny na mieru.<button onclick="VSWidget.hideTeaser()">×</button></div>
-<button id="vasasauna-bubble" type="button" aria-label="Otvoriť asistenta" onclick="VSWidget.toggle()"><span class="vs-bubble-mark" id="vs-bubble-icon"></span><span class="vs-notify"></span></button>
-<section id="vasasauna-chat" aria-hidden="true">
-<header class="vs-header"><div class="vs-avatar" id="vs-header-icon"></div><div class="vs-head"><div class="vs-title">AI asistent Vaša Sauna</div><div class="vs-sub"><span class="vs-online"></span>Online · pomôže s výberom aj cenou</div></div><div class="vs-actions-head"><button class="vs-icon" onclick="VSWidget.openCalc()" title="Konfigurátor"><svg viewBox="0 0 24 24"><path d="M4 4h16v4H4V4Zm0 6h7v10H4V10Zm9 0h7v4h-7v-4Zm0 6h7v4h-7v-4Z"/></svg></button><button class="vs-icon" onclick="VSWidget.close()" title="Zavrieť"><svg viewBox="0 0 24 24"><path d="m18.3 5.7-1.4-1.4-4.9 4.9-4.9-4.9-1.4 1.4 4.9 4.9-4.9 4.9 1.4 1.4 4.9-4.9 4.9 4.9 1.4-1.4-4.9-4.9 4.9-4.9Z"/></svg></button></div></header>
-<div class="vs-top"><button class="vs-config-cta" onclick="VSWidget.openCalc()"><span class="vs-config-ico"><svg viewBox="0 0 24 24"><path d="M4 4h16v4H4V4Zm0 6h7v10H4V10Zm9 0h7v4h-7v-4Zm0 6h7v4h-7v-4Z"/></svg></span><span><span class="vs-config-title">Konfigurátor sauny</span><span class="vs-config-sub">Typ, priestor, materiál, sklo, doplnky a orientačná cena.</span></span><span class="vs-arrow">›</span></button></div>
-<div id="vs-messages" class="vs-messages"></div>
-<div class="vs-chips"><button class="vs-chip" onclick="VSWidget.quick('Aký typ sauny je pre mňa najlepší?')">Typ sauny</button><button class="vs-chip" onclick="VSWidget.quick('Koľko stojí sauna na mieru?')">Cena</button><button class="vs-chip" onclick="VSWidget.quick('Ako prebieha výroba a montáž?')">Postup</button><button class="vs-chip" onclick="VSWidget.openCalc()">Konfigurátor</button></div>
-<form class="vs-inputbar" onsubmit="VSWidget.submitChat(event)"><input id="vs-input" class="vs-input" placeholder="Napíšte otázku o saune..." autocomplete="off"><button class="vs-send" aria-label="Odoslať"><svg viewBox="0 0 24 24"><path d="M2 21 23 12 2 3v7l15 2-15 2v7Z"/></svg></button></form>
-<div class="vs-contactbar"><a class="vs-contact" href="tel:+421907435224"><span class="vs-contact-ico"><svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.07 21 3 13.93 3 5c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.24.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2Z"/></svg></span><span>Volať</span></a><a class="vs-contact" href="mailto:info@vasasauna.sk"><span class="vs-contact-ico"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg></span><span>E-mail</span></a><a class="vs-contact" href="https://wa.me/421907435224" target="_blank" rel="noopener"><span class="vs-contact-ico"><svg viewBox="0 0 24 24"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.07 0C5.5 0 .16 5.34.16 11.91c0 2.1.55 4.15 1.59 5.96L0 24l6.33-1.66a11.9 11.9 0 0 0 5.73 1.46h.01c6.56 0 11.91-5.34 11.91-11.91 0-3.18-1.24-6.17-3.46-8.41Zm-8.45 18.3h-.01a9.9 9.9 0 0 1-5.05-1.39l-.36-.21-3.76.99 1-3.67-.24-.38a9.89 9.89 0 0 1-1.52-5.21c0-5.46 4.45-9.91 9.92-9.91 2.65 0 5.13 1.03 7 2.91a9.83 9.83 0 0 1 2.9 7c0 5.46-4.45 9.91-9.9 9.91Z"/><path d="M16.75 13.96c-.25-.13-1.47-.72-1.7-.8-.23-.08-.39-.12-.56.13-.17.25-.64.8-.79.96-.15.17-.29.19-.54.07-.25-.13-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.39-1.72-.15-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.76-1.85-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.09s.9 2.42 1.02 2.58c.13.17 1.77 2.7 4.3 3.78.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.17-.48-.29Z"/></svg></span><span>WhatsApp</span></a></div>
-<div id="vs-calc" class="vs-calc"></div>
+
+<!-- Demo pozadie (na ostrej stránke zmazať telo .demo, nechať len widget nižšie) -->
+<div class="demo">
+  <h1>DERAT<span>.sk</span> – deratizácia, dezinsekcia, dezinfekcia</h1>
+  <p>Ukážka asistenta a kalkulačky. Kliknite na zelenú bublinu vpravo dole – chatbot poradí so škodcami a v kalkulačke získate orientačnú cenu zásahu za pár klikov.</p>
+  <div class="hint">👉 Bublina vpravo dole</div>
+</div>
+
+<!-- ====================== WIDGET ZAČIATOK ====================== -->
+<div id="dr-teaser">Trápia vás <b>hlodavce alebo hmyz</b>? Spočítajte si orientačnú cenu zásahu.<button onclick="DERAT.hideTeaser()">×</button></div>
+
+<button id="derat-bubble" type="button" aria-label="Otvoriť asistenta DERAT" onclick="DERAT.toggle()">
+  <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a7 7 0 0 0-7 7c0 1.7.6 3.2 1.6 4.4.7.8 1.4 1.8 1.4 2.9V17h8v-.7c0-1.1.7-2.1 1.4-2.9A6.97 6.97 0 0 0 19 9a7 7 0 0 0-7-7Zm-3 19a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg>
+  <span class="dr-notify"></span>
+</button>
+
+<section id="derat-chat" aria-hidden="true">
+  <header class="dr-header">
+    <div class="dr-logo"><svg viewBox="0 0 24 24"><path fill="#406618" d="M12 2a7 7 0 0 0-7 7c0 1.7.6 3.2 1.6 4.4.7.8 1.4 1.8 1.4 2.9V17h8v-.7c0-1.1.7-2.1 1.4-2.9A6.97 6.97 0 0 0 19 9a7 7 0 0 0-7-7Z"/><path fill="#c63a27" d="M9 19a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg></div>
+    <div class="dr-head">
+      <div class="dr-title">DERAT asistent</div>
+      <div class="dr-sub"><span class="dr-online"></span>Online · poradíme aj spočítame cenu</div>
+    </div>
+    <div class="dr-actions-head">
+      <button class="dr-icon" onclick="DERAT.openCalc()" title="Kalkulačka"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg></button>
+      <button class="dr-icon" onclick="DERAT.close()" title="Zavrieť"><svg viewBox="0 0 24 24"><path d="m18.3 5.7-1.4-1.4-4.9 4.9-4.9-4.9-1.4 1.4 4.9 4.9-4.9 4.9 1.4 1.4 4.9-4.9 4.9 4.9 1.4-1.4-4.9-4.9 4.9-4.9Z"/></svg></button>
+    </div>
+  </header>
+
+  <div class="dr-top">
+    <button class="dr-cta" onclick="DERAT.openCalc()">
+      <span class="dr-cta-ico"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg></span>
+      <span><span class="dr-cta-title">Kalkulačka ceny zásahu</span><span class="dr-cta-sub">Služba, škodca, priestor, plocha a rozsah – orientačná cena za pár klikov.</span></span>
+      <span class="dr-arrow">›</span>
+    </button>
+  </div>
+
+  <div id="dr-messages" class="dr-messages"></div>
+
+  <div class="dr-chips">
+    <button class="dr-chip" onclick="DERAT.openCalc()">💶 Spočítať cenu</button>
+    <button class="dr-chip" onclick="DERAT.quick('Mám doma myši/potkany, čo s tým?')">🐭 Hlodavce</button>
+    <button class="dr-chip" onclick="DERAT.quick('Trápia ma šváby a hmyz')">🪳 Hmyz</button>
+    <button class="dr-chip" onclick="DERAT.quick('Ako prebieha zásah a je to bezpečné?')">🛡️ Postup</button>
+  </div>
+
+  <form class="dr-inputbar" onsubmit="DERAT.submitChat(event)">
+    <input id="dr-input" class="dr-input" placeholder="Napíšte otázku o škodcoch..." autocomplete="off">
+    <button class="dr-send" aria-label="Odoslať"><svg viewBox="0 0 24 24"><path d="M2 21 23 12 2 3v7l15 2-15 2v7Z"/></svg></button>
+  </form>
+
+  <div class="dr-contactbar">
+    <a class="dr-contact" id="dr-c-call" href="#"><span class="dr-contact-ico"><svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C10.07 21 3 13.93 3 5c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.24.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2Z"/></svg></span><span>Volať</span></a>
+    <a class="dr-contact" id="dr-c-mail" href="#"><span class="dr-contact-ico"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg></span><span>E-mail</span></a>
+    <a class="dr-contact" id="dr-c-wa" href="#" target="_blank" rel="noopener"><span class="dr-contact-ico"><svg viewBox="0 0 24 24"><path d="M20.52 3.48A11.86 11.86 0 0 0 12.07 0C5.5 0 .16 5.34.16 11.91c0 2.1.55 4.15 1.59 5.96L0 24l6.33-1.66a11.9 11.9 0 0 0 5.73 1.46h.01c6.56 0 11.91-5.34 11.91-11.91 0-3.18-1.24-6.17-3.46-8.41ZM12.06 21.79a9.9 9.9 0 0 1-5.05-1.39l-.36-.21-3.76.99 1-3.67-.24-.38a9.89 9.89 0 0 1-1.52-5.21c0-5.46 4.45-9.91 9.92-9.91 2.65 0 5.13 1.03 7 2.91a9.83 9.83 0 0 1 2.9 7c0 5.46-4.45 9.91-9.9 9.91Z"/><path d="M16.75 13.96c-.25-.13-1.47-.72-1.7-.8-.23-.08-.39-.12-.56.13-.17.25-.64.8-.79.96-.15.17-.29.19-.54.07-.25-.13-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.39-1.72-.15-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.76-1.85-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.09s.9 2.42 1.02 2.58c.13.17 1.77 2.7 4.3 3.78.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.17-.48-.29Z"/></svg></span><span>WhatsApp</span></a>
+  </div>
+
+  <div id="dr-calc" class="dr-calc"></div>
 </section>
+<!-- ====================== WIDGET KONIEC ====================== -->
+
 <script>
 (function(){
-const botSvg=`<svg class="vs-bot-svg" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#fff7eb" stroke="#d9b784" stroke-width="2"/><path d="M32 13c5 7 10 11 10 19 0 7-4.7 13-10 13s-10-6-10-13c0-5 2.1-8.3 4.8-11.4 2-2.3 3.5-4.6 5.2-7.6Z" fill="#d77b2f"/><path d="M32 24c2.5 4.2 5.2 6.3 5.2 10.2 0 3.7-2.3 6.8-5.2 6.8s-5.2-3.1-5.2-6.8c0-2.4 1.1-4.3 2.4-5.9 1.1-1.2 1.8-2.3 2.8-4.3Z" fill="#ffd36a"/></svg>`;
-const DATA={types:{finska:{name:'Fínska sauna',desc:'Klasická sauna s pecou a suchým teplom.',base:6900},infra:{name:'Infrasauna',desc:'Jemné infravyžarovanie a nižšia teplota.',base:5450},combi:{name:'Kombinovaná sauna',desc:'Fínske teplo aj infra v jednom riešení.',base:8950}},places:{interier:{name:'Interiér',desc:'Wellness miestnosť alebo kúpeľňa.',mult:1},exterier:{name:'Exteriér',desc:'Samostatná sauna pri dome alebo v záhrade.',mult:1.10},zabudovana:{name:'Zabudovaná sauna',desc:'Vstavané riešenie vo wellness priestore.',mult:1.08}},sizes:{compact:{name:'Kompaktná / 1–2 osoby',desc:'Miesto na sedenie približne pre 1–2 osoby.',mult:.96},medium:{name:'Rodinná / 3–4 osoby',desc:'Miesto na sedenie približne pre 3–4 osoby.',mult:1},large:{name:'Veľká / 4–6 osôb',desc:'Miesto na sedenie približne pre 4–6 osôb.',mult:1.14}},woods:{smrek:{name:'Svetlý severský smrek',desc:'Svetlý teplý vzhľad.',mult:1,cls:'wood-smrek',sw:'#d9aa70'},thermo:{name:'Thermo drevo',desc:'Tmavšie tepelne upravené drevo.',mult:1.15,cls:'wood-thermo',sw:'#5f321d'},osika:{name:'Osika / svetlý interiér',desc:'Veľmi svetlé čisté prevedenie.',mult:1.10,cls:'wood-osika',sw:'#ead2aa'},premium:{name:'Prémiový mix',desc:'Kombinácia svetlých a tmavých tónov.',mult:1.18,cls:'wood-premium',sw:'#9a6339'}},glass:{standard:{name:'Štandardné sklo',desc:'Čisté presklenie.',price:0,cls:'glass-standard'},panorama:{name:'Panoramatické sklo',desc:'Väčšia sklenená plocha.',price:640,cls:'glass-panorama'},bronze:{name:'Bronzové tónované sklo',desc:'Jemný bronzový tón.',price:490,cls:'glass-bronze'}},options:{led:{name:'LED pásiky',desc:'Decentné svetlo v saune.',price:420},salt:{name:'Soľná stena',desc:'Viditeľný wellness prvok.',price:850},wifi:{name:'Wi‑Fi ovládanie',desc:'Ovládanie cez smart prvok.',price:250}}};
-const state={open:false,step:0,choice:{type:'finska',place:'interier',size:'medium',wood:'smrek',glass:'standard',options:[]}};
-const $=id=>document.getElementById(id),chat=$('vasasauna-chat'),messages=$('vs-messages'),calc=$('vs-calc'),input=$('vs-input'),teaser=$('vs-teaser');$('vs-bubble-icon').innerHTML=botSvg;$('vs-header-icon').innerHTML=botSvg;
-function euro(n){return Math.round(n).toLocaleString('sk-SK')+' €'}function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}function addMsg(html,who='bot'){const row=document.createElement('div');row.className='vs-row '+who;row.innerHTML=(who==='bot'?'<span class="vs-mini-av">'+botSvg+'</span>':'')+'<div class="vs-msg '+who+'">'+html+'</div>';messages.appendChild(row);messages.scrollTop=messages.scrollHeight}function reply(t){let x=t.toLowerCase();if(x.includes('cena')||x.includes('stoj'))return 'Presná cena závisí od typu, umiestnenia, skla a doplnkov. Najrýchlejšie je kliknúť na <b>Konfigurátor sauny</b>.';if(x.includes('typ'))return 'Najčastejšia je fínska sauna. Infrasauna je jemnejšia a kombinovaná spája obe možnosti.';if(x.includes('postup')||x.includes('mont'))return 'Postup: výber riešenia, zameranie priestoru, cenová ponuka, výroba a montáž.';return 'Pomôžem s výberom sauny. Pre cenu a konkrétne riešenie otvor konfigurátor.'}
-function compute(){const c=state.choice,t=DATA.types[c.type],p=DATA.places[c.place],s=DATA.sizes[c.size],w=DATA.woods[c.wood],g=DATA.glass[c.glass];let base=t.base*p.mult*s.mult*w.mult;let opt=c.options.reduce((a,id)=>a+DATA.options[id].price,0);let install=Math.round(base*.1);let total=Math.round(base+g.price+opt+install);return {t,p,s,w,g,opt,install,total,vat:total*1.23}}
-function cardGrid(items,key,cols=''){return '<div class="vs-grid '+cols+'">'+Object.keys(items).map(id=>{let it=items[id],sel=state.choice[key]===id,price=it.base?'od '+euro(it.base):it.price?'+'+euro(it.price):'';return `<button class="vs-card ${sel?'selected':''}" onclick="VSWidget.select('${key}','${id}')"><span class="vs-card-name">${it.name}</span><span class="vs-card-desc">${it.desc||''}</span>${price?`<span class="vs-card-price">${price}</span>`:''}</button>`}).join('')+'</div>'}
-function choiceList(items,key){return '<div class="vs-choice-list">'+Object.keys(items).map(id=>{let it=items[id],sel=state.choice[key]===id,price=it.price?'+'+euro(it.price):it.mult&&it.mult!==1?(it.mult>1?'+':'')+Math.round((it.mult-1)*100)+'%':'v cene',sw=it.sw?`<span class="vs-swatch" style="background:${it.sw}"></span>`:'';return `<button class="vs-choice ${sel?'selected':''}" onclick="VSWidget.select('${key}','${id}')"><span class="vs-check"></span>${sw}<span class="vs-choice-main"><span class="vs-choice-name">${it.name}</span><span class="vs-choice-desc">${it.desc||''}</span></span><span class="vs-choice-price">${price}</span></button>`}).join('')+'</div>'}
-function optionsList(){let set=new Set(state.choice.options);return '<div class="vs-choice-list">'+Object.keys(DATA.options).map(id=>{let it=DATA.options[id],sel=set.has(id);return `<button class="vs-choice ${sel?'selected':''}" onclick="VSWidget.toggleOption('${id}')"><span class="vs-check"></span><span class="vs-choice-main"><span class="vs-choice-name">${it.name}</span><span class="vs-choice-desc">${it.desc}</span></span><span class="vs-choice-price">+${euro(it.price)}</span></button>`}).join('')+'</div>'}
-function previewHtml(){const c=state.choice;if(state.step===3)return `<div class="vs-preview"><div class="vs-sample wood ${DATA.woods[c.wood].cls}"></div></div>`;if(state.step===4)return `<div class="vs-preview"><div class="vs-sample glass ${DATA.glass[c.glass].cls}"></div></div>`;return `<div class="vs-preview"><div class="vs-scene ${c.type} ${c.place} ${c.size}"><span class="vs-roof"></span><span class="vs-sauna"></span><span class="vs-bench"></span><span class="vs-stove"></span><span class="vs-heat"></span></div></div>`}
-function stepHtml(){let s=state.step;if(s===0)return `<div class="vs-step-title">1. Vyberte typ sauny</div><div class="vs-step-sub">Po kliknutí sa hore hneď zmení vizuál typu sauny.</div>${cardGrid(DATA.types,'type')}`;if(s===1)return `<div class="vs-step-title">2. Prostredie</div><div class="vs-step-sub">Pri zmene prostredia sa zmení pozadie preview.</div>${cardGrid(DATA.places,'place')}`;if(s===2)return `<div class="vs-step-title">3. Veľkosť sauny</div><div class="vs-step-sub">Veľkosť ukazuje približné miesto na sedenie.</div>${choiceList(DATA.sizes,'size')}`;if(s===3)return `<div class="vs-step-title">4. Materiál a farba dreva</div><div class="vs-step-sub">Hore sa mení iba drevo.</div>${choiceList(DATA.woods,'wood')}`;if(s===4)return `<div class="vs-step-title">5. Typ skla</div><div class="vs-step-sub">Hore sa mení iba sklo.</div>${cardGrid(DATA.glass,'glass','two')}`;if(s===5)return `<div class="vs-step-title">6. Doplnky</div><div class="vs-step-sub">Vyberte voliteľné doplnky.</div>${optionsList()}`;return summaryHtml()}
-function summaryHtml(){let r=compute(),c=state.choice,opts=c.options.length?c.options.map(id=>DATA.options[id].name).join(', '):'bez doplnkov';return `<div class="vs-step-title">7. Zhrnutie konfigurácie</div><div class="vs-summary"><div class="vs-price-label">Orientačná cena vrátane montáže</div><div class="vs-price">${euro(r.total)} <small>bez DPH</small></div><div class="vs-note">Presná ponuka sa pripraví po zameraní a doladení detailov.</div><div class="vs-breakdown"><div class="vs-breakrow"><span>Typ sauny</span><b>${euro(r.t.base)}</b></div><div class="vs-breakrow"><span>Umiestnenie</span><b>${r.p.mult===1?'bez zmeny':Math.round((r.p.mult-1)*100)+'%'}</b></div><div class="vs-breakrow"><span>Veľkosť</span><b>${r.s.mult===1?'štandard':Math.round((r.s.mult-1)*100)+'%'}</b></div><div class="vs-breakrow"><span>Materiál</span><b>${r.w.mult===1?'v cene':Math.round((r.w.mult-1)*100)+'%'}</b></div><div class="vs-breakrow"><span>Sklo</span><b>${r.g.price?'+ '+euro(r.g.price):'v cene'}</b></div><div class="vs-breakrow"><span>Doplnky</span><b>${euro(r.opt)}</b></div><div class="vs-breakrow"><span>Montáž / zabudovanie</span><b>+${euro(r.install)}</b></div><div class="vs-breakrow"><span>Orientačne s DPH</span><b>${euro(r.vat)}</b></div></div></div><div class="vs-lead-card"><div class="vs-lead-head"><span class="vs-final-ico">✉</span><span><b>Odoslať dopyt firme</b><small>Vyplňte kontakt. Po napojení príde konfigurácia firme.</small></span></div><div class="vs-lead-form"><input id="vs-name" placeholder="Meno a priezvisko *"><div class="vs-lead-row"><input id="vs-mail" placeholder="E-mail *"><input id="vs-phone" placeholder="Telefón *"></div><textarea id="vs-note" placeholder="Poznámka, rozmery priestoru, lokalita..."></textarea><label class="vs-consent"><input id="vs-consent" type="checkbox"><span>Súhlasím so spracovaním osobných údajov za účelom vybavenia dopytu.</span></label><div id="vs-lead-status" class="vs-lead-status"></div><button id="vs-send-lead" class="vs-send-lead" onclick="VSWidget.sendLead()">Odoslať dopyt</button></div></div>`}
-function renderCalc(){let total=7,progress=Math.round(((state.step+1)/total)*100),last=state.step>=total-1;calc.innerHTML=`<div class="vs-calc-head"><h3>Konfigurátor sauny</h3><button class="vs-calc-close" onclick="VSWidget.closeCalc()">×</button></div><div class="vs-progress"><button class="vs-back" onclick="VSWidget.prev()" ${state.step===0?'disabled':''}>‹</button><div class="vs-bar"><div class="vs-bar-fill" style="width:${progress}%"></div></div><div class="vs-count">${state.step+1}/${total}</div></div>${previewHtml()}<div class="vs-step">${stepHtml()}</div><div class="vs-actions"><button class="vs-btn secondary" onclick="VSWidget.prev()" ${state.step===0?'disabled':''}>Späť</button><button class="vs-btn" onclick="VSWidget.next()">${last?'Nová konfigurácia':'Pokračovať'}</button></div>`}
-window.VSWidget={toggle(){state.open?this.close():this.open()},open(){state.open=true;chat.classList.add('visible');chat.setAttribute('aria-hidden','false');$('vasasauna-bubble').classList.add('open');this.hideTeaser();if(!messages.dataset.init){addMsg('Dobrý deň. Som <b>AI asistent Vaša Sauna</b>. Pomôžem vám vybrať správny typ sauny a v konfigurátore prejdete výberom <b>typu</b>, <b>prostredia</b>, <b>veľkosti</b>, <b>materiálu</b> a <b>doplnkov</b>.');messages.dataset.init='1'}},close(){state.open=false;chat.classList.remove('visible','calc-open');chat.setAttribute('aria-hidden','true');$('vasasauna-bubble').classList.remove('open')},openCalc(){this.open();chat.classList.add('calc-open');renderCalc()},closeCalc(){chat.classList.remove('calc-open')},hideTeaser(){teaser.classList.remove('show')},submitChat(e){e.preventDefault();let val=input.value.trim();if(!val)return;input.value='';addMsg(esc(val),'user');setTimeout(()=>addMsg(reply(val),'bot'),250)},quick(t){this.open();addMsg(esc(t),'user');setTimeout(()=>addMsg(reply(t),'bot'),250)},select(k,id){state.choice[k]=id;renderCalc()},toggleOption(id){let a=state.choice.options,i=a.indexOf(id);i>=0?a.splice(i,1):a.push(id);renderCalc()},next(){state.step<6?state.step++:state.step=0;renderCalc()},prev(){if(state.step>0)state.step--;renderCalc()},sendLead(){let st=$('vs-lead-status'),n=$('vs-name').value.trim(),m=$('vs-mail').value.trim(),ph=$('vs-phone').value.trim(),ok=$('vs-consent').checked;if(!n||!m||!ph){st.className='vs-lead-status show err';st.textContent='Vyplňte meno, e-mail aj telefón.';return}if(!ok){st.className='vs-lead-status show err';st.textContent='Najprv potvrďte súhlas so spracovaním údajov.';return}st.className='vs-lead-status show err';st.textContent='Odosielanie ešte nie je napojené. Doplňte VS_LEAD_ENDPOINT alebo EmailJS.'}};
-setTimeout(()=>{if(!state.open)teaser.classList.add('show')},1300);
+/* =========================================================
+   NASTAVENIA – upravte podľa firmy
+   ========================================================= */
+const COMPANY={
+  phone:'+421905648129',          // tel: odkaz
+  phoneText:'+421 905 648 129',
+  email:'info@derat.sk',          // sem chodia dopyty (mailto fallback)
+  whatsapp:'421905648129',        // číslo pre WhatsApp odkaz
+  // Voliteľný backend endpoint na ukladanie dopytov (POST JSON). Prázdne = použije sa mailto/WhatsApp.
+  leadEndpoint:''
+};
+
+/* =========================================================
+   IKONY / ILUSTRÁCIE (SVG) – "fotky" pri jednotlivých službách
+   ========================================================= */
+const SVG={
+  rat:`<svg viewBox="0 0 64 64" fill="none"><ellipse cx="30" cy="40" rx="20" ry="12" fill="#7a6b5d"/><circle cx="50" cy="34" r="10" fill="#8a7a6b"/><circle cx="47" cy="26" r="5" fill="#9a8a7b"/><circle cx="55" cy="26" r="5" fill="#9a8a7b"/><circle cx="50" cy="34" r="2" fill="#1f1f1f"/><circle cx="54" cy="36" r="1.4" fill="#1f1f1f"/><path d="M58 36c4 0 6 2 6 2" stroke="#c63a27" stroke-width="2" stroke-linecap="round"/><path d="M12 44c-8 2-10 8-10 8" stroke="#7a6b5d" stroke-width="3" stroke-linecap="round"/></svg>`,
+  mouse:`<svg viewBox="0 0 64 64" fill="none"><ellipse cx="28" cy="42" rx="17" ry="11" fill="#8a8d92"/><circle cx="44" cy="36" r="9" fill="#9aa0a6"/><circle cx="41" cy="29" r="5" fill="#aab0b6"/><circle cx="49" cy="29" r="5" fill="#aab0b6"/><circle cx="45" cy="36" r="1.8" fill="#1f1f1f"/><path d="M13 46c-7 1-9 6-9 6" stroke="#8a8d92" stroke-width="3" stroke-linecap="round"/></svg>`,
+  roach:`<svg viewBox="0 0 64 64" fill="none"><ellipse cx="32" cy="34" rx="14" ry="20" fill="#5b3a1e"/><ellipse cx="32" cy="26" rx="9" ry="9" fill="#724a26"/><path d="M30 12l-4-7M34 12l4-7" stroke="#724a26" stroke-width="2.4" stroke-linecap="round"/><path d="M18 30l-12-4M18 38l-12 2M18 46l-10 6M46 30l12-4M46 38l12 2M46 46l10 6" stroke="#5b3a1e" stroke-width="2.4" stroke-linecap="round"/></svg>`,
+  ant:`<svg viewBox="0 0 64 64" fill="none"><circle cx="20" cy="32" r="7" fill="#3a2412"/><circle cx="33" cy="32" r="6" fill="#4a3018"/><circle cx="46" cy="32" r="9" fill="#3a2412"/><path d="M14 26l-6-6M14 32H6M14 38l-6 6M33 26l-2-10M33 38l-2 10" stroke="#3a2412" stroke-width="2.2" stroke-linecap="round"/><path d="M40 22l-3-7M52 22l3-7" stroke="#4a3018" stroke-width="2" stroke-linecap="round"/></svg>`,
+  bug:`<svg viewBox="0 0 64 64" fill="none"><ellipse cx="32" cy="36" rx="15" ry="17" fill="#7a3b1e"/><path d="M32 19v34" stroke="#3a1c0e" stroke-width="2"/><circle cx="32" cy="16" r="7" fill="#5b2c16"/><path d="M28 9l-4-6M36 9l4-6" stroke="#5b2c16" stroke-width="2.2" stroke-linecap="round"/><path d="M17 30l-10-3M17 40l-10 3M47 30l10-3M47 40l10 3" stroke="#7a3b1e" stroke-width="2.4" stroke-linecap="round"/></svg>`,
+  wasp:`<svg viewBox="0 0 64 64" fill="none"><ellipse cx="32" cy="38" rx="11" ry="16" fill="#e7b400"/><path d="M21 32h22M21 40h22M23 48h18" stroke="#1f1f1f" stroke-width="3"/><circle cx="32" cy="18" r="7" fill="#3a2a00"/><ellipse cx="20" cy="28" rx="10" ry="5" fill="#cfe8ff" opacity=".7" transform="rotate(-25 20 28)"/><ellipse cx="44" cy="28" rx="10" ry="5" fill="#cfe8ff" opacity=".7" transform="rotate(25 44 28)"/></svg>`,
+  mosquito:`<svg viewBox="0 0 64 64" fill="none"><ellipse cx="34" cy="36" rx="6" ry="13" fill="#4a4f55" transform="rotate(20 34 36)"/><circle cx="28" cy="22" r="6" fill="#5a5f65"/><path d="M24 18L8 8" stroke="#4a4f55" stroke-width="2" stroke-linecap="round"/><ellipse cx="20" cy="26" rx="14" ry="5" fill="#cfe8ff" opacity=".6" transform="rotate(-18 20 26)"/><ellipse cx="40" cy="24" rx="14" ry="5" fill="#cfe8ff" opacity=".6" transform="rotate(14 40 24)"/><path d="M40 44l8 10M44 42l10 6" stroke="#4a4f55" stroke-width="2" stroke-linecap="round"/></svg>`,
+  tick:`<svg viewBox="0 0 64 64" fill="none"><ellipse cx="32" cy="36" rx="15" ry="13" fill="#5b3a1e"/><circle cx="32" cy="22" r="6" fill="#3a2412"/><path d="M18 30l-8-4M18 36H8M18 42l-8 4M46 30l8-4M46 36h10M46 42l8 4" stroke="#5b3a1e" stroke-width="2.2" stroke-linecap="round"/></svg>`,
+  mold:`<svg viewBox="0 0 64 64" fill="none"><path d="M8 50c0-10 8-14 8-22 0 8 6 10 6 18M22 50c0-8 6-12 6-20 0 8 6 10 6 18M36 50c0-9 7-13 7-22 0 9 6 11 6 18" stroke="#4a5a2a" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="16" cy="22" r="5" fill="#6b7d3a"/><circle cx="30" cy="16" r="5" fill="#4a5a2a"/><circle cx="44" cy="22" r="6" fill="#6b7d3a"/><circle cx="52" cy="34" r="4" fill="#4a5a2a"/></svg>`,
+  virus:`<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="13" fill="#c63a27"/><g stroke="#c63a27" stroke-width="3" stroke-linecap="round"><path d="M32 19V8M32 45v11M19 32H8M45 32h11M23 23l-8-8M41 41l8 8M41 23l8-8M23 41l-8 8"/></g><circle cx="32" cy="8" r="3" fill="#9e2a1a"/><circle cx="32" cy="56" r="3" fill="#9e2a1a"/><circle cx="8" cy="32" r="3" fill="#9e2a1a"/><circle cx="56" cy="32" r="3" fill="#9e2a1a"/><circle cx="28" cy="30" r="2.5" fill="#fff"/><circle cx="36" cy="36" r="2" fill="#fff"/></svg>`,
+  weed:`<svg viewBox="0 0 64 64" fill="none"><path d="M32 54V26" stroke="#4a5a2a" stroke-width="3" stroke-linecap="round"/><path d="M32 32c-6-2-12 0-16-6 6-2 12 0 16 6ZM32 40c6-2 12 0 16-6-6-2-12 0-16 6ZM32 26c0-8 4-14 4-14s4 6 4 14c0 4-4 6-4 6s-4-2-4-6Z" fill="#6b7d3a"/><path d="M14 54h36" stroke="#7a5a2a" stroke-width="4" stroke-linecap="round"/></svg>`,
+  tree:`<svg viewBox="0 0 64 64" fill="none"><rect x="29" y="36" width="6" height="18" rx="2" fill="#7a5a2a"/><circle cx="32" cy="24" r="15" fill="#4a7a2a"/><circle cx="22" cy="30" r="9" fill="#5a8a24"/><circle cx="42" cy="30" r="9" fill="#5a8a24"/><circle cx="44" cy="20" r="5" fill="#c63a27"/><circle cx="26" cy="18" r="4" fill="#c63a27"/></svg>`,
+  spray:`<svg viewBox="0 0 64 64" fill="none"><rect x="22" y="22" width="20" height="32" rx="4" fill="#406618"/><rect x="26" y="14" width="12" height="10" rx="2" fill="#5a8a24"/><rect x="38" y="10" width="6" height="6" rx="1" fill="#2e4a11"/><path d="M48 8l8-2M48 14h9M48 20l8 4" stroke="#5a8a24" stroke-width="2.4" stroke-linecap="round"/><rect x="27" y="30" width="10" height="14" rx="2" fill="#fff" opacity=".5"/></svg>`,
+  // priestory
+  flat:`<svg viewBox="0 0 64 64" fill="none"><rect x="14" y="18" width="36" height="34" rx="2" fill="#cdd8c0"/><rect x="20" y="24" width="8" height="8" fill="#fff"/><rect x="36" y="24" width="8" height="8" fill="#fff"/><rect x="20" y="38" width="8" height="14" fill="#7a5a2a"/><rect x="36" y="38" width="8" height="8" fill="#fff"/></svg>`,
+  house:`<svg viewBox="0 0 64 64" fill="none"><path d="M10 30 32 12l22 18v24H10V30Z" fill="#cdd8c0"/><path d="M8 31 32 11l24 20" stroke="#c63a27" stroke-width="4" stroke-linecap="round"/><rect x="27" y="38" width="10" height="16" fill="#7a5a2a"/><rect x="16" y="34" width="8" height="8" fill="#fff"/><rect x="40" y="34" width="8" height="8" fill="#fff"/></svg>`,
+  biz:`<svg viewBox="0 0 64 64" fill="none"><rect x="12" y="14" width="40" height="40" fill="#bcc7af"/><g fill="#fff"><rect x="18" y="20" width="7" height="7"/><rect x="29" y="20" width="7" height="7"/><rect x="40" y="20" width="7" height="7"/><rect x="18" y="31" width="7" height="7"/><rect x="29" y="31" width="7" height="7"/><rect x="40" y="31" width="7" height="7"/></g><rect x="27" y="42" width="11" height="12" fill="#406618"/></svg>`,
+  food:`<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="34" r="18" fill="#cdd8c0"/><circle cx="32" cy="34" r="9" fill="#fff"/><rect x="30" y="6" width="4" height="22" rx="2" fill="#7a6b5d"/><path d="M44 6v10c0 3 3 4 3 4v8" stroke="#7a6b5d" stroke-width="3" stroke-linecap="round"/></svg>`,
+  warehouse:`<svg viewBox="0 0 64 64" fill="none"><path d="M8 26 32 14l24 12v28H8V26Z" fill="#bcc7af"/><rect x="18" y="34" width="12" height="20" fill="#7a5a2a"/><rect x="34" y="34" width="12" height="20" fill="#7a5a2a"/><path d="M8 26 32 14l24 12" stroke="#406618" stroke-width="3"/></svg>`,
+  outdoor:`<svg viewBox="0 0 64 64" fill="none"><rect x="4" y="42" width="56" height="12" fill="#6b7d3a"/><circle cx="48" cy="18" r="8" fill="#e7b400"/><circle cx="18" cy="34" r="8" fill="#4a7a2a"/><rect x="16" y="34" width="4" height="10" fill="#7a5a2a"/><path d="M4 44c10-6 20-2 30-4s16-6 26-2" stroke="#5a8a24" stroke-width="2" fill="none"/></svg>`
+};
+
+/* Scéna v preview – pozadie podľa priestoru + ikona služby/škodcu */
+function sceneSvg(){
+  const c=state.choice;
+  const placeBg={byt:'#dbe6d0',dom:'#d4e3c6',prevadzka:'#d8e0d0',horeca:'#e3ddc8',sklad:'#d0d6c8',exterier:'#cfe0b8'}[c.place]||'#dbe6d0';
+  const placeIco={byt:SVG.flat,dom:SVG.house,prevadzka:SVG.biz,horeca:SVG.food,sklad:SVG.warehouse,exterier:SVG.outdoor}[c.place]||SVG.flat;
+  // hlavná ikona = vybraný škodca, inak služba
+  let mainIco=SVG.spray;
+  const sub=SERVICES[c.service]&&SERVICES[c.service].subs[c.sub];
+  if(sub&&SVG[sub.ico])mainIco=SVG[sub.ico];
+  else if(SERVICES[c.service]&&SVG[SERVICES[c.service].ico])mainIco=SVG[SERVICES[c.service].ico];
+  return `<div class="dr-scene" style="background:radial-gradient(circle at 78% 30%,#ffffff66,transparent 45%),linear-gradient(180deg,${placeBg},#ffffff)">
+    <div style="position:absolute;left:6%;bottom:4%;width:46%;opacity:.9">${placeIco}</div>
+    <div style="position:absolute;right:7%;top:10%;width:46%;filter:drop-shadow(0 8px 14px rgba(31,31,31,.18))">${mainIco}</div>
+  </div>`;
+}
+
+/* =========================================================
+   DÁTA – služby, škodcovia, priestory, ceny (orientačné, €, bez DPH)
+   ========================================================= */
+const SERVICES={
+  deratizacia:{name:'Deratizácia',ico:'rat',desc:'Likvidácia hlodavcov',base:49,rate:.45,unit:'m²',
+    subs:{mysi:{name:'Myši',ico:'mouse',mult:1},potkany:{name:'Potkany',ico:'rat',mult:1.15},hraboše:{name:'Hraboše / vonku',ico:'mouse',mult:1.1}}},
+  dezinsekcia:{name:'Dezinsekcia',ico:'roach',desc:'Likvidácia hmyzu',base:55,rate:.55,unit:'m²',
+    subs:{svaby:{name:'Šváby / rusy',ico:'roach',mult:1},mravce:{name:'Mravce',ico:'ant',mult:.95},plostice:{name:'Ploštice',ico:'bug',mult:1.35},blchy:{name:'Blchy',ico:'bug',mult:1.1},osy:{name:'Osy / sršne',ico:'wasp',mult:1.1},komare:{name:'Komáre',ico:'mosquito',mult:1.05},kliest:{name:'Kliešte',ico:'tick',mult:1.05}}},
+  dezinfekcia:{name:'Dezinfekcia',ico:'spray',desc:'Plesne, baktérie, vírusy',base:59,rate:.65,unit:'m²',
+    subs:{plesne:{name:'Plesne',ico:'mold',mult:1.1},baktérie:{name:'Baktérie / vírusy',ico:'virus',mult:1},zapach:{name:'Zápach / pachy',ico:'spray',mult:1.05}}},
+  burina:{name:'Likvidácia buriny',ico:'weed',desc:'Postrek pozemkov',base:45,rate:.35,unit:'m²',
+    subs:{burina:{name:'Burina / náletové',ico:'weed',mult:1},invazne:{name:'Invázne rastliny',ico:'weed',mult:1.25}}},
+  stromy:{name:'Ošetrenie stromov',ico:'tree',desc:'Postrek a ochrana',base:39,rate:16,unit:'ks',
+    subs:{ovocne:{name:'Ovocné stromy',ico:'tree',mult:1},okrasne:{name:'Okrasné dreviny',ico:'tree',mult:1.1}}}
+};
+const PLACES={
+  byt:{name:'Byt',ico:'flat',mult:1,defArea:60},
+  dom:{name:'Rodinný dom',ico:'house',mult:1.05,defArea:120},
+  prevadzka:{name:'Firma / prevádzka',ico:'biz',mult:1.15,defArea:200},
+  horeca:{name:'Reštaurácia / HoReCa',ico:'food',mult:1.2,defArea:150},
+  sklad:{name:'Sklad / hala',ico:'warehouse',mult:1.1,defArea:400},
+  exterier:{name:'Exteriér / pozemok',ico:'outdoor',mult:.95,defArea:300}
+};
+const SEVERITY={
+  mierne:{name:'Mierne',desc:'Ojedinelý výskyt, prevencia.',mult:.9,visits:'1 zásah'},
+  stredne:{name:'Stredné',desc:'Pravidelný výskyt na viacerých miestach.',mult:1,visits:'1–2 zásahy'},
+  silne:{name:'Silné zamorenie',desc:'Rozsiahly výskyt, opakovaný zásah nutný.',mult:1.3,visits:'2–3 zásahy'}
+};
+const ADDONS={
+  opakovany:{name:'Opakovaný / kontrolný zásah',desc:'Druhý výjazd na overenie účinnosti.',price:39},
+  protokol:{name:'Písomný protokol / potvrdenie',desc:'Doklad pre úrady, HACCP, prevádzku.',price:19},
+  monitoring:{name:'Monitoring 12 mesiacov',desc:'Nástrahové staničky a kontroly.',price:79},
+  expres:{name:'Expres / víkend',desc:'Zásah do 24 h alebo cez víkend.',price:35},
+  hniezda:{name:'Likvidácia hniezd',desc:'Odstránenie hniezd ôs/sršňov a pod.',price:29}
+};
+
+/* =========================================================
+   STAV
+   ========================================================= */
+const state={open:false,step:0,choice:{service:'deratizacia',sub:'mysi',place:'byt',area:60,severity:'stredne',addons:[]}};
+const STEPS=['service','sub','place','area','severity','addons','summary'];
+
+const $=id=>document.getElementById(id);
+const chat=$('derat-chat'),messages=$('dr-messages'),calc=$('dr-calc'),input=$('dr-input'),teaser=$('dr-teaser');
+
+// kontaktné odkazy
+$('dr-c-call').href='tel:'+COMPANY.phone;
+$('dr-c-mail').href='mailto:'+COMPANY.email;
+$('dr-c-wa').href='https://wa.me/'+COMPANY.whatsapp;
+
+/* =========================================================
+   POMOCNÉ
+   ========================================================= */
+function euro(n){return Math.round(n).toLocaleString('sk-SK')+' €';}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function addMsg(html,who='bot'){
+  const row=document.createElement('div');row.className='dr-row '+who;
+  row.innerHTML=(who==='bot'?'<span class="dr-mini-av"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a7 7 0 0 0-7 7c0 1.7.6 3.2 1.6 4.4.7.8 1.4 1.8 1.4 2.9V17h8v-.7c0-1.1.7-2.1 1.4-2.9A6.97 6.97 0 0 0 19 9a7 7 0 0 0-7-7Zm-3 19a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1Z"/></svg></span>':'')
+    +'<div class="dr-msg '+who+'">'+html+'</div>';
+  messages.appendChild(row);messages.scrollTop=messages.scrollHeight;
+}
+/* Jednoduchý "chatbot" – kľúčové slová */
+function reply(t){
+  const x=t.toLowerCase();
+  if(/(cena|stoj|koľko|kolko|cenn)/.test(x))return 'Cena závisí od služby, druhu škodcu, plochy a rozsahu zamorenia. Najrýchlejšie ju zistíte v <b>Kalkulačke</b> – kliknite na „💶 Spočítať cenu". Presnú ponuku potvrdíme po obhliadke.';
+  if(/(my[šs]|potkan|hlodav|hraboš)/.test(x))return 'Pri hlodavcoch nasadzujeme nástrahové staničky a monitoring. Dôležité je zistiť cestičky a zdroj. Otvorte <b>Deratizáciu</b> v kalkulačke a vyberte myši/potkany.';
+  if(/(šváb|svab|rus|hmyz|mravc|ploštic|plostic|blch)/.test(x))return 'Hmyz riešime gélom a postrekom s dlhodobým účinkom. Pri plošticiach odporúčame opakovaný zásah. Vyberte v kalkulačke <b>Dezinsekciu</b> a konkrétneho škodcu.';
+  if(/(os[ay]|sršn|srsn|včel)/.test(x))return 'Hniezda ôs a sršňov odstraňujeme bezpečne aj vo výškach. V kalkulačke zvoľte Dezinsekcia → Osy/sršne a doplnok „Likvidácia hniezd".';
+  if(/(plesn|baktér|bakter|vírus|virus|dezinf|covid)/.test(x))return 'Dezinfekciu robíme proti plesniam, baktériám aj vírusom (vrátane priestorov po ochorení). Vyberte v kalkulačke <b>Dezinfekciu</b>.';
+  if(/(burin|stromy|postrek|záhrad|zahrad|pozemok)/.test(x))return 'Riešime aj postrek pozemkov (burina) a ošetrenie stromov. Nájdete to v kalkulačke pod službami <b>Likvidácia buriny</b> a <b>Ošetrenie stromov</b>.';
+  if(/(postup|prebieha|ako to|obhliad|zásah|zasah|garanc)/.test(x))return 'Postup: 1) obhliadka/konzultácia, 2) návrh riešenia a cena, 3) zásah certifikovaným prípravkom, 4) protokol a podľa potreby kontrolný zásah. Na zásahy poskytujeme garanciu.';
+  if(/(bezpeč|bezpec|deti|dieťa|dieta|zviera|domác|pes|mač)/.test(x))return 'Pracujeme s certifikovanými prípravkami a postupmi. Po zásahu vám odovzdáme pokyny ohľadom detí a domácich zvierat. Bezpečnosť je u nás priorita.';
+  if(/(kde|región|region|okres|mesto|bratislav|cestuj)/.test(x))return 'Pôsobíme po celom Slovensku, ťažisko Bratislava a okolie. Termín a dojazd radi potvrdíme telefonicky.';
+  if(/(ahoj|dobrý|dobry|zdrav|čau|cau|prosím|prosim)/.test(x))return 'Dobrý deň 👋 Som DERAT asistent. Poviete mi, akého škodcu riešite (myši, šváby, ploštice, plesne...)? Alebo rovno otvorte <b>Kalkulačku</b> pre orientačnú cenu.';
+  return 'Rád pomôžem so škodcami – deratizácia, dezinsekcia, dezinfekcia, burina aj stromy. Napíšte konkrétneho škodcu, alebo otvorte <b>Kalkulačku</b> pre cenu. Prípadne nám zavolajte na '+COMPANY.phoneText+'.';
+}
+
+/* =========================================================
+   VÝPOČET CENY
+   ========================================================= */
+function compute(){
+  const c=state.choice,sv=SERVICES[c.service],sub=sv.subs[c.sub],pl=PLACES[c.place],sev=SEVERITY[c.severity];
+  const qty=sv.unit==='ks'?Math.max(1,c.area):c.area;
+  const variable=sv.rate*qty*sub.mult*pl.mult*sev.mult;
+  const addons=c.addons.reduce((a,id)=>a+(ADDONS[id]?ADDONS[id].price:0),0);
+  let subtotal=sv.base+variable+addons;
+  // minimálny výjazd
+  const MIN=69;
+  if(subtotal<MIN)subtotal=MIN;
+  const total=Math.round(subtotal);
+  return {sv,sub,pl,sev,qty,unit:sv.unit,base:sv.base,variable,addons,total,low:Math.round(total*0.9),high:Math.round(total*1.2),vat:Math.round(total*1.23)};
+}
+
+/* =========================================================
+   RENDER KROKOV
+   ========================================================= */
+function card(item,sel,onclick,priceTxt){
+  const ico=SVG[item.ico]?`<span class="dr-card-ico">${SVG[item.ico]}</span>`:'';
+  return `<button class="dr-card ${sel?'selected':''}" onclick="${onclick}">${ico}<span class="dr-card-name">${item.name}</span>${item.desc?`<span class="dr-card-desc">${item.desc}</span>`:''}${priceTxt?`<span class="dr-card-price">${priceTxt}</span>`:''}</button>`;
+}
+function stepServices(){
+  const items=Object.keys(SERVICES).map(id=>card(SERVICES[id],state.choice.service===id,`DERAT.pickService('${id}')`,'od '+euro(SERVICES[id].base))).join('');
+  return `<div class="dr-step-title">1. Akú službu potrebujete?</div><div class="dr-step-sub">Vyberte typ zásahu. Vizuál hore sa hneď prispôsobí.</div><div class="dr-grid three">${items}</div>`;
+}
+function stepSubs(){
+  const sv=SERVICES[state.choice.service];
+  const items=Object.keys(sv.subs).map(id=>card(sv.subs[id],state.choice.sub===id,`DERAT.select('sub','${id}')`,'')).join('');
+  return `<div class="dr-step-title">2. ${sv.name} – čoho sa zbavíme?</div><div class="dr-step-sub">Vyberte konkrétneho škodcu alebo problém.</div><div class="dr-grid three">${items}</div>`;
+}
+function stepPlace(){
+  const items=Object.keys(PLACES).map(id=>card(PLACES[id],state.choice.place===id,`DERAT.pickPlace('${id}')`,'')).join('');
+  return `<div class="dr-step-title">3. Kde robíme zásah?</div><div class="dr-step-sub">Typ priestoru ovplyvňuje rozsah aj cenu.</div><div class="dr-grid three">${items}</div>`;
+}
+function stepArea(){
+  const sv=SERVICES[state.choice.service],unit=sv.unit;
+  const max=unit==='ks'?40:1000,a=state.choice.area;
+  const quick=unit==='ks'?[1,3,8,15,30]:[40,80,150,300,600];
+  const qbtns=quick.map(v=>`<button onclick="DERAT.setArea(${v})">${v} ${unit}</button>`).join('');
+  return `<div class="dr-step-title">4. ${unit==='ks'?'Počet stromov':'Plocha priestoru'}</div><div class="dr-step-sub">${unit==='ks'?'Koľko stromov treba ošetriť?':'Približná podlahová / ošetrovaná plocha. Nemusí byť presné.'}</div>
+  <div class="dr-area">
+    <div class="dr-area-val" id="dr-area-val">${a} <small>${unit}</small></div>
+    <input class="dr-range" type="range" min="${unit==='ks'?1:10}" max="${max}" step="${unit==='ks'?1:5}" value="${a}" oninput="DERAT.setArea(+this.value)">
+    <div class="dr-range-scale"><span>${unit==='ks'?1:10} ${unit}</span><span>${max}+ ${unit}</span></div>
+    <div class="dr-area-quick">${qbtns}</div>
+  </div>`;
+}
+function stepSeverity(){
+  const items=Object.keys(SEVERITY).map(id=>{const s=SEVERITY[id],sel=state.choice.severity===id;
+    return `<button class="dr-choice ${sel?'selected':''}" onclick="DERAT.select('severity','${id}')"><span class="dr-check"></span><span class="dr-choice-main"><span class="dr-choice-name">${s.name}</span><span class="dr-choice-desc">${s.desc}</span></span><span class="dr-choice-price">${s.visits}</span></button>`;
+  }).join('');
+  return `<div class="dr-step-title">5. Rozsah problému</div><div class="dr-step-sub">Pomôže odhadnúť počet zásahov a cenu.</div><div class="dr-list">${items}</div>`;
+}
+function stepAddons(){
+  const set=new Set(state.choice.addons);
+  const items=Object.keys(ADDONS).map(id=>{const a=ADDONS[id],sel=set.has(id);
+    return `<button class="dr-choice ${sel?'selected':''}" onclick="DERAT.toggleAddon('${id}')"><span class="dr-check"></span><span class="dr-choice-main"><span class="dr-choice-name">${a.name}</span><span class="dr-choice-desc">${a.desc}</span></span><span class="dr-choice-price">+${euro(a.price)}</span></button>`;
+  }).join('');
+  return `<div class="dr-step-title">6. Doplnkové služby</div><div class="dr-step-sub">Voliteľné – vyberte, čo sa hodí.</div><div class="dr-list">${items}</div>`;
+}
+function stepSummary(){
+  const r=compute(),c=state.choice;
+  const addTxt=c.addons.length?c.addons.map(id=>ADDONS[id].name).join(', '):'žiadne';
+  return `<div class="dr-step-title">7. Vaša orientačná cena</div>
+  <div class="dr-summary">
+    <div class="dr-price-label">Orientačná cena zásahu (bez DPH)</div>
+    <div class="dr-price">${euro(r.total)}</div>
+    <div class="dr-price-range">Reálne zvyčajne ${euro(r.low)} – ${euro(r.high)} · s DPH ~ ${euro(r.vat)}</div>
+    <div class="dr-note">Ide o orientačný odhad. Konečnú cenu potvrdíme po obhliadke alebo telefonicky podľa stavu priestoru a dostupnosti.</div>
+    <div class="dr-breakdown">
+      <div class="dr-breakrow"><span>${r.sv.name} – ${r.sub.name}</span><b>${euro(r.base)} + zásah</b></div>
+      <div class="dr-breakrow"><span>${r.unit==='ks'?'Počet stromov':'Plocha'}</span><b>${r.qty} ${r.unit}</b></div>
+      <div class="dr-breakrow"><span>Priestor</span><b>${r.pl.name}</b></div>
+      <div class="dr-breakrow"><span>Rozsah</span><b>${r.sev.name} (${r.sev.visits})</b></div>
+      <div class="dr-breakrow"><span>Doplnky</span><b>${r.addons?'+'+euro(r.addons):'—'}</b></div>
+      <div class="dr-breakrow tot"><span>Spolu orientačne</span><b>${euro(r.total)}</b></div>
+    </div>
+  </div>
+  <div class="dr-lead">
+    <div class="dr-lead-head"><span class="dr-lead-ico"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg></span><span><b>Chcem presnú cenu / termín</b><small>Pošlite kontakt – ozveme sa s konkrétnou ponukou.</small></span></div>
+    <div class="dr-lead-form">
+      <input id="dr-name" placeholder="Meno a priezvisko *">
+      <div class="dr-lead-row"><input id="dr-phone" placeholder="Telefón *"><input id="dr-mail" placeholder="E-mail"></div>
+      <input id="dr-loc" placeholder="Mesto / lokalita">
+      <textarea id="dr-note" placeholder="Poznámka – kedy sa škodca objavuje, prístup, termín..."></textarea>
+      <label class="dr-consent"><input id="dr-consent" type="checkbox"><span>Súhlasím so spracovaním osobných údajov za účelom vybavenia dopytu.</span></label>
+      <div id="dr-lead-status" class="dr-lead-status"></div>
+      <button class="dr-send-lead" onclick="DERAT.sendLead()"><svg viewBox="0 0 24 24"><path d="M2 21 23 12 2 3v7l15 2-15 2v7Z"/></svg> Odoslať dopyt</button>
+    </div>
+  </div>`;
+}
+function stepHtml(){
+  switch(STEPS[state.step]){
+    case 'service':return stepServices();
+    case 'sub':return stepSubs();
+    case 'place':return stepPlace();
+    case 'area':return stepArea();
+    case 'severity':return stepSeverity();
+    case 'addons':return stepAddons();
+    default:return stepSummary();
+  }
+}
+function renderCalc(){
+  const total=STEPS.length,progress=Math.round(((state.step+1)/total)*100),last=state.step>=total-1;
+  calc.innerHTML=`<div class="dr-calc-head"><h3>Kalkulačka zásahu</h3><button class="dr-calc-close" onclick="DERAT.closeCalc()">×</button></div>
+  <div class="dr-progress"><button class="dr-back" onclick="DERAT.prev()" ${state.step===0?'disabled':''}>‹</button><div class="dr-bar"><div class="dr-bar-fill" style="width:${progress}%"></div></div><div class="dr-count">${state.step+1}/${total}</div></div>
+  <div class="dr-preview">${sceneSvg()}<span class="dr-scene-tag">${SERVICES[state.choice.service].name} · ${PLACES[state.choice.place].name}</span></div>
+  <div class="dr-stepbox">${stepHtml()}</div>
+  <div class="dr-actions"><button class="dr-btn secondary" onclick="DERAT.prev()" ${state.step===0?'disabled':''}>Späť</button><button class="dr-btn" onclick="DERAT.next()">${last?'Začať odznova':'Pokračovať ›'}</button></div>`;
+}
+
+/* =========================================================
+   VEREJNÉ API WIDGETU
+   ========================================================= */
+window.DERAT={
+  toggle(){state.open?this.close():this.open();},
+  open(){
+    state.open=true;chat.classList.add('visible');chat.setAttribute('aria-hidden','false');
+    $('derat-bubble').classList.add('open');this.hideTeaser();
+    if(!messages.dataset.init){
+      addMsg('Dobrý deň 👋 Som <b>DERAT asistent</b>. Pomôžem so škodcami – <b>deratizácia, dezinsekcia, dezinfekcia</b>, burina aj stromy. Napíšte, čo riešite, alebo si v <b>Kalkulačke</b> spočítajte orientačnú cenu.');
+      messages.dataset.init='1';
+    }
+  },
+  close(){state.open=false;chat.classList.remove('visible','calc-open');chat.setAttribute('aria-hidden','true');$('derat-bubble').classList.remove('open');},
+  openCalc(){this.open();chat.classList.add('calc-open');renderCalc();calc.scrollTop=0;},
+  closeCalc(){chat.classList.remove('calc-open');},
+  hideTeaser(){teaser.classList.remove('show');},
+  submitChat(e){e.preventDefault();const v=input.value.trim();if(!v)return;input.value='';addMsg(esc(v),'user');setTimeout(()=>addMsg(reply(v),'bot'),260);},
+  quick(t){this.open();addMsg(esc(t),'user');setTimeout(()=>addMsg(reply(t),'bot'),260);},
+  pickService(id){state.choice.service=id;state.choice.sub=Object.keys(SERVICES[id].subs)[0];renderCalc();},
+  pickPlace(id){state.choice.place=id;state.choice.area=PLACES[id].defArea;renderCalc();},
+  select(k,id){state.choice[k]=id;renderCalc();},
+  setArea(v){state.choice.area=v;const el=$('dr-area-val');if(el)el.innerHTML=v+' <small>'+SERVICES[state.choice.service].unit+'</small>';},
+  toggleAddon(id){const a=state.choice.addons,i=a.indexOf(id);i>=0?a.splice(i,1):a.push(id);renderCalc();},
+  next(){state.step<STEPS.length-1?state.step++:(state.step=0);renderCalc();calc.scrollTop=0;},
+  prev(){if(state.step>0)state.step--;renderCalc();calc.scrollTop=0;},
+  sendLead(){
+    const st=$('dr-lead-status'),name=$('dr-name').value.trim(),phone=$('dr-phone').value.trim(),mail=$('dr-mail').value.trim(),loc=$('dr-loc').value.trim(),note=$('dr-note').value.trim(),ok=$('dr-consent').checked;
+    if(!name||!phone){st.className='dr-lead-status show err';st.textContent='Vyplňte aspoň meno a telefón.';return;}
+    if(!ok){st.className='dr-lead-status show err';st.textContent='Potvrďte prosím súhlas so spracovaním údajov.';return;}
+    const r=compute(),c=state.choice;
+    const summary=`DOPYT z kalkulačky DERAT.sk
+Služba: ${r.sv.name} – ${r.sub.name}
+Priestor: ${r.pl.name}, ${r.qty} ${r.unit}
+Rozsah: ${r.sev.name} (${r.sev.visits})
+Doplnky: ${c.addons.length?c.addons.map(id=>ADDONS[id].name).join(', '):'žiadne'}
+Orientačná cena: ${euro(r.total)} bez DPH (rozsah ${euro(r.low)}–${euro(r.high)})
+---
+Meno: ${name}
+Telefón: ${phone}
+E-mail: ${mail||'-'}
+Lokalita: ${loc||'-'}
+Poznámka: ${note||'-'}`;
+    const done=()=>{st.className='dr-lead-status show ok';st.textContent='Ďakujeme! Dopyt je pripravený na odoslanie / odoslaný. Čoskoro sa vám ozveme.';};
+    // 1) ak je nastavený backend endpoint, pošli JSON
+    if(COMPANY.leadEndpoint){
+      fetch(COMPANY.leadEndpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,phone,mail,loc,note,price:r.total,config:c})})
+        .then(res=>{if(!res.ok)throw 0;done();})
+        .catch(()=>{st.className='dr-lead-status show err';st.textContent='Odoslanie zlyhalo. Zavolajte nám prosím na '+COMPANY.phoneText+'.';});
+      return;
+    }
+    // 2) inak otvor predvyplnený e-mail (funguje hneď, bez backendu)
+    const subj=encodeURIComponent('Dopyt z kalkulačky – '+r.sv.name);
+    window.location.href='mailto:'+COMPANY.email+'?subject='+subj+'&body='+encodeURIComponent(summary);
+    done();
+  }
+};
+
+/* teaser po krátkej chvíli */
+setTimeout(()=>{if(!state.open)teaser.classList.add('show');},1400);
 })();
 </script>
 </body>
