@@ -28,6 +28,9 @@ Dizajn a UX sú inšpirované konfigurátorom **„Môj plot"**, prefarbené do 
 - ✨ Animácie (bublina, prechody krokov, count-up ceny) · rešpektuje `prefers-reduced-motion`.
 - 📱 Plne responzívne (na mobile fullscreen).
 
+- 🐭 **Maskot** – usmievavá myš ako ikona asistenta (bublina, hlavička, avatary).
+- 💰 **Logické ceny** – počíta sa *cena za 1 zásah × počet zásahov* (rozsah), takže väčší problém = výrazne vyššia cena.
+
 ## Vloženie do stránky
 Skopírujte blok medzi `<!-- WIDGET -->` (vrátane `<style>`, `<section>` a `<script>`)
 do šablóny webu. Blok `<div class="demo">…</div>` je len ukážkové pozadie – na ostrej
