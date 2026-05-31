@@ -1,3 +1,0 @@
-Pozri index.html v tomto repozitári. Je to rovnaký kompaktný widget pripravený na vloženie do HTML.
-
-Súbor index.html je pod 50 KB, kalkulačka sa otvára cez Konfigurátor sauny, preview fotka je vložená priamo v kóde a kontakty ostávajú dole aj pri otvorenej kalkulačke.
