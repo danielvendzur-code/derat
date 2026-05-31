@@ -1,51 +1,56 @@
-# DERAT.sk – chatbot + kalkulačka
+# DERAT.sk – AI asistent & cenová kalkulačka
 
-Samostatný widget (jeden súbor `index.html`) pre web **derat.sk** – plávajúca bublina
-vpravo dole otvorí asistenta, ktorý poradí so škodcami a obsahuje **kalkulačku
-orientačnej ceny** zásahu.
+Samostatný widget (jeden súbor `index.html`) pre web **derat.sk**. Plávajúca bublina
+vpravo dole otvorí asistenta, ktorý poradí so škodcami a obsahuje prepracovanú
+**cenovú kalkulačku s reálnymi fotkami**.
 
-Postavené vo firemných farbách derat.sk: zelená `#406618`, červená `#c63a27`, font **Poppins**.
+Dizajn a UX sú inšpirované konfigurátorom **„Môj plot"**, prefarbené do brandu
+**derat.sk**: zelená `#406618`, červená `#c63a27`, font **Poppins**.
 
-## Čo to vie
-- 💬 **Chatbot** – odpovedá na časté otázky (hlodavce, hmyz, plesne, postup, bezpečnosť, cena, región).
-- 🧮 **Kalkulačka v 7 krokoch** – jednoduchá, vizuálna, pre každý prípad:
-  1. Služba (deratizácia, dezinsekcia, dezinfekcia, likvidácia buriny, ošetrenie stromov)
-  2. Druh škodcu / problému (myši, potkany, šváby, mravce, ploštice, blchy, osy, komáre, kliešte, plesne, baktérie/vírusy…)
-  3. Priestor (byt, dom, prevádzka, HoReCa, sklad, exteriér)
-  4. Plocha (`m²`) alebo počet stromov – posuvník + rýchle voľby
-  5. Rozsah zamorenia (mierne / stredné / silné)
-  6. Doplnky (opakovaný zásah, protokol, monitoring, expres, hniezda)
-  7. Zhrnutie + orientačná cena + dopytový formulár
-- 📷 **Reálne fotky služieb** z derat.sk (myš, šváby, roztoče) v náhľade s jemným zoomom (Ken Burns); pri burine a stromoch ostré SVG ilustrácie.
-- ✨ **Animácie** – pulzujúca bublina, „typing" indikátor chatbota, plynulé prechody krokov, count-up ceny, hover efekty. Rešpektuje `prefers-reduced-motion`.
-- 📝 **Vysvetlenia služieb presne podľa derat.sk** – pri každej službe info box (potkany/myši/hraboše, postrek/zadymovanie/plynovanie, polymérová dezinfekcia…) a postup zásahu.
-- 📩 **Odoslanie dopytu** funguje hneď cez predvyplnený e-mail; voliteľne aj na vlastný backend.
+## Čo widget vie
+- 💬 **Chatbot** – odpovedá na časté otázky (hlodavce, hmyz, osy, plesne/vírusy, burina,
+  stromy, postup zásahu, bezpečnosť, cena, región) s „typing" indikátorom.
+- 🧮 **Kalkulačka v 7 jednoduchých krokoch** s peknými, stručnými otázkami:
+  1. *Akú službu potrebujete?* – deratizácia / dezinsekcia / dezinfekcia / burina / stromy (karty s **fotkami**)
+  2. *Čoho presne sa potrebujete zbaviť?* – konkrétny škodca + info box s vysvetlením
+  3. *Kde máme zasiahnuť?* – byt / dom / prevádzka / HoReCa / sklad / exteriér (karty s **fotkami**)
+  4. *Aká je veľkosť priestoru?* – posuvník (m² alebo počet stromov) + rýchle voľby
+  5. *Ako veľký je problém?* – mierne / stredné / silné (odhad počtu zásahov)
+  6. *Chcete niečo navyše?* – doplnky (opakovaný zásah, protokol, monitoring, expres, hniezda)
+  7. *Vaša orientačná cena* – animovaná cena, rozpis, formulár dopytu
+- 📷 **Reálne fotky** – fotka služby/priestoru v hero náhľade (jemný Ken Burns zoom),
+  fotky na výberových kartách. Zdroje: oficiálne fotky derat.sk + Wikimedia Commons (voľná licencia).
+- 💶 **Živá cena** – počas vypĺňania vidíte priebežnú orientačnú sumu; na konci animovaný súčet + rozpis.
+- 📝 **Vysvetlenia presne podľa derat.sk** – info boxy a postup zásahu.
+- 🛡️ **Trust lišta** – certifikované prípravky, skúsenosti, garancia, celé Slovensko.
+- 📩 **Odoslanie dopytu** – funguje hneď (predvyplnený **e-mail** alebo **WhatsApp**),
+  voliteľne cez **EmailJS** alebo vlastný backend.
+- ✨ Animácie (bublina, prechody krokov, count-up ceny) · rešpektuje `prefers-reduced-motion`.
 - 📱 Plne responzívne (na mobile fullscreen).
 
 ## Vloženie do stránky
-Skopírujte obsah medzi `WIDGET ZAČIATOK` a `WIDGET KONIEC` (vrátane `<style>` a `<script>`)
+Skopírujte blok medzi `<!-- WIDGET -->` (vrátane `<style>`, `<section>` a `<script>`)
 do šablóny webu. Blok `<div class="demo">…</div>` je len ukážkové pozadie – na ostrej
-stránke ho vynechajte.
+stránke ho vynechajte. Súbor `@emailjs/browser` v `<head>` načítajte len ak chcete EmailJS.
 
-## Úprava nastavení
-Na začiatku `<script>` je objekt `COMPANY`:
-
+## Nastavenia (na začiatku `<script>`)
 ```js
-const COMPANY={
-  phone:'+421905648129',
-  phoneText:'+421 905 648 129',
-  email:'info@derat.sk',     // sem chodia dopyty (mailto)
-  whatsapp:'421905648129',
-  leadEndpoint:''            // voliteľné: URL backendu na POST dopytu (JSON)
+const CONFIG={
+  phone:'+421905648129', phoneText:'+421 905 648 129',
+  email:'info@derat.sk', whatsapp:'421905648129',
+  leadEndpoint:'',                                   // voliteľný backend (POST JSON)
+  emailjs:{publicKey:'', serviceId:'', templateId:''} // voliteľný EmailJS
 };
 ```
-
-- **Ceny** sa upravujú v objektoch `SERVICES`, `PLACES`, `SEVERITY`, `ADDONS` – sú to
-  orientačné sumy v eurách bez DPH (`base` = výjazd, `rate` = €/m² resp. €/strom,
-  `mult` = násobiteľ). Minimálny výjazd je v premennej `MIN`.
-- **Texty chatbota** sa upravujú vo funkcii `reply()`.
-- **Fotky** sa nastavujú v objekte `PHOTO` (URL na obrázok pre danú službu). Burina
-  a stromy používajú SVG z objektu `SVG`. Náhľad vykresľuje funkcia `previewHtml()`.
-- **Vysvetlenia** sú v poli `info` každej služby + premenná `PROCESS` (postup zásahu).
+- **Ceny** sú orientačné (€ bez DPH) v objektoch `SERVICES`, `PLACES`, `SEVERITY`,
+  `ADDONS` (`base`=výjazd, `rate`=€/m² resp. €/ks, `m`=násobiteľ). Min. výjazd `MIN`.
+- **Fotky** sú v objekte `IMG` – stačí vymeniť URL (ideálne za vlastné fotky derat.sk).
+- **Texty** chatbota v `reply()`, vysvetlenia v poli `info` služieb a v `PROCESS`,
+  otázky v `QUESTIONS`.
 
 > Ceny v kalkulačke sú **orientačné**; konečná suma sa potvrdzuje po obhliadke.
+
+## Kredit k fotkám
+Fotografie priestorov, buriny, stromu a fogovania pochádzajú z **Wikimedia Commons**
+(voľná licencia, bez nutnosti platby). Fotky myši/švábov sú z derat.sk. Pred ostrým
+nasadením odporúčame nahradiť ich vlastnými fotkami z realizácií.
