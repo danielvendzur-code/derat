@@ -38,6 +38,10 @@ img{max-width:100%}
 @keyframes drKen{0%{transform:scale(1.05)}100%{transform:scale(1.15)}}
 @keyframes drDot{0%,80%,100%{transform:scale(.5);opacity:.4}40%{transform:scale(1);opacity:1}}
 @keyframes drPop{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+@keyframes drBlink{0%,92%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+@keyframes drReveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.dr-mouse .dr-eye{transform-box:fill-box;transform-origin:center;animation:drBlink 4s ease-in-out infinite}
+.dr-mouse .dr-eye:nth-of-type(2){animation-delay:.06s}
 
 /* ===== Teaser + bublina ===== */
 #dr-teaser{position:fixed;right:20px;bottom:96px;z-index:99998;max-width:272px;padding:14px 42px 14px 16px;border-radius:16px;background:#fff;border:1px solid var(--line);box-shadow:0 18px 44px rgba(31,31,31,.18);font:600 13.5px/1.45 var(--font);color:var(--ink);opacity:0;transform:translateY(10px);pointer-events:none;transition:.3s}
@@ -106,16 +110,20 @@ img{max-width:100%}
 .dr-inbar button svg{width:18px;fill:#fff}
 
 /* kontaktná lišta – jednotná */
-.dr-cbar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:9px 13px 13px;background:linear-gradient(180deg,#fff,#eef3e6);border-top:1px solid var(--line);order:9}
-.dr-c{min-height:54px;text-decoration:none;color:var(--g-dk);border:1px solid var(--line);background:#fff;border-radius:13px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;font:700 11px var(--font);transition:.15s}
-.dr-c:hover{background:var(--g-50);transform:translateY(-1px);border-color:rgba(64,102,24,.3)}
-.dr-c-ic{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#5a8a24,#2e4a11);display:flex;align-items:center;justify-content:center}
-.dr-c-ic svg{width:16px;height:16px;fill:#fff;display:block}
+.dr-cbar{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:10px 13px 13px;background:linear-gradient(180deg,#fff,#eef3e6);border-top:1px solid var(--line);order:9}
+.dr-c{position:relative;height:50px;text-decoration:none;border:0;border-radius:14px;background:linear-gradient(135deg,#5a8a24,#2e4a11);box-shadow:0 6px 16px rgba(46,74,17,.22);display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;overflow:hidden;transition:.2s cubic-bezier(.2,.8,.2,1)}
+.dr-c:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(46,74,17,.3)}
+.dr-c:active{transform:translateY(0) scale(.97)}
+.dr-c svg{width:20px;height:20px;fill:#fff;display:block;flex:0 0 auto;transition:transform .2s}
+.dr-c:hover svg{transform:scale(1.08)}
+.dr-c-lbl{max-width:0;opacity:0;overflow:hidden;white-space:nowrap;color:#fff;font:800 12px var(--font);transform:translateY(6px);transition:max-width .28s cubic-bezier(.2,.8,.2,1),opacity .22s,transform .28s}
+.dr-c.show .dr-c-lbl{max-width:80px;opacity:1;transform:none}
+.dr-c.show svg{transform:scale(1.05)}
 
 /* ===== KALKULAČKA ===== */
 .dr-calc{display:none;flex:1;min-height:0;overflow:hidden;background:linear-gradient(180deg,#fff,#f5f8f0);order:2;flex-direction:column}
 #derat-chat.calc .dr-msgs,#derat-chat.calc .dr-chips,#derat-chat.calc .dr-inbar,#derat-chat.calc .dr-top{display:none}
-#derat-chat.calc .dr-calc{display:flex}
+#derat-chat.calc .dr-calc{display:flex;animation:drReveal .34s cubic-bezier(.2,.8,.2,1)}
 #derat-chat.calc .dr-cbar{display:grid}
 
 .dr-chead{display:flex;align-items:center;gap:10px;padding:13px 13px 9px}
@@ -311,9 +319,9 @@ img{max-width:100%}
   </form>
 
   <div class="dr-cbar">
-    <a class="dr-c" id="dr-call"><span class="dr-c-ic"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg></span>Volať</a>
-    <a class="dr-c" id="dr-mail"><span class="dr-c-ic"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4a2 2 0 0 1-2-2V6c0-1.1.9-2 2-2Zm8 7 8-5H4l8 5Zm0 2.2L4 8.2V18h16V8.2l-8 5Z"/></svg></span>E-mail</a>
-    <a class="dr-c" id="dr-wa" target="_blank" rel="noopener"><span class="dr-c-ic"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.6 4.8-1.3A10 10 0 1 0 12 2Zm0 2a8 8 0 1 1-4.2 14.8l-.3-.2-2.5.7.7-2.4-.2-.3A8 8 0 0 1 12 4Zm4.4 10.3c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.1.1-.3 0-.4l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.7.7-.7 1.7-.1 2.7a9 9 0 0 0 3.9 3.6c1.2.5 1.7.5 2.3.4.4 0 1.2-.5 1.4-1 .2-.5.2-.9.1-1Z"/></svg></span>WhatsApp</a>
+    <button class="dr-c" id="dr-call" onclick="DERAT.contact('call')" title="Volať"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg><span class="dr-c-lbl">Volať</span></button>
+    <button class="dr-c" id="dr-mail" onclick="DERAT.contact('mail')" title="E-mail"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4a2 2 0 0 1-2-2V6c0-1.1.9-2 2-2Zm8 7 8-5H4l8 5Zm0 2.2L4 8.2V18h16V8.2l-8 5Z"/></svg><span class="dr-c-lbl">E-mail</span></button>
+    <button class="dr-c" id="dr-wa" onclick="DERAT.contact('wa')" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.6 4.8-1.3A10 10 0 1 0 12 2Zm0 2a8 8 0 1 1-4.2 14.8l-.3-.2-2.5.7.7-2.4-.2-.3A8 8 0 0 1 12 4Zm4.4 10.3c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.1.1-.3 0-.4l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.7.7-.7 1.7-.1 2.7a9 9 0 0 0 3.9 3.6c1.2.5 1.7.5 2.3.4.4 0 1.2-.5 1.4-1 .2-.5.2-.9.1-1Z"/></svg><span class="dr-c-lbl">WhatsApp</span></button>
   </div>
 
   <div id="dr-calc" class="dr-calc"></div>
@@ -339,8 +347,6 @@ const IMG={
   deratizacia:'https://www.derat.sk/images/box-1.jpg',
   dezinsekcia:'https://www.derat.sk/images/box-2.jpg',
   dezinfekcia:C+'Fogging.jpg?width=900',
-  burina:C+'Overgrowth_and_Underlay.jpg?width=900',
-  stromy:C+'Apple_Garden_in_Kashmir%2C_India.jpg?width=900',
   byt:C+'Modern_living_room_with_stylish_furniture_and_a_view_of_the_outdoors_in_a_cozy_apartment_setting.jpg?width=900',
   dom:C+'20120922010DR_Dresden_Doppelhaus_Wieckestra%C3%9Fe_43%2B45.jpg?width=900',
   horeca:C+'Restaurant_Kitchen_expo_station.jpg?width=900',
@@ -350,7 +356,7 @@ const IMG={
 };
 
 /* Maskot – usmievavá myš (biela na zelenom) */
-const MOUSE='<svg viewBox="0 0 48 48" fill="none"><circle cx="13.5" cy="14" r="6.5" fill="#fff"/><circle cx="34.5" cy="14" r="6.5" fill="#fff"/><circle cx="13.5" cy="14" r="3" fill="#a9d27a"/><circle cx="34.5" cy="14" r="3" fill="#a9d27a"/><circle cx="24" cy="27" r="13" fill="#fff"/><circle cx="19.4" cy="25.4" r="2.1" fill="#2e4a11"/><circle cx="28.6" cy="25.4" r="2.1" fill="#2e4a11"/><circle cx="20.1" cy="24.7" r=".7" fill="#fff"/><circle cx="29.3" cy="24.7" r=".7" fill="#fff"/><ellipse cx="24" cy="30.4" rx="2.4" ry="1.8" fill="#c63a27"/><path d="M20.5 33.2c1.3 1.6 5.7 1.6 7 0" stroke="#2e4a11" stroke-width="1.5" stroke-linecap="round"/></svg>';
+const MOUSE='<svg class="dr-mouse" viewBox="0 0 48 48" fill="none"><circle cx="14" cy="13" r="7.5" fill="#fff" stroke="#1e231d" stroke-width="2"/><circle cx="34" cy="13" r="7.5" fill="#fff" stroke="#1e231d" stroke-width="2"/><circle cx="14" cy="13" r="3.2" fill="#1e231d" opacity=".12"/><circle cx="34" cy="13" r="3.2" fill="#1e231d" opacity=".12"/><circle cx="24" cy="28" r="14" fill="#fff" stroke="#1e231d" stroke-width="2"/><path d="M16.4 30.4 8.6 28.8M16.2 33 8.8 34.6M31.6 30.4l7.8-1.6M31.8 33l7.4 1.6" stroke="#1e231d" stroke-width="1.3" stroke-linecap="round"/><g class="dr-eye"><ellipse cx="19" cy="26" rx="2.2" ry="2.8" fill="#1e231d"/><circle cx="19.8" cy="25.1" r=".7" fill="#fff"/></g><g class="dr-eye"><ellipse cx="29" cy="26" rx="2.2" ry="2.8" fill="#1e231d"/><circle cx="29.8" cy="25.1" r=".7" fill="#fff"/></g><ellipse cx="24" cy="31" rx="2.1" ry="1.7" fill="#1e231d"/><path d="M20 34.6c1.4 1.7 6.6 1.7 8 0" stroke="#1e231d" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>';
 
 /* Ikony škodcov / priestorov (jednotná veľkosť, viewBox 64) */
 const I={
@@ -367,14 +373,12 @@ const I={
   mold:`<svg viewBox="0 0 64 64"><path d="M8 50c0-10 8-14 8-22 0 8 6 10 6 18M22 50c0-8 6-12 6-20 0 8 6 10 6 18M36 50c0-9 7-13 7-22 0 9 6 11 6 18" stroke="#4a5a2a" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="16" cy="22" r="5" fill="#6b7d3a"/><circle cx="30" cy="16" r="5" fill="#4a5a2a"/><circle cx="44" cy="22" r="6" fill="#6b7d3a"/></svg>`,
   virus:`<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="12" fill="#c63a27"/><g stroke="#c63a27" stroke-width="3" stroke-linecap="round"><path d="M32 20V9M32 44v11M20 32H9M44 32h11M23 23l-7-7M41 41l7 7M41 23l7-7M23 41l-7 7"/></g><circle cx="28" cy="30" r="2.4" fill="#fff"/><circle cx="36" cy="36" r="2" fill="#fff"/></svg>`,
   pigeon:`<svg viewBox="0 0 64 64"><ellipse cx="30" cy="36" rx="15" ry="10" fill="#8b95a1"/><circle cx="45" cy="28" r="7" fill="#9aa3ae"/><path d="M50 26l6-2" stroke="#e7b400" stroke-width="3" stroke-linecap="round"/><circle cx="46" cy="27" r="1.6" fill="#222"/><path d="M16 38c-8 0-12 6-12 6M24 46l-3 8M32 46l1 8" stroke="#8b95a1" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
-  weed:`<svg viewBox="0 0 64 64"><path d="M32 54V26" stroke="#4a5a2a" stroke-width="3" stroke-linecap="round"/><path d="M32 32c-6-2-12 0-16-6 6-2 12 0 16 6ZM32 40c6-2 12 0 16-6-6-2-12 0-16 6ZM32 26c0-8 4-14 4-14s4 6 4 14c0 4-4 6-4 6s-4-2-4-6Z" fill="#6b7d3a"/><path d="M14 54h36" stroke="#7a5a2a" stroke-width="4" stroke-linecap="round"/></svg>`,
-  tree:`<svg viewBox="0 0 64 64"><rect x="29" y="36" width="6" height="18" rx="2" fill="#7a5a2a"/><circle cx="32" cy="24" r="14" fill="#4a7a2a"/><circle cx="22" cy="30" r="8" fill="#5a8a24"/><circle cx="42" cy="30" r="8" fill="#5a8a24"/><circle cx="44" cy="20" r="4.5" fill="#c63a27"/><circle cx="26" cy="18" r="4" fill="#c63a27"/></svg>`,
   spray:`<svg viewBox="0 0 64 64"><rect x="22" y="22" width="20" height="32" rx="4" fill="#406618"/><rect x="26" y="14" width="12" height="10" rx="2" fill="#5a8a24"/><rect x="38" y="10" width="6" height="6" rx="1" fill="#2e4a11"/><path d="M48 8l8-2M48 14h9M48 20l8 4" stroke="#5a8a24" stroke-width="2.4" stroke-linecap="round"/></svg>`,
   biz:`<svg viewBox="0 0 64 64"><rect x="12" y="14" width="40" height="40" fill="#9fb088"/><g fill="#fff"><rect x="18" y="20" width="7" height="7"/><rect x="29" y="20" width="7" height="7"/><rect x="40" y="20" width="7" height="7"/><rect x="18" y="31" width="7" height="7"/><rect x="29" y="31" width="7" height="7"/><rect x="40" y="31" width="7" height="7"/></g><rect x="27" y="42" width="11" height="12" fill="#406618"/></svg>`
 };
 
 /* =========================================================
-   2) DÁTA – služby derat.sk (3 hlavné + burina/stromy, ktoré firma reálne ponúka)
+   2) DÁTA – 3 hlavné služby derat.sk (Deratizácia, Dezinsekcia, Dezinfekcia)
    Ceny ORIENTAČNÉ (€, bez DPH): base=výjazd, rate=€/jednotku, m=násobiteľ
    ========================================================= */
 const SERVICES={
@@ -389,15 +393,7 @@ const SERVICES={
   dezinfekcia:{name:'Dezinfekcia',desc:'Plesne, vírusy, baktérie',base:59,rate:.65,unit:'m²',
     q:'Čo potrebujete vydezinfikovať?',
     info:'Špeciálna <b>polymérová dezinfekcia</b> vás zbaví plesní, vírusov a iných nežiaducich mikroorganizmov. Vhodná aj počas pandémie COVID-19, po havárii kanalizácie či pri zvýšenom výskyte holubov.',
-    subs:{plesne:{n:'Plesne',ic:'mold',m:1.1},virusy:{n:'Vírusy / baktérie',ic:'virus',m:1},holuby:{n:'Holuby / kanalizácia',ic:'pigeon',m:1.15}}},
-  burina:{name:'Likvidácia buriny',desc:'Postrek pozemkov',base:45,rate:.35,unit:'m²',
-    q:'Akú vegetáciu treba odstrániť?',
-    info:'Ničíme <b>burinu a náletové rastliny</b> postrekom na pozemkoch, spevnených plochách aj okolo objektov – s ohľadom na účinnosť i životné prostredie. Súčasť doplnkových služieb derat.sk.',
-    subs:{burina:{n:'Bežná burina',ic:'weed',m:1},invazne:{n:'Invázne rastliny',ic:'weed',m:1.25}}},
-  stromy:{name:'Ošetrenie stromov',desc:'Postrek a ochrana drevín',base:39,rate:16,unit:'ks',
-    q:'Aké dreviny budeme ošetrovať?',
-    info:'Zabezpečujeme <b>ošetrovanie stromov a drevín</b> postrekom proti škodcom a chorobám. Cena sa odvíja od počtu a veľkosti stromov. Súčasť doplnkových služieb derat.sk.',
-    subs:{ovocne:{n:'Ovocné stromy',ic:'tree',m:1},okrasne:{n:'Okrasné dreviny',ic:'tree',m:1.1}}}
+    subs:{plesne:{n:'Plesne',ic:'mold',m:1.1},virusy:{n:'Vírusy / baktérie',ic:'virus',m:1},holuby:{n:'Holuby / kanalizácia',ic:'pigeon',m:1.15}}}
 };
 const PLACES={
   byt:{n:'Byt',m:1,a:60},
@@ -440,7 +436,7 @@ const state={open:false,step:0,c:{service:'deratizacia',sub:'potkany',place:'byt
 const $=s=>document.getElementById(s);
 const chat=$('derat-chat'),msgs=$('dr-msgs'),calc=$('dr-calc'),inp=$('dr-in'),teaser=$('dr-teaser');
 $('dr-bub-ic').innerHTML=MOUSE;$('dr-logo').innerHTML=MOUSE;
-$('dr-call').href='tel:'+CONFIG.phone;$('dr-mail').href='mailto:'+CONFIG.email;$('dr-wa').href='https://wa.me/'+CONFIG.whatsapp;
+const CONTACT_URL={call:'tel:'+CONFIG.phone,mail:'mailto:'+CONFIG.email,wa:'https://wa.me/'+CONFIG.whatsapp};
 if(CONFIG.emailjs.publicKey&&window.emailjs){try{emailjs.init({publicKey:CONFIG.emailjs.publicKey});}catch(e){}}
 
 const eur=n=>Math.round(n).toLocaleString('sk-SK')+' €';
@@ -455,12 +451,11 @@ function reply(t){const x=t.toLowerCase();
   if(/(šváb|svab|rus|hmyz|mravc|ploštic|plostic|blch|much)/.test(x))return 'Lezúci aj lietajúci hmyz likvidujeme <b>dezinsekciou</b> — postrekom, zadymovaním, plynovaním či nástrahami. Pri plošticiach odporúčame opakovaný zásah.';
   if(/(os[ay]|sršn|srsn|včel|hniezd)/.test(x))return 'Hniezda ôs a sršňov odstraňujeme bezpečne. V kalkulačke zvoľte Dezinsekcia → Osy/sršne a doplnok „Likvidácia hniezd".';
   if(/(plesn|baktér|bakter|vírus|virus|dezinf|covid|holub|kanaliz)/.test(x))return 'Robíme <b>polymérovú dezinfekciu</b> proti plesniam, vírusom a baktériám — vhodnú aj počas COVID-19, po havárii kanalizácie či pri výskyte holubov.';
-  if(/(burin|strom|postrek|záhrad|zahrad|pozemok|drevin)/.test(x))return 'Zabezpečujeme aj <b>ničenie buriny</b> a <b>ošetrovanie stromov</b> postrekom — vyberte príslušnú službu v kalkulačke.';
   if(/(postup|prebieha|ako to|obhliad|zásah|zasah|garanc)/.test(x))return PROCESS;
   if(/(bezpeč|bezpec|deti|dieťa|dieta|zviera|domác|pes|mač)/.test(x))return 'Používame certifikované prípravky a moderné technológie s ohľadom na účinnosť aj životné prostredie. Po zásahu odovzdáme pokyny ohľadom detí a domácich zvierat.';
   if(/(kde|región|region|okres|mesto|bratislav|dojazd|cestuj)/.test(x))return 'Pôsobíme po celom Slovensku, ťažisko Bratislava a okolie. Termín a dojazd potvrdíme telefonicky na '+CONFIG.phoneText+'.';
   if(/(ahoj|dobrý|dobry|zdrav|čau|cau)/.test(x))return 'Dobrý deň 👋 Akého škodcu riešite — myši, šváby, ploštice, plesne? Alebo otvorte <b>kalkulačku</b> pre orientačnú cenu.';
-  return 'Pomôžem so škodcami — deratizácia, dezinsekcia, dezinfekcia, burina aj stromy. Napíšte konkrétneho škodcu, otvorte <b>kalkulačku</b>, alebo zavolajte na '+CONFIG.phoneText+'.';
+  return 'Pomôžem so škodcami — deratizácia, dezinsekcia a dezinfekcia. Napíšte konkrétneho škodcu, otvorte <b>kalkulačku</b>, alebo zavolajte na '+CONFIG.phoneText+'.';
 }
 
 /* =========================================================
@@ -572,16 +567,23 @@ function countUp(){const el=$('dr-price');if(!el)return;const t=+el.dataset.t,t0
    6) API
    ========================================================= */
 window.DERAT={
+  contact(k){const el=$('dr-'+k);if(!el)return;
+    // najprv ukáž popis (slide-up + fade), potom otvor akciu
+    document.querySelectorAll('.dr-c.show').forEach(b=>{if(b!==el)b.classList.remove('show');});
+    el.classList.add('show');
+    const url=CONTACT_URL[k];
+    setTimeout(()=>{k==='wa'?window.open(url,'_blank','noopener'):window.location.href=url;},230);
+  },
   toggle(){state.open?this.close():this.open();},
   open(){state.open=true;chat.classList.add('show');chat.setAttribute('aria-hidden','false');$('derat-bubble').classList.add('open');this.hideTeaser();
-    if(!msgs.dataset.i){add('Dobrý deň 👋 Som <b>DERAT asistent</b>. Pomôžem so škodcami — <b>deratizácia, dezinsekcia, dezinfekcia</b>, burina aj stromy. Napíšte, čo riešite, alebo si v <b>kalkulačke</b> spočítajte orientačnú cenu.','bot');msgs.dataset.i='1';}},
+    if(!msgs.dataset.i){add('Dobrý deň 👋 Som <b>DERAT asistent</b>. Pomôžem so škodcami — <b>deratizácia, dezinsekcia a dezinfekcia</b>. Napíšte, čo riešite, alebo si v <b>kalkulačke</b> spočítajte orientačnú cenu.','bot');msgs.dataset.i='1';}},
   close(){state.open=false;chat.classList.remove('show','calc');chat.setAttribute('aria-hidden','true');$('derat-bubble').classList.remove('open');},
   openCalc(){this.open();chat.classList.add('calc');render();},
   closeCalc(){chat.classList.remove('calc');},
   hideTeaser(){teaser.classList.remove('show');},
   submit(e){e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';add(esc(v),'me');bot(reply(v));},
   quick(t){this.open();add(esc(t),'me');bot(reply(t));},
-  pickService(id){state.c.service=id;state.c.sub=Object.keys(SERVICES[id].subs)[0];if(SERVICES[id].unit==='ks'&&state.c.area>40)state.c.area=8;if(SERVICES[id].unit!=='ks'&&state.c.area<10)state.c.area=PLACES[state.c.place].a;render(true);},
+  pickService(id){state.c.service=id;state.c.sub=Object.keys(SERVICES[id].subs)[0];render(true);},
   pickPlace(id){state.c.place=id;if(unit()!=='ks')state.c.area=PLACES[id].a;render(true);},
   set(k,id){state.c[k]=id;render(true);},
   area(v){state.c.area=v;const u=unit(),el=$('dr-av');if(el){el.innerHTML=v+' <small>'+u+'</small>';const s=document.querySelector('.dr-slider');if(s){const ks=u==='ks',min=ks?1:10,max=ks?40:1000;s.style.setProperty('--p',Math.round((v-min)/(max-min)*100)+'%');s.value=v;}document.querySelectorAll('.dr-quick button').forEach(b=>b.classList.toggle('on',b.textContent.trim()===v+' '+u));const lp=document.querySelector('.dr-live-price b');if(lp)lp.textContent=eur(compute().total);}},
