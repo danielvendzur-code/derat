@@ -48,7 +48,7 @@ img{max-width:100%}
 #derat-bubble{position:fixed;right:20px;bottom:20px;z-index:100000;width:66px;height:66px;border:0;border-radius:50%;background:radial-gradient(circle at 32% 24%,#6fa530,#406618 60%,#2e4a11);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .25s;animation:drPulse 2.6s ease-in-out infinite}
 #derat-bubble:hover{transform:translateY(-2px) scale(1.06);animation-play-state:paused}
 #derat-bubble.open{opacity:0;pointer-events:none;transform:scale(.85)}
-#derat-bubble svg{width:42px;height:42px}
+#derat-bubble svg{width:50px;height:50px}
 .dr-dot{position:absolute;right:5px;top:5px;width:15px;height:15px;border-radius:50%;background:var(--red);border:3px solid #fff}
 
 /* ===== Okno ===== */
@@ -58,7 +58,7 @@ img{max-width:100%}
 /* hlavička – zarovnaná */
 .dr-head{padding:13px 14px;background:linear-gradient(135deg,#2e4a11,#406618 58%,#5a8a24);color:#fff;display:flex;align-items:center;gap:11px}
 .dr-head-logo{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#6fa530,#2e4a11);display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 5px 14px rgba(0,0,0,.22),inset 0 0 0 2px rgba(255,255,255,.25)}
-.dr-head-logo svg{width:30px;height:30px}
+.dr-head-logo svg{width:36px;height:36px}
 .dr-head-t{min-width:0;flex:1;display:flex;flex-direction:column;justify-content:center;gap:3px}
 .dr-head-t b{font-size:15px;font-weight:800;line-height:1.1}
 .dr-head-t span{font-size:11px;font-weight:600;color:rgba(255,255,255,.86);display:flex;gap:6px;align-items:center;line-height:1}
@@ -86,7 +86,7 @@ img{max-width:100%}
 .dr-row{display:flex;gap:8px;align-items:flex-end;animation:drIn .3s ease}
 .dr-row.me{justify-content:flex-end}
 .dr-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6fa530,#2e4a11);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
-.dr-av svg{width:21px;height:21px}
+.dr-av svg{width:26px;height:26px}
 .dr-row.me .dr-av{display:none}
 .dr-b{max-width:80%;padding:10px 13px;border-radius:16px;font:500 13px/1.5 var(--font);box-shadow:0 6px 16px rgba(31,40,18,.06)}
 .dr-b.bot{background:#fff;border:1px solid var(--line);border-bottom-left-radius:6px}
@@ -170,7 +170,7 @@ img{max-width:100%}
 .dr-rowcard-bd span{font-size:11px;font-weight:500;color:var(--muted);line-height:1.3;display:block;margin-top:2px}
 .dr-rowcard-pr{text-align:right;font:900 13px var(--font);color:var(--g);white-space:nowrap}
 .dr-rowcard-pr small{display:block;font:600 9px var(--font);color:var(--muted);letter-spacing:.3px}
-.dr-rowcard.sel:after{content:"✓";position:absolute;right:10px;top:10px;width:22px;height:22px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;font:900 12px var(--font);animation:drPop .3s ease;box-shadow:0 2px 6px rgba(0,0,0,.22)}
+.dr-rowcard.sel:after{content:"✓";position:absolute;left:8px;top:8px;width:21px;height:21px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;font:900 12px var(--font);animation:drPop .3s ease;box-shadow:0 2px 6px rgba(0,0,0,.35)}
 .dr-pcard{position:relative;border:1.8px solid var(--line);background:#fff;border-radius:15px;overflow:hidden;cursor:pointer;text-align:left;transition:.16s;animation:drStep .35s ease both}
 .dr-pcard:hover{border-color:var(--g-lt);transform:translateY(-2px);box-shadow:0 10px 20px rgba(46,74,17,.12)}
 .dr-pcard.sel{border-color:var(--g);box-shadow:0 0 0 3px rgba(64,102,24,.16)}
@@ -371,7 +371,7 @@ const IMG={
 };
 
 /* Maskot – usmievavá myš (biela na zelenom) */
-const MOUSE='<svg class="dr-mouse" viewBox="0 0 48 48"><path d="M42.5 31 C46 29.5 48 32 47 35" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><ellipse cx="27" cy="31" rx="16" ry="10.5" fill="currentColor"/><circle cx="13.5" cy="26" r="8.5" fill="currentColor"/><circle cx="14.5" cy="15.5" r="5.4" fill="currentColor"/><path d="M6 28.5 C3.2 28.5 1.4 26.8 0.6 25 C2.8 23.8 5 24.8 6.8 26 Z" fill="currentColor"/><circle class="dr-eye" cx="11" cy="25" r="1.9" fill="#1f3a0e"/><circle cx="3.6" cy="25.4" r="1.15" fill="#1f3a0e"/><line x1="5" y1="27.6" x2="0.4" y2="27.6" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".85"/><line x1="5.2" y1="25.8" x2="0.6" y2="24.8" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".85"/><line x1="6" y1="24" x2="2" y2="22.2" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".85"/></svg>';
+const MOUSE='<svg class="dr-mouse" viewBox="0 0 64 48"><path d="M4 33.5 C6 30.5 9.5 30.5 11.5 31.5 C10 24.5 13.5 18 20.5 17.5 C19.5 12.5 23 9.5 27 11 C30 12 30.5 15.5 29.5 18 C39 16 51 18.5 56.5 25 C61.5 31 59.5 39 51.5 41 C38 44.5 20 43.5 11 39.5 C7 37.5 3 36.5 4 33.5 Z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M53 40.5 C58 42.5 62 39.5 61 35" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M11.5 31.5 C13.5 33.2 16.5 33.2 18.5 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle class="dr-eye" cx="13.5" cy="26" r="1.8" fill="currentColor"/><path d="M8 33.2 L2.2 32.2 M8 35.2 L2.2 36" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
 
 /* Ikony škodcov / priestorov (jednotná veľkosť, viewBox 64) */
 const I={
@@ -500,12 +500,12 @@ function hero(){
 function info(html){return `<div class="dr-info"><span class="i">i</span><p>${html}</p></div>`;}
 
 function rService(){return Object.keys(SERVICES).map((id,i)=>{const s=SERVICES[id],sel=state.c.service===id;
-  return `<button class="dr-rowcard${sel?' sel':''}" style="animation-delay:${i*60}ms" onclick="DERAT.pickService('${id}')"><span class="dr-rowcard-img" style="background-image:url('${IMG[id]}')"></span><span class="dr-rowcard-bd"><b>${s.name}</b><span>${s.desc}</span></span><span class="dr-rowcard-pr">${eur(s.base)}<small>od</small></span></button>`;}).join('');}
+  return `<button class="dr-rowcard${sel?' sel':''}" data-grp="service" data-id="${id}" style="animation-delay:${i*60}ms" onclick="DERAT.pickService('${id}',this)"><span class="dr-rowcard-img" style="background-image:url('${IMG[id]}')"></span><span class="dr-rowcard-bd"><b>${s.name}</b><span>${s.desc}</span></span><span class="dr-rowcard-pr">${eur(s.base)}<small>od</small></span></button>`;}).join('');}
 function rSub(){const sv=SERVICES[state.c.service];return Object.keys(sv.subs).map((id,i)=>{const it=sv.subs[id],sel=state.c.sub===id;
-  return `<button class="dr-scard${sel?' sel':''}" style="animation-delay:${i*35}ms" onclick="DERAT.set('sub','${id}')"><span class="dr-scard-ic">${I[it.ic]||I.spray}</span><b>${it.n}</b></button>`;}).join('');}
+  return `<button class="dr-scard${sel?' sel':''}" data-grp="sub" data-id="${id}" style="animation-delay:${i*35}ms" onclick="DERAT.pickSub('${id}',this)"><span class="dr-scard-ic">${I[it.ic]||I.spray}</span><b>${it.n}</b></button>`;}).join('');}
 function rPlace(){return Object.keys(PLACES).map((id,i)=>{const p=PLACES[id],sel=state.c.place===id;
   const vis=IMG[id]?`<span class="dr-pcard-img" style="background-image:url('${IMG[id]}')"></span>`:`<span class="dr-pcard-svg">${I.biz}</span>`;
-  return `<button class="dr-pcard${sel?' sel':''}" style="animation-delay:${i*40}ms" onclick="DERAT.pickPlace('${id}')">${vis}<span class="dr-pcard-bd"><b>${p.n}</b><span>${p.d}</span></span></button>`;}).join('');}
+  return `<button class="dr-pcard${sel?' sel':''}" data-grp="place" data-id="${id}" style="animation-delay:${i*40}ms" onclick="DERAT.pickPlace('${id}',this)">${vis}<span class="dr-pcard-bd"><b>${p.n}</b><span>${p.d}</span></span></button>`;}).join('');}
 function rArea(){const u=unit(),a=state.c.area,ks=u==='ks',min=ks?1:10,max=ks?40:1000,step=ks?1:5,p=Math.round((a-min)/(max-min)*100);
   const quick=ks?[1,3,8,15,30]:[40,80,150,300,600];
   return `<div class="dr-area">
@@ -515,9 +515,9 @@ function rArea(){const u=unit(),a=state.c.area,ks=u==='ks',min=ks?1:10,max=ks?40
     <div class="dr-quick">${quick.map(v=>`<button class="${v===a?'on':''}" onclick="DERAT.area(${v})">${v} ${u}</button>`).join('')}</div>
   </div>`;}
 function rSeverity(){return `<div class="dr-list">`+Object.keys(SEVERITY).map((id,i)=>{const s=SEVERITY[id],sel=state.c.severity===id;
-  return `<button class="dr-opt${sel?' sel':''}" style="animation-delay:${i*45}ms" onclick="DERAT.set('severity','${id}')"><span class="dr-rb"></span><span class="dr-opt-m"><b>${s.n}</b><span>${s.d}</span></span><span class="dr-opt-p">${s.v}</span></button>`;}).join('')+`</div>`;}
+  return `<button class="dr-opt${sel?' sel':''}" data-grp="severity" data-id="${id}" style="animation-delay:${i*45}ms" onclick="DERAT.pickSeverity('${id}',this)"><span class="dr-rb"></span><span class="dr-opt-m"><b>${s.n}</b><span>${s.d}</span></span><span class="dr-opt-p">${s.v}</span></button>`;}).join('')+`</div>`;}
 function rAddons(){const set=new Set(state.c.addons);return `<div class="dr-list">`+Object.keys(ADDONS).map((id,i)=>{const a=ADDONS[id],sel=set.has(id);
-  return `<button class="dr-opt${sel?' sel':''}" style="animation-delay:${i*35}ms" onclick="DERAT.addon('${id}')"><span class="dr-rb sq"></span><span class="dr-opt-m"><b>${a.n}</b><span>${a.d}</span></span><span class="dr-opt-p">+${eur(a.p)}</span></button>`;}).join('')+`</div>`;}
+  return `<button class="dr-opt${sel?' sel':''}" data-grp="addon" data-id="${id}" style="animation-delay:${i*35}ms" onclick="DERAT.addon('${id}',this)"><span class="dr-rb sq"></span><span class="dr-opt-m"><b>${a.n}</b><span>${a.d}</span></span><span class="dr-opt-p">+${eur(a.p)}</span></button>`;}).join('')+`</div>`;}
 function rResult(){const r=compute(),c=state.c;
   return `<div class="dr-result">
     <div class="lbl">Orientačná cena (bez DPH)</div>
@@ -603,11 +603,15 @@ window.DERAT={
   closeCalc(){chat.classList.remove('calc');},
   submit(e){e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';add(esc(v),'me');bot(reply(v));},
   quick(t){this.open();add(esc(t),'me');bot(reply(t));},
-  pickService(id){state.c.service=id;state.c.sub=Object.keys(SERVICES[id].subs)[0];render(true);},
-  pickPlace(id){state.c.place=id;if(unit()!=='ks')state.c.area=PLACES[id].a;render(true);},
-  set(k,id){state.c[k]=id;render(true);},
-  area(v){state.c.area=v;const u=unit(),el=$('dr-av');if(el){el.innerHTML=v+' <small>'+u+'</small>';const s=document.querySelector('.dr-slider');if(s){const ks=u==='ks',min=ks?1:10,max=ks?40:1000;s.style.setProperty('--p',Math.round((v-min)/(max-min)*100)+'%');s.value=v;}document.querySelectorAll('.dr-quick button').forEach(b=>b.classList.toggle('on',b.textContent.trim()===v+' '+u));const lp=document.querySelector('.dr-live-price b');if(lp)lp.textContent=eur(compute().total);}},
-  addon(id){const a=state.c.addons,i=a.indexOf(id);i>=0?a.splice(i,1):a.push(id);render(true);},
+  _markOne(grp,el){document.querySelectorAll('.dr-body [data-grp="'+grp+'"]').forEach(b=>b.classList.toggle('sel',b===el));},
+  _livePrice(){const lp=document.querySelector('.dr-live-price b');if(lp)lp.textContent=eur(compute().total);},
+  _hero(){const h=calc.querySelector('.dr-hero');if(h)h.innerHTML=hero();},
+  pickService(id,el){state.c.service=id;state.c.sub=Object.keys(SERVICES[id].subs)[0];this._markOne('service',el);this._hero();this._livePrice();},
+  pickSub(id,el){state.c.sub=id;this._markOne('sub',el);this._hero();this._livePrice();},
+  pickPlace(id,el){state.c.place=id;if(unit()!=='ks')state.c.area=PLACES[id].a;this._markOne('place',el);this._hero();this._livePrice();},
+  pickSeverity(id,el){state.c.severity=id;this._markOne('severity',el);this._livePrice();},
+  area(v){state.c.area=v;const u=unit(),el=$('dr-av');if(el){el.innerHTML=v+' <small>'+u+'</small>';const s=document.querySelector('.dr-slider');if(s){const ks=u==='ks',min=ks?1:10,max=ks?40:1000;s.style.setProperty('--p',Math.round((v-min)/(max-min)*100)+'%');s.value=v;}document.querySelectorAll('.dr-quick button').forEach(b=>b.classList.toggle('on',b.textContent.trim()===v+' '+u));this._livePrice();}},
+  addon(id,el){const a=state.c.addons,i=a.indexOf(id);i>=0?a.splice(i,1):a.push(id);if(el)el.classList.toggle('sel',i<0);this._livePrice();},
   next(){state.step<STEPS.length-1?state.step++:(state.step=0);render(false);},
   prev(){if(state.step>0)state.step--;render(false);},
   _payload(){const r=compute(),c=state.c;return{
