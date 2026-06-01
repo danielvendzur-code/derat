@@ -67,6 +67,12 @@ img{max-width:100%}
 .dr-hbtn.ghost:hover{background:rgba(255,255,255,.28)}
 .dr-hbtn svg{width:19px;height:19px;fill:currentColor}
 
+/* pruh dôvery (rotujúce čísla) */
+.dr-trust{position:relative;height:30px;overflow:hidden;background:linear-gradient(90deg,#26400e,#33530f);border-bottom:1px solid rgba(255,255,255,.08)}
+.dr-trust-i{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:6px;color:#dff0c8;font:800 11.5px var(--font);letter-spacing:.2px;opacity:0;transform:translateY(100%);transition:opacity .5s,transform .5s cubic-bezier(.2,.8,.2,1);white-space:nowrap}
+.dr-trust-i.on{opacity:1;transform:none}
+.dr-trust-i.out{opacity:0;transform:translateY(-100%);transition:opacity .45s,transform .45s ease}
+
 /* CTA */
 .dr-top{padding:12px 13px 9px;background:#fff;border-bottom:1px solid var(--line)}
 .dr-cta{width:100%;border:1px solid rgba(64,102,24,.26);border-radius:15px;background:linear-gradient(135deg,#f3f8ea,#e6efd4);box-shadow:0 8px 20px rgba(64,102,24,.10);padding:12px;display:grid;grid-template-columns:46px 1fr auto;gap:12px;align-items:center;text-align:left;cursor:pointer;transition:.18s}
@@ -92,10 +98,20 @@ img{max-width:100%}
 .dr-typing{display:flex;gap:4px;padding:14px}
 .dr-typing span{width:7px;height:7px;border-radius:50%;background:var(--g-lt);animation:drDot 1.2s infinite}
 .dr-typing span:nth-child(2){animation-delay:.18s}.dr-typing span:nth-child(3){animation-delay:.36s}
+/* blikajúci kurzor typewritera */
+.dr-cur{display:inline-block;width:2px;height:1em;margin-left:1px;background:var(--g);vertical-align:-2px;animation:drCur .7s steps(1) infinite}
+@keyframes drCur{50%{opacity:0}}
 
 .dr-chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 13px 10px;background:#f5f8f0}
-.dr-chip{border:1px solid rgba(64,102,24,.24);background:#fff;border-radius:999px;color:var(--g-dk);padding:8px 12px;font:700 11.5px var(--font);cursor:pointer;transition:.15s}
+.dr-chip{border:1px solid rgba(64,102,24,.24);background:#fff;border-radius:999px;color:var(--g-dk);padding:8px 12px;font:700 11.5px var(--font);cursor:pointer;transition:.15s,opacity .3s,transform .3s}
 .dr-chip:hover{background:var(--g-50);transform:translateY(-1px)}
+/* chipy nabehnú po jednom (po dopísaní úvodu) */
+.dr-chips .dr-chip{opacity:0;transform:translateY(8px);pointer-events:none}
+.dr-chips.reveal .dr-chip{opacity:1;transform:none;pointer-events:auto}
+.dr-chips.reveal .dr-chip:nth-child(1){transition-delay:0s}
+.dr-chips.reveal .dr-chip:nth-child(2){transition-delay:.09s}
+.dr-chips.reveal .dr-chip:nth-child(3){transition-delay:.18s}
+.dr-chips.reveal .dr-chip:nth-child(4){transition-delay:.27s}
 .dr-inbar{display:flex;gap:8px;align-items:center;margin:0 13px 11px;padding:7px;border:1px solid var(--line);border-radius:15px;background:#fff;box-shadow:0 8px 18px rgba(31,40,18,.06)}
 .dr-inbar input{flex:1;height:40px;border:1.4px solid var(--line);border-radius:12px;background:#f8fbf3;padding:0 12px;font:600 13px var(--font);outline:none;transition:.15s}
 .dr-inbar input:focus{border-color:var(--g-lt);background:#fff}
@@ -118,7 +134,7 @@ img{max-width:100%}
 
 /* ===== KALKULAČKA ===== */
 .dr-calc{display:none;flex:1;min-height:0;overflow:hidden;background:linear-gradient(180deg,#fff,#f5f8f0);order:2;flex-direction:column}
-#derat-chat.calc .dr-msgs,#derat-chat.calc .dr-chips,#derat-chat.calc .dr-inbar,#derat-chat.calc .dr-top{display:none}
+#derat-chat.calc .dr-msgs,#derat-chat.calc .dr-chips,#derat-chat.calc .dr-inbar,#derat-chat.calc .dr-top,#derat-chat.calc .dr-trust{display:none}
 #derat-chat.calc .dr-calc{display:flex;animation:drReveal .34s cubic-bezier(.2,.8,.2,1)}
 #derat-chat.calc .dr-cbar{display:grid}
 
@@ -303,10 +319,18 @@ img{max-width:100%}
     </div>
   </header>
 
+  <div class="dr-trust" id="dr-trust" aria-hidden="true">
+    <span class="dr-trust-i">✓ 30+ rokov skúseností</span>
+    <span class="dr-trust-i">★ 4,9/5 spokojnosť klientov</span>
+    <span class="dr-trust-i">⚡ Zásah aj do 24 hodín</span>
+    <span class="dr-trust-i">🛡️ Garancia na každý zásah</span>
+    <span class="dr-trust-i">✓ Certifikovaní technici</span>
+  </div>
+
   <div class="dr-top">
     <button class="dr-cta" onclick="DERAT.openCalc()">
       <span class="dr-cta-ic"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg></span>
-      <span><b>Cenová kalkulačka</b><span>Služba, škodca, priestor a plocha — orientačná cena za pár klikov.</span></span>
+      <span><b>Cenová kalkulačka</b><span>Orientačná cena za pár klikov.</span></span>
       <span class="ar">›</span>
     </button>
   </div>
@@ -321,7 +345,7 @@ img{max-width:100%}
   </div>
 
   <form class="dr-inbar" onsubmit="DERAT.submit(event)">
-    <input id="dr-in" placeholder="Napíšte otázku o škodcoch..." autocomplete="off">
+    <input id="dr-in" placeholder="Napíšte svoju otázku…" autocomplete="off">
     <button aria-label="Odoslať"><svg viewBox="0 0 24 24"><path d="M2 21 23 12 2 3v7l15 2-15 2v7Z"/></svg></button>
   </form>
 
@@ -446,11 +470,25 @@ $('dr-bub-ic').innerHTML=MOUSE;$('dr-logo').innerHTML=MOUSE;
 const CONTACT_URL={call:'tel:'+CONFIG.phone,mail:'mailto:'+CONFIG.email,wa:'https://wa.me/'+CONFIG.whatsapp};
 if(CONFIG.emailjs.publicKey&&window.emailjs){try{emailjs.init({publicKey:CONFIG.emailjs.publicKey});}catch(e){}}
 
+/* rotujúci pruh dôvery */
+(function(){const items=[].slice.call(document.querySelectorAll('#dr-trust .dr-trust-i'));if(!items.length)return;let i=0;items[0].classList.add('on');
+  setInterval(()=>{const cur=items[i];i=(i+1)%items.length;const nx=items[i];
+    cur.classList.add('out');cur.classList.remove('on');
+    nx.classList.remove('out');nx.classList.add('on');
+    setTimeout(()=>cur.classList.remove('out'),500);},2800);})();
+
 const eur=n=>Math.round(n).toLocaleString('sk-SK')+' €';
 const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const unit=()=>SERVICES[state.c.service].unit;
 
 function add(html,who){const r=document.createElement('div');r.className='dr-row '+(who||'bot');r.innerHTML=(who==='me'?'':'<span class="dr-av">'+MOUSE+'</span>')+'<div class="dr-b '+(who||'bot')+'">'+html+'</div>';msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;}
+/* HTML-bezpečný výrez na n viditeľných znakov (tagy ostávajú celé) */
+function htmlSlice(html,n){let out='',c=0,i=0;while(i<html.length&&c<n){const ch=html[i];if(ch==='<'){const j=html.indexOf('>',i);out+=html.slice(i,j+1);i=j+1;}else if(ch==='&'){const j=html.indexOf(';',i);out+=html.slice(i,j+1);i=j+1;c++;}else{out+=ch;i++;c++;}}while(i<html.length&&html[i]==='<'){const j=html.indexOf('>',i);out+=html.slice(i,j+1);i=j+1;}return out;}
+function visLen(html){let c=0,i=0;while(i<html.length){if(html[i]==='<'){i=html.indexOf('>',i)+1;}else if(html[i]==='&'){i=html.indexOf(';',i)+1;c++;}else{i++;c++;}}return c;}
+/* uvítacia správa s typewriter efektom + chipy nabehnú po jednom */
+function botType(html,done){const r=document.createElement('div');r.className='dr-row bot';r.innerHTML='<span class="dr-av">'+MOUSE+'</span><div class="dr-b bot"><div class="dr-typing"><span></span><span></span><span></span></div></div>';msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;
+  const b=r.querySelector('.dr-b'),total=visLen(html);
+  setTimeout(()=>{let n=0;(function tick(){n++;b.innerHTML=htmlSlice(html,n)+'<span class="dr-cur"></span>';msgs.scrollTop=msgs.scrollHeight;if(n<total)setTimeout(tick,18);else{b.innerHTML=html;done&&done();}})();},650);}
 function bot(html){const r=document.createElement('div');r.className='dr-row bot';r.innerHTML='<span class="dr-av">'+MOUSE+'</span><div class="dr-b bot"><div class="dr-typing"><span></span><span></span><span></span></div></div>';msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;setTimeout(()=>{r.querySelector('.dr-b').innerHTML=html;msgs.scrollTop=msgs.scrollHeight;},650);}
 function reply(t){const x=t.toLowerCase();
   if(/(cena|stoj|koľko|kolko|cenn|lacn)/.test(x))return 'Cena závisí od služby, druhu škodcu, plochy a rozsahu. Najrýchlejšie ju zistíte v <b>kalkulačke</b> — kliknite na „Spočítať cenu". Presnú ponuku potvrdíme po obhliadke.';
@@ -589,7 +627,8 @@ window.DERAT={
   },
   toggle(){state.open?this.close():this.open();},
   open(){state.open=true;chat.classList.add('show');chat.setAttribute('aria-hidden','false');$('derat-bubble').classList.add('open');
-    if(!msgs.dataset.i){add('Dobrý deň 👋 Som <b>DERAT asistent</b>. Pomôžem so škodcami — <b>deratizácia, dezinsekcia a dezinfekcia</b>. Napíšte, čo riešite, alebo si v <b>kalkulačke</b> spočítajte orientačnú cenu.','bot');msgs.dataset.i='1';}},
+    if(!msgs.dataset.i){msgs.dataset.i='1';botType('Dobrý deň 👋 Som <b>DERAT asistent</b>. Pomôžem so škodcami — <b>deratizácia, dezinsekcia a dezinfekcia</b>. Napíšte, čo riešite, alebo si v <b>kalkulačke</b> spočítajte orientačnú cenu.',()=>{const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('reveal');});}
+    else{const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('reveal');}},
   close(){state.open=false;chat.classList.remove('show','calc');chat.setAttribute('aria-hidden','true');$('derat-bubble').classList.remove('open');},
   openCalc(){this.open();chat.classList.add('calc');render();},
   closeCalc(){chat.classList.remove('calc');},
