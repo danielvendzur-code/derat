@@ -15,6 +15,7 @@
    =========================================================== */
 :root{
   --g:#406618;--g-dk:#2e4a11;--g-700:#37591a;--g-lt:#5a8a24;--g-50:#eef3e6;--g-100:#e2ecd5;
+  --am:#e9a23a;--am-dk:#c87d1c;--am-50:#fdf2df;--am-100:#f8e3bf;
   --red:#c63a27;--red-dk:#9e2a1a;
   --ink:#1e231d;--muted:#6b7363;--line:#e3e8db;--paper:#fff;--bg:#f5f8f0;--wa:#25d366;
   --sh:0 18px 50px rgba(31,40,18,.18);--r:18px;
@@ -46,15 +47,15 @@ img{max-width:100%}
 #derat-bubble:hover{transform:translateY(-2px) scale(1.06);animation-play-state:paused}
 #derat-bubble.open{opacity:0;pointer-events:none;transform:scale(.85)}
 #derat-bubble .dr-mouse{width:46px}
-.dr-dot{position:absolute;right:5px;top:5px;width:15px;height:15px;border-radius:50%;background:var(--red);border:3px solid #fff}
+.dr-dot{position:absolute;right:5px;top:5px;width:15px;height:15px;border-radius:50%;background:var(--am);border:3px solid #fff}
 
 /* ===== Okno ===== */
 #derat-chat{position:fixed;right:20px;bottom:96px;z-index:99999;width:382px;height:min(84vh,672px);max-height:672px;border-radius:24px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh);display:flex;flex-direction:column;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(20px) scale(.96);transform-origin:bottom right;transition:.3s cubic-bezier(.2,.8,.2,1)}
 #derat-chat.show{opacity:1;pointer-events:auto;transform:none}
 
 /* hlavička – zarovnaná */
-.dr-head{padding:13px 14px;background:linear-gradient(135deg,#2e4a11,#406618 58%,#5a8a24);color:#fff;display:flex;align-items:center;gap:11px}
-.dr-head-logo{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#6fa530,#2e4a11);display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 5px 14px rgba(0,0,0,.22),inset 0 0 0 2px rgba(255,255,255,.25)}
+.dr-head{padding:13px 14px;background:linear-gradient(135deg,#2e4a11,#406618 58%,#5a8a24);color:#fff;display:flex;align-items:center;gap:11px;border-bottom:3px solid var(--am)}
+.dr-head-logo{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#6fa530,#2e4a11);display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 5px 14px rgba(0,0,0,.22),inset 0 0 0 2px rgba(255,255,255,.25),0 0 0 2px var(--am)}
 .dr-head-logo .dr-mouse{width:32px}
 .dr-head-t{min-width:0;flex:1;display:flex;flex-direction:column;justify-content:center;gap:3px}
 .dr-head-t b{font-size:15px;font-weight:800;line-height:1.1}
@@ -67,21 +68,15 @@ img{max-width:100%}
 .dr-hbtn.ghost:hover{background:rgba(255,255,255,.28)}
 .dr-hbtn svg{width:19px;height:19px;fill:currentColor}
 
-/* pruh dôvery (rotujúce čísla) */
-.dr-trust{position:relative;height:30px;overflow:hidden;background:linear-gradient(90deg,#26400e,#33530f);border-bottom:1px solid rgba(255,255,255,.08)}
-.dr-trust-i{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:6px;color:#dff0c8;font:800 11.5px var(--font);letter-spacing:.2px;opacity:0;transform:translateY(100%);transition:opacity .5s,transform .5s cubic-bezier(.2,.8,.2,1);white-space:nowrap}
-.dr-trust-i.on{opacity:1;transform:none}
-.dr-trust-i.out{opacity:0;transform:translateY(-100%);transition:opacity .45s,transform .45s ease}
-
 /* CTA */
 .dr-top{padding:12px 13px 9px;background:#fff;border-bottom:1px solid var(--line)}
 .dr-cta{width:100%;border:1px solid rgba(64,102,24,.26);border-radius:15px;background:linear-gradient(135deg,#f3f8ea,#e6efd4);box-shadow:0 8px 20px rgba(64,102,24,.10);padding:12px;display:grid;grid-template-columns:46px 1fr auto;gap:12px;align-items:center;text-align:left;cursor:pointer;transition:.18s}
 .dr-cta:hover{transform:translateY(-1px);box-shadow:0 14px 28px rgba(64,102,24,.18)}
-.dr-cta-ic{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,#5a8a24,#2e4a11);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(46,74,17,.28)}
+.dr-cta-ic{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,#f3b552,#d6841d);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(200,125,28,.32)}
 .dr-cta-ic svg{width:25px;height:25px;fill:#fff}
 .dr-cta b{font-size:13.5px;font-weight:800;color:var(--g-dk);display:block}
 .dr-cta span{font-size:11px;font-weight:500;color:var(--muted);line-height:1.3}
-.dr-cta .ar{font-size:25px;color:var(--g);font-weight:900;transition:.2s}
+.dr-cta .ar{font-size:25px;color:var(--am-dk);font-weight:900;transition:.2s}
 .dr-cta:hover .ar{transform:translateX(4px)}
 
 /* správy */
@@ -104,7 +99,7 @@ img{max-width:100%}
 
 .dr-chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 13px 10px;background:#f5f8f0}
 .dr-chip{border:1px solid rgba(64,102,24,.24);background:#fff;border-radius:999px;color:var(--g-dk);padding:8px 12px;font:700 11.5px var(--font);cursor:pointer;transition:.15s,opacity .3s,transform .3s}
-.dr-chip:hover{background:var(--g-50);transform:translateY(-1px)}
+.dr-chip:hover{background:var(--am-50);border-color:var(--am);color:var(--am-dk);transform:translateY(-1px)}
 /* chipy nabehnú po jednom (po dopísaní úvodu) */
 .dr-chips .dr-chip{opacity:0;transform:translateY(8px);pointer-events:none}
 .dr-chips.reveal .dr-chip{opacity:1;transform:none;pointer-events:auto}
@@ -134,7 +129,7 @@ img{max-width:100%}
 
 /* ===== KALKULAČKA ===== */
 .dr-calc{display:none;flex:1;min-height:0;overflow:hidden;background:linear-gradient(180deg,#fff,#f5f8f0);order:2;flex-direction:column}
-#derat-chat.calc .dr-msgs,#derat-chat.calc .dr-chips,#derat-chat.calc .dr-inbar,#derat-chat.calc .dr-top,#derat-chat.calc .dr-trust{display:none}
+#derat-chat.calc .dr-msgs,#derat-chat.calc .dr-chips,#derat-chat.calc .dr-inbar,#derat-chat.calc .dr-top{display:none}
 #derat-chat.calc .dr-calc{display:flex;animation:drReveal .34s cubic-bezier(.2,.8,.2,1)}
 #derat-chat.calc .dr-cbar{display:grid}
 
@@ -146,7 +141,7 @@ img{max-width:100%}
 .dr-back{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--g-dk);font-weight:900;cursor:pointer;flex:0 0 auto}
 .dr-back:disabled{opacity:.32}
 .dr-prog-track{flex:1;height:7px;background:#e0e9d3;border-radius:999px;overflow:hidden}
-.dr-prog-fill{height:100%;background:linear-gradient(90deg,#406618,#5a8a24,#a6f06f);transition:width .4s cubic-bezier(.2,.8,.2,1)}
+.dr-prog-fill{height:100%;background:linear-gradient(90deg,#406618,#5a8a24,#e9a23a);transition:width .4s cubic-bezier(.2,.8,.2,1)}
 .dr-prog-n{font:900 11px var(--font);color:var(--g);white-space:nowrap}
 
 .dr-body{flex:1;overflow:auto;padding:0 13px 8px}
@@ -159,7 +154,7 @@ img{max-width:100%}
 .dr-hero-svg svg{width:46%;height:46%}
 .dr-hero-cap{position:absolute;left:12px;right:12px;bottom:11px;display:flex;align-items:center;gap:7px;color:#fff;font:800 12.5px var(--font);text-shadow:0 1px 5px rgba(0,0,0,.5)}
 .dr-hero-cap .d{width:7px;height:7px;border-radius:50%;background:#a6f06f;flex:0 0 auto}
-.dr-hero-cap .bdg{margin-left:auto;background:rgba(255,255,255,.94);color:var(--g-dk);font:800 10px var(--font);padding:4px 9px;border-radius:999px;text-shadow:none}
+.dr-hero-cap .bdg{margin-left:auto;background:linear-gradient(135deg,#f3b552,#d6841d);color:#fff;font:800 10px var(--font);padding:4px 9px;border-radius:999px;text-shadow:none;box-shadow:0 2px 6px rgba(200,125,28,.35)}
 
 .dr-q{font-size:16.5px;font-weight:900;color:var(--g-dk);margin:0 0 3px;letter-spacing:-.2px}
 .dr-q-sub{font-size:11.5px;font-weight:500;color:var(--muted);line-height:1.4;margin-bottom:12px}
@@ -319,14 +314,6 @@ img{max-width:100%}
     </div>
   </header>
 
-  <div class="dr-trust" id="dr-trust" aria-hidden="true">
-    <span class="dr-trust-i">✓ 30+ rokov skúseností</span>
-    <span class="dr-trust-i">★ 4,9/5 spokojnosť klientov</span>
-    <span class="dr-trust-i">⚡ Zásah aj do 24 hodín</span>
-    <span class="dr-trust-i">🛡️ Garancia na každý zásah</span>
-    <span class="dr-trust-i">✓ Certifikovaní technici</span>
-  </div>
-
   <div class="dr-top">
     <button class="dr-cta" onclick="DERAT.openCalc()">
       <span class="dr-cta-ic"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg></span>
@@ -469,13 +456,6 @@ const chat=$('derat-chat'),msgs=$('dr-msgs'),calc=$('dr-calc'),inp=$('dr-in');
 $('dr-bub-ic').innerHTML=MOUSE;$('dr-logo').innerHTML=MOUSE;
 const CONTACT_URL={call:'tel:'+CONFIG.phone,mail:'mailto:'+CONFIG.email,wa:'https://wa.me/'+CONFIG.whatsapp};
 if(CONFIG.emailjs.publicKey&&window.emailjs){try{emailjs.init({publicKey:CONFIG.emailjs.publicKey});}catch(e){}}
-
-/* rotujúci pruh dôvery */
-(function(){const items=[].slice.call(document.querySelectorAll('#dr-trust .dr-trust-i'));if(!items.length)return;let i=0;items[0].classList.add('on');
-  setInterval(()=>{const cur=items[i];i=(i+1)%items.length;const nx=items[i];
-    cur.classList.add('out');cur.classList.remove('on');
-    nx.classList.remove('out');nx.classList.add('on');
-    setTimeout(()=>cur.classList.remove('out'),500);},2800);})();
 
 const eur=n=>Math.round(n).toLocaleString('sk-SK')+' €';
 const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
