@@ -108,14 +108,14 @@ img{max-width:100%}
 
 /* kontaktná lišta – jednotná */
 .dr-cbar{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;padding:10px 13px 13px;background:linear-gradient(180deg,#fff,#eef3e6);border-top:1px solid var(--line);order:9}
-.dr-c{position:relative;height:52px;text-decoration:none;border:0;border-radius:14px;background:linear-gradient(135deg,#5a8a24,#2e4a11);box-shadow:0 6px 16px rgba(46,74,17,.22);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;overflow:hidden;transition:.2s cubic-bezier(.2,.8,.2,1)}
-.dr-c:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.18),transparent 55%);opacity:0;transition:.2s}
-.dr-c:hover{transform:translateY(-2px);box-shadow:0 11px 24px rgba(46,74,17,.32)}
-.dr-c:hover:before{opacity:1}
+.dr-c{position:relative;height:58px;text-decoration:none;border:1.5px solid var(--g-100);border-radius:14px;background:#fff;box-shadow:0 4px 12px rgba(46,74,17,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;overflow:hidden;transition:.2s cubic-bezier(.2,.8,.2,1)}
+.dr-c:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(46,74,17,.15);border-color:var(--g-lt)}
 .dr-c:active{transform:translateY(0) scale(.97)}
-.dr-c svg{width:19px;height:19px;fill:#fff;display:block;transition:transform .2s}
-.dr-c:hover svg{transform:scale(1.12) translateY(-1px)}
-.dr-c-lbl{color:#fff;font:800 11px var(--font);letter-spacing:.2px}
+.dr-c-ic{width:27px;height:27px;border-radius:8px;background:var(--g-50);display:flex;align-items:center;justify-content:center;transition:.2s}
+.dr-c:hover .dr-c-ic{background:var(--g);transform:scale(1.06)}
+.dr-c-ic svg{width:15px;height:15px;fill:var(--g);display:block;transition:fill .2s}
+.dr-c:hover .dr-c-ic svg{fill:#fff}
+.dr-c-lbl{color:var(--g-dk);font:800 11px var(--font);letter-spacing:.2px}
 .dr-c.tap{animation:drTap .4s ease}
 @keyframes drTap{0%{transform:scale(1)}40%{transform:scale(.93)}100%{transform:scale(1)}}
 
@@ -334,9 +334,9 @@ img{max-width:100%}
   </form>
 
   <div class="dr-cbar">
-    <button class="dr-c" id="dr-call" onclick="DERAT.contact('call')" title="Volať"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg><span class="dr-c-lbl">Volať</span></button>
-    <button class="dr-c" id="dr-mail" onclick="DERAT.contact('mail')" title="E-mail"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4a2 2 0 0 1-2-2V6c0-1.1.9-2 2-2Zm8 7 8-5H4l8 5Zm0 2.2L4 8.2V18h16V8.2l-8 5Z"/></svg><span class="dr-c-lbl">E-mail</span></button>
-    <button class="dr-c" id="dr-wa" onclick="DERAT.contact('wa')" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.6 4.8-1.3A10 10 0 1 0 12 2Zm0 2a8 8 0 1 1-4.2 14.8l-.3-.2-2.5.7.7-2.4-.2-.3A8 8 0 0 1 12 4Zm4.4 10.3c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.1.1-.3 0-.4l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.7.7-.7 1.7-.1 2.7a9 9 0 0 0 3.9 3.6c1.2.5 1.7.5 2.3.4.4 0 1.2-.5 1.4-1 .2-.5.2-.9.1-1Z"/></svg><span class="dr-c-lbl">WhatsApp</span></button>
+    <button class="dr-c" id="dr-call" onclick="DERAT.contact('call')" title="Volať"><span class="dr-c-ic"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg></span><span class="dr-c-lbl">Volať</span></button>
+    <button class="dr-c" id="dr-mail" onclick="DERAT.contact('mail')" title="E-mail"><span class="dr-c-ic"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4a2 2 0 0 1-2-2V6c0-1.1.9-2 2-2Zm8 7 8-5H4l8 5Zm0 2.2L4 8.2V18h16V8.2l-8 5Z"/></svg></span><span class="dr-c-lbl">E-mail</span></button>
+    <button class="dr-c" id="dr-wa" onclick="DERAT.contact('wa')" title="WhatsApp"><span class="dr-c-ic"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.6 4.8-1.3A10 10 0 1 0 12 2Zm0 2a8 8 0 1 1-4.2 14.8l-.3-.2-2.5.7.7-2.4-.2-.3A8 8 0 0 1 12 4Zm4.4 10.3c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.1.1-.3 0-.4l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.7.7-.7 1.7-.1 2.7a9 9 0 0 0 3.9 3.6c1.2.5 1.7.5 2.3.4.4 0 1.2-.5 1.4-1 .2-.5.2-.9.1-1Z"/></svg></span><span class="dr-c-lbl">WhatsApp</span></button>
   </div>
 
   <div id="dr-calc" class="dr-calc"></div>
@@ -371,7 +371,7 @@ const IMG={
 };
 
 /* Maskot – usmievavá myš (biela na zelenom) */
-const MOUSE='<svg class="dr-mouse" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="14.5" cy="13" r="6.5"/><circle cx="33.5" cy="13" r="6.5"/><path d="M11 21a13 13 0 1 0 26 0 13 13 0 0 0-26 0Z"/><g class="dr-eye" stroke="none" fill="currentColor"><circle cx="19.5" cy="25.5" r="1.9"/></g><g class="dr-eye" stroke="none" fill="currentColor"><circle cx="28.5" cy="25.5" r="1.9"/></g><path d="M24 30.5v2.3" stroke-width="1.6"/><circle cx="24" cy="30" r="1.7" fill="currentColor" stroke="none"/><path d="M20.5 34c1.3 1.5 5.7 1.5 7 0" stroke-width="1.6"/><path d="M15 30l-7-1.5M15 32.5l-7 1.5M33 30l7-1.5M33 32.5l7 1.5" stroke-width="1.2"/></svg>';
+const MOUSE='<svg class="dr-mouse" viewBox="0 0 48 48"><path d="M42.5 31 C46 29.5 48 32 47 35" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><ellipse cx="27" cy="31" rx="16" ry="10.5" fill="currentColor"/><circle cx="13.5" cy="26" r="8.5" fill="currentColor"/><circle cx="14.5" cy="15.5" r="5.4" fill="currentColor"/><path d="M6 28.5 C3.2 28.5 1.4 26.8 0.6 25 C2.8 23.8 5 24.8 6.8 26 Z" fill="currentColor"/><circle class="dr-eye" cx="11" cy="25" r="1.9" fill="#1f3a0e"/><circle cx="3.6" cy="25.4" r="1.15" fill="#1f3a0e"/><line x1="5" y1="27.6" x2="0.4" y2="27.6" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".85"/><line x1="5.2" y1="25.8" x2="0.6" y2="24.8" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".85"/><line x1="6" y1="24" x2="2" y2="22.2" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity=".85"/></svg>';
 
 /* Ikony škodcov / priestorov (jednotná veľkosť, viewBox 64) */
 const I={
