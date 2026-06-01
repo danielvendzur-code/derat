@@ -39,13 +39,13 @@ img{max-width:100%}
 @keyframes drDot{0%,80%,100%{transform:scale(.5);opacity:.4}40%{transform:scale(1);opacity:1}}
 @keyframes drPop{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
 @keyframes drReveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.dr-mouse{display:block;object-fit:contain;user-select:none}
+.dr-mouse{display:block;height:auto;object-fit:contain;user-select:none}
 
 /* ===== Teaser + bublina ===== */
 #derat-bubble{position:fixed;right:20px;bottom:20px;z-index:100000;width:66px;height:66px;border:0;border-radius:50%;background:radial-gradient(circle at 32% 24%,#6fa530,#406618 60%,#2e4a11);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .25s;animation:drPulse 2.6s ease-in-out infinite}
 #derat-bubble:hover{transform:translateY(-2px) scale(1.06);animation-play-state:paused}
 #derat-bubble.open{opacity:0;pointer-events:none;transform:scale(.85)}
-#derat-bubble .dr-mouse{width:48px;height:48px}
+#derat-bubble .dr-mouse{width:46px}
 .dr-dot{position:absolute;right:5px;top:5px;width:15px;height:15px;border-radius:50%;background:var(--red);border:3px solid #fff}
 
 /* ===== Okno ===== */
@@ -55,7 +55,7 @@ img{max-width:100%}
 /* hlavička – zarovnaná */
 .dr-head{padding:13px 14px;background:linear-gradient(135deg,#2e4a11,#406618 58%,#5a8a24);color:#fff;display:flex;align-items:center;gap:11px}
 .dr-head-logo{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#6fa530,#2e4a11);display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 5px 14px rgba(0,0,0,.22),inset 0 0 0 2px rgba(255,255,255,.25)}
-.dr-head-logo .dr-mouse{width:34px;height:34px}
+.dr-head-logo .dr-mouse{width:32px}
 .dr-head-t{min-width:0;flex:1;display:flex;flex-direction:column;justify-content:center;gap:3px}
 .dr-head-t b{font-size:15px;font-weight:800;line-height:1.1}
 .dr-head-t span{font-size:11px;font-weight:600;color:rgba(255,255,255,.86);display:flex;gap:6px;align-items:center;line-height:1}
@@ -83,7 +83,7 @@ img{max-width:100%}
 .dr-row{display:flex;gap:8px;align-items:flex-end;animation:drIn .3s ease}
 .dr-row.me{justify-content:flex-end}
 .dr-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#6fa530,#2e4a11);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
-.dr-av .dr-mouse{width:24px;height:24px}
+.dr-av .dr-mouse{width:23px}
 .dr-row.me .dr-av{display:none}
 .dr-b{max-width:80%;padding:10px 13px;border-radius:16px;font:500 13px/1.5 var(--font);box-shadow:0 6px 16px rgba(31,40,18,.06)}
 .dr-b.bot{background:#fff;border:1px solid var(--line);border-bottom-left-radius:6px}
