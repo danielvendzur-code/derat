@@ -448,7 +448,8 @@ img{max-width:100%}
 
 /* hlavička: teplý akcentový prúžok dole */
 .dr-head{position:relative;background:linear-gradient(122deg,#22400b,#3d6817 48%,#62a128)}
-.dr-head::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--accent),rgba(234,161,46,0) 66%);z-index:2}
+.dr-head::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;z-index:2;background:linear-gradient(90deg,transparent 0,var(--accent) 38%,#ffd98a 50%,var(--accent) 62%,transparent 100%);background-size:55% 100%;background-repeat:no-repeat;animation:drAccent 6s ease-in-out infinite}
+@keyframes drAccent{0%,100%{background-position:0% 0}50%{background-position:100% 0}}
 .dr-reset svg{transition:transform .5s cubic-bezier(.3,1.4,.5,1)}
 .dr-reset:hover svg{transform:rotate(-180deg)}
 #derat-chat.calc .dr-reset{display:none}
@@ -638,7 +639,7 @@ const IMG={
 
 /* Maskot – chatová bublina (biela na zelenom) */
 const WELCOME='Dobrý deň 👋 Som <b>DERAT asistent</b>. Pomôžem so škodcami — <b>deratizácia, dezinsekcia a dezinfekcia</b>. Napíšte, čo riešite, alebo si v <b>kalkulačke</b> spočítajte orientačnú cenu.';
-const MOUSE='<svg class="dr-mouse" viewBox="0 0 24 24" aria-hidden="true"><g fill="#fff"><circle cx="6.7" cy="7" r="3.3"/><circle cx="17.3" cy="7" r="3.3"/><ellipse cx="12" cy="13" rx="6.6" ry="6"/></g><circle cx="6.7" cy="7" r="1.5" fill="#e7a9b6"/><circle cx="17.3" cy="7" r="1.5" fill="#e7a9b6"/><circle cx="9.5" cy="12" r="1.2" fill="#2e4a11"/><circle cx="14.5" cy="12" r="1.2" fill="#2e4a11"/><ellipse cx="12" cy="14.7" rx="1.35" ry="1.05" fill="#d4677a"/><path d="M13.1 15c2.2.2 3.8.9 4.9 1.9M10.9 15c-2.2.2-3.8.9-4.9 1.9" stroke="#dfe6d6" stroke-width=".55" fill="none" stroke-linecap="round" opacity=".8"/></svg>';
+const MOUSE='<svg class="dr-mouse" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><circle cx="8" cy="9" r="1.5"/><circle cx="12" cy="9" r="1.5"/><circle cx="16" cy="9" r="1.5"/></svg>';
 
 /* Ikony škodcov / priestorov (jednotná veľkosť, viewBox 64) */
 const I={
