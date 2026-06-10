@@ -427,7 +427,7 @@ img{max-width:100%}
 /* PSČ kontrola oblasti */
 .dr-area-msg{font:700 11px var(--font);padding:0 2px}
 .dr-area-msg.ok{color:var(--g);padding:2px 2px 4px}
-.dr-area-msg.no{color:var(--red-dk);padding:2px 2px 4px}
+.dr-area-msg.info{color:var(--accent-dk);padding:2px 2px 4px}
 
 /* foto upload */
 .dr-photo{display:block;cursor:pointer}
@@ -618,8 +618,8 @@ const CONFIG={
   phone:'+421905648129', phoneText:'+421 905 648 129',
   email:'info@derat.sk', whatsapp:'421905648129',
   leadEndpoint:'',
-  // PSČ predvoľby, kde firma pôsobí (prázdne = celé Slovensko). Upravte podľa seba.
-  areas:['81','82','83','84','85','90','91','92','93'],
+  // sídlo Bratislava — cestovné podľa vzdialenosti (Bratislavský kraj zdarma, ďalej ~0,45 €/km)
+  travelPerKm:0.45, travelFreeKm:30,
   emailjs:{publicKey:'', serviceId:'', templateId:''}
 };
 
@@ -738,6 +738,10 @@ if(CONFIG.emailjs.publicKey&&window.emailjs){try{emailjs.init({publicKey:CONFIG.
 const eur=n=>Math.round(n).toLocaleString('sk-SK')+' €';
 const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const unit=()=>SERVICES[state.c.service].unit;
+/* orientačná cestná vzdialenosť PSČ od Bratislavy (km) — podľa prvých číslic PSČ */
+const PSC_KM={'80':0,'81':0,'82':0,'83':0,'84':0,'85':0,'90':25,'91':80,'92':70,'93':55,'94':110,'95':95,'96':200,'97':215,'98':235,'01':205,'02':235,'03':255,'04':400,'05':350,'06':360,'07':420,'08':405,'09':430};
+function pscKm(psc){const p=String(psc).replace(/\s/g,'');if(p.length<2)return null;const t=p.slice(0,2);if(t in PSC_KM)return PSC_KM[t];const F={'8':0,'9':120,'0':300};return p[0] in F?F[p[0]]:120;}
+function travelFee(km){if(km==null)return null;return km<=CONFIG.travelFreeKm?0:Math.round(km*CONFIG.travelPerKm);}
 
 function add(html,who){const r=document.createElement('div');r.className='dr-row '+(who||'bot');r.innerHTML=(who==='me'?'':'<span class="dr-av">'+MOUSE+'</span>')+'<div class="dr-b '+(who||'bot')+'">'+html+'</div>';msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;}
 /* HTML-bezpečný výrez na n viditeľných znakov (tagy ostávajú celé) */
@@ -962,8 +966,9 @@ window.DERAT={
   checkLock(){if(state.unlocked)return;const n=$('dr-name'),p=$('dr-phone');
     if(n&&p&&n.value.trim()&&p.value.replace(/\s/g,'').length>=6){state.unlocked=true;const card=document.querySelector('.dr-result');if(card)card.classList.remove('locked');}},
   checkArea(){const el=$('dr-psc'),msg=$('dr-area-msg');if(!el||!msg)return;const v=el.value.replace(/\s/g,'');if(v.length<2){msg.className='dr-area-msg';msg.textContent='';return;}
-    const ok=!CONFIG.areas.length||CONFIG.areas.some(p=>v.startsWith(p));
-    msg.className='dr-area-msg '+(ok?'ok':'no');msg.innerHTML=ok?'✓ Áno, vo vašej oblasti pôsobíme.':'Mimo našej bežnej oblasti — ozvite sa, dohodneme sa: <b>'+CONFIG.phoneText+'</b>.';},
+    const km=pscKm(v),c=travelFee(km);
+    if(c===0){msg.className='dr-area-msg ok';msg.innerHTML='📍 Bratislavský kraj — <b>cestovné zdarma</b>. Pôsobíme po celom Slovensku.';}
+    else{msg.className='dr-area-msg info';msg.innerHTML='📍 ≈ '+km+' km od Bratislavy · orientačné cestovné <b>~'+eur(c)+'</b> (k cene zásahu).';}},
   photoPick(e){const f=e.target.files&&e.target.files[0];const box=$('dr-photo-prev');if(!f){state.photo=null;if(box)box.innerHTML='';return;}
     state.photo=f.name;const rd=new FileReader();rd.onload=()=>{if(box)box.innerHTML='<img src="'+rd.result+'" alt=""><span>'+f.name+'</span><button type="button" onclick="DERAT.photoClear()">×</button>';};rd.readAsDataURL(f);},
   photoClear(){state.photo=null;const i=$('dr-photo');if(i)i.value='';const box=$('dr-photo-prev');if(box)box.innerHTML='';},
@@ -974,6 +979,7 @@ window.DERAT={
   _payload(){const r=compute(),c=state.c;return{
     name:$('dr-name').value.trim(),phone:$('dr-phone').value.trim(),email:$('dr-email').value.trim(),
     loc:$('dr-loc').value.trim(),psc:$('dr-psc').value.trim(),note:$('dr-note').value.trim(),
+    travel:(()=>{const k=pscKm($('dr-psc').value);return k==null?null:{km:k,fee:travelFee(k)};})(),
     term:$('dr-term').value,pref:$('dr-pref').value,photo:state.photo,
     service:r.sv.name,pest:r.sub.n,place:r.pl.n,size:r.qty+' '+r.unit,severity:r.sev.n,multi:r.multi,
     addons:c.addons.map(id=>ADDONS[id].n).join(', ')||'žiadne',price:r.total,priceRange:eur(r.low)+'–'+eur(r.high)};},
@@ -983,6 +989,7 @@ Priestor: ${p.place}, ${p.size}
 Miera zamorenia: ${p.severity}${p.multi?' (potrebné opakované ošetrenie)':''}
 Doplnky: ${p.addons}
 Orientačná cena: od ${eur(p.price)} bez DPH (${p.priceRange})
+Cestovné: ${p.travel?(p.travel.fee?'~'+eur(p.travel.fee)+' (≈'+p.travel.km+' km)':'zdarma (Bratislavský kraj)'):'-'}
 ---
 Meno: ${p.name}
 Telefón: ${p.phone}
