@@ -16,12 +16,13 @@ Dizajn a UX sú inšpirované konfigurátorom **„Môj plot"**, prefarbené do 
   3. *Kde máme zasiahnuť?* – byt / dom / prevádzka / HoReCa / sklad / exteriér (karty s **fotkami**)
   4. *Aká je veľkosť priestoru?* – rozhodujúca rozloha v m² alebo pri dezinfekcii objem v m³
   5. *Ako veľký je problém?* – mierne / stredné / silné; podľa toho sa automaticky zvolí materiál
-  6. *Kde a kedy?* – PSČ, doprava 0,40 €/km, víkend a sviatok
+  6. *Kde a kedy?* – Bratislava ako hlavná oblasť, PSČ, dojazd, víkend a sviatok
   7. *Chcete doplnkové služby?* – šesť orientačne nacenených možností + vlastná požiadavka
   8. *Vaša orientačná cena* – kompaktný rozpis bez DPH, s DPH a formulár dopytu
-- 📷 **Reálne fotky** – fotka služby/priestoru v hero náhľade (jemný Ken Burns zoom),
-  fotky na výberových kartách. Zdroje: oficiálne fotky derat.sk + Wikimedia Commons (voľná licencia).
+- 📷 **Reálne fotky vo výberoch** – fotografie sú priamo v kartách služieb a priestorov,
+  bez samostatného horného náhľadu. Zdroje: oficiálne fotky derat.sk + Wikimedia Commons.
 - 💶 **Živá cena** – počas vypĺňania vidíte priebežnú orientačnú sumu; na konci animovaný súčet + rozpis.
+- 🔁 **Prepínač DPH** – výslednú cenu možno jedným klikom zobraziť bez DPH alebo s DPH.
 - 📝 **Vysvetlenia presne podľa derat.sk** – info boxy a postup zásahu.
 - 📩 **Odoslanie dopytu** – funguje hneď (predvyplnený **e-mail** alebo **WhatsApp**),
   voliteľne cez **EmailJS** alebo vlastný backend.
@@ -50,8 +51,9 @@ const CONFIG={
   emailjs:{publicKey:'', serviceId:'', templateId:''} // voliteľný EmailJS
 };
 ```
-- **Ceny** sú orientačné a všetky vstupy z cenníka sú bez DPH. Minimum výjazdu a práce je
-  `60 €`, doprava mimo Bratislavy `0,40 €/km`, víkend `+20 %` a sviatok `+50 %`.
+- **Ceny** sú orientačné a vstupy z cenníka sú bez DPH. Minimum výjazdu a práce je
+  `60 €`; výsledok sa dá prepnúť na cenu s DPH. Bratislava je hlavná oblasť a mimo nej
+  sa do výsledku orientačne pripočíta doplatok za dojazd.
 - Ploštice sa počítajú podľa rozlohy; rodinný dom má zachované cenníkové minimum `200 €`.
 - Pri hlodavcoch kalkulačka sama vyberie vhodný materiál podľa škodcu a miery zamorenia.
 - PSČ určuje orientačnú vzdialenosť z Bratislavy tam aj späť. Presná doprava sa potvrdí

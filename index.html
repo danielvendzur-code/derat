@@ -411,7 +411,7 @@ img{max-width:100%}
 .dr-chip,.dr-cta{position:relative}
 
 /* ===== Krajšia animácia výberu ===== */
-.dr-rowcard.sel,.dr-pcard.sel,.dr-scard.sel,.dr-opt.sel{animation:drSelPop .34s cubic-bezier(.2,1.6,.35,1)}
+.dr-rowcard.sel,.dr-pcard.sel,.dr-opt.sel{animation:drSelPop .34s cubic-bezier(.2,1.6,.35,1)}
 @keyframes drSelPop{0%{transform:scale(1)}45%{transform:scale(1.035)}100%{transform:scale(1)}}
 .dr-rowcard.sel,.dr-pcard.sel{box-shadow:0 0 0 3px rgba(64,102,24,.18),0 10px 22px rgba(46,74,17,.16)}
 
@@ -636,15 +636,14 @@ img{max-width:100%}
 #derat-chat.calc .dr-prog{padding:6px 11px}
 #derat-chat.calc .dr-body{padding:8px 11px 3px}
 #derat-chat.calc .dr-actions{padding:7px 11px 9px}
-.dr-hero{height:84px;margin-bottom:7px;border-radius:14px}
 .dr-q{font-size:15px;margin:0 0 1px}.dr-q-sub{font-size:10.5px;margin-bottom:7px}
 .dr-first-min{display:flex;align-items:center;gap:8px;margin-bottom:7px;padding:8px 10px;border:1px solid #cfe0b8;border-radius:12px;background:linear-gradient(135deg,#f4faec,#e8f4da);color:var(--g-dk);font:800 11px var(--font)}
 .dr-first-min span{display:grid;place-items:center;width:24px;height:24px;border-radius:8px;background:var(--g);color:#fff;font-size:13px}
 .dr-rows,.dr-grid.tri{gap:6px}.dr-rowcard{min-height:64px}.dr-rowcard-img{width:80px;flex-basis:80px}
-.dr-scard{min-height:62px;padding:7px 4px}.dr-scard-ic{width:34px;height:30px}
-.dr-pcard{height:76px;display:grid;grid-template-columns:74px 1fr;padding:5px}
-.dr-pcard-img,.dr-pcard-svg{width:68px;height:64px;min-height:64px;border-radius:10px}
-.dr-pcard-bd{padding:6px 7px}.dr-pcard-bd span{font-size:9.5px}
+.dr-scard{min-height:62px;padding:7px 4px;animation:none!important}.dr-scard-ic{width:34px;height:30px}
+.dr-pcard{height:92px;display:grid;grid-template-columns:94px 1fr;padding:5px}
+.dr-pcard-img,.dr-pcard-svg{width:88px;height:80px;min-height:80px;border-radius:11px}
+.dr-pcard-bd{padding:7px 9px}.dr-pcard-bd b{font-size:13px}.dr-pcard-bd span{font-size:10px}
 .dr-choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .dr-choice-grid .dr-opt{min-height:92px;padding:8px;display:flex;flex-direction:column;align-items:flex-start;gap:5px}
 .dr-choice-grid .dr-opt-m span{font-size:9.5px;line-height:1.25}.dr-choice-grid .dr-sev-meter{margin:0}
@@ -664,6 +663,9 @@ img{max-width:100%}
 .dr-optional-body{display:grid;gap:6px;padding-bottom:8px}
 .dr-breakdown{margin-top:7px;border-top:1px dashed var(--line)}.dr-breakdown summary{padding:7px 0 1px;cursor:pointer;color:var(--g-dk);font:800 10.5px var(--font)}
 .dr-breakdown .dr-bd{margin-top:5px}.dr-lead-h{display:none}
+.dr-vat-switch{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:8px 0 2px;padding:4px;border-radius:12px;background:#e8efdf}
+.dr-vat-switch button{border:0;border-radius:9px;padding:8px 6px;background:transparent;color:var(--muted);font:800 10.5px var(--font);cursor:pointer}
+.dr-vat-switch button.on{background:#fff;color:var(--g-dk);box-shadow:0 3px 9px rgba(46,74,17,.13)}
 
 @media (prefers-reduced-motion: reduce){
   .dr-head::after,#derat-chat.thinking .dr-beam,.dr-live,.dr-typing span,
@@ -886,9 +888,9 @@ const RODENT_METHODS={
   glueStation:{n:'Lepová pasca v staničke',d:'cenník 8,00–10,00 €/ks',price:10,low:8,high:10}
 };
 const SEVERITY={
-  mierne:{n:'Mierne zamorenie',d:'Ojedinelý výskyt alebo prevencia.',m:.9,lvl:1,points:.75},
-  stredne:{n:'Stredné zamorenie',d:'Opakovaný výskyt na viacerých miestach.',m:1,lvl:2,points:1},
-  silne:{n:'Silné zamorenie',d:'Premnoženie alebo rozsiahly problém.',m:1.25,lvl:3,points:1.4}
+  mierne:{n:'Občasný výskyt',d:'Jeden kus alebo ojedinelé stopy.',m:.9,lvl:1,points:.75},
+  stredne:{n:'Opakovaný výskyt',d:'Škodcu vídate pravidelne.',m:1,lvl:2,points:1},
+  silne:{n:'Silný výskyt',d:'Veľa kusov alebo viac miest.',m:1.25,lvl:3,points:1.4}
 };
 /* slider pre voľbu „Iné": veľkosť škodcu → náročnosť/cena (rastúca animácia od hmyzu po väčšie zvieratá) */
 const ANIMALS=[
@@ -938,17 +940,17 @@ function flow(){const c=state.c;
     return true;
   });}
 const QUESTIONS={
-  service:['S čím vám môžeme pomôcť?','Vyberte službu — ukážka aj ceny sa prispôsobia.'],
-  sub:['Ktorý škodca vás trápi?','Pomôže nám zvoliť správny prípravok a postup.'],
-  place:['O aký priestor ide?','Typ priestoru ovplyvňuje rozsah aj cenu.'],
-  area:['Aká je rozloha priestoru?','Stačí približný odhad — rozloha je hlavný údaj výpočtu.'],
-  severity:['Aká je miera zamorenia?','Podľa toho odhadneme náročnosť a cenu zásahu.'],
-  location:['Kde a kedy má byť zásah?','Mimo Bratislavy sa doprava počíta 0,40 €/km bez DPH.'],
-  addons:['Pridáte doplnkové služby?','Voliteľné orientačné ceny „od“, všetky bez DPH.'],
-  result:['Vaša orientačná cena','Pošlite kontakt a ozveme sa s presnou ponukou.']
+  service:['Čo potrebujete vyriešiť?','Vyberte jednu z troch služieb.'],
+  sub:['Akého škodcu ste si všimli?','Ak si nie ste istí, zvoľte „Iné / neviem“.'],
+  place:['Kde je problém?','Vyberte priestor, v ktorom má byť zásah.'],
+  area:['Aký veľký je priestor?','Stačí približný odhad rozlohy.'],
+  severity:['Ako často škodcu vidíte?','Vyberte možnosť, ktorá je najbližšie vašej situácii.'],
+  location:['Kde a kedy má byť zásah?','Bratislava je hlavná oblasť. Mimo nej sa pripočíta dojazd.'],
+  addons:['Potrebujete niečo navyše?','Tento krok je nepovinný.'],
+  result:['Vaša orientačná cena','Cenu si môžete prepnúť bez DPH alebo s DPH.']
 };
 
-const state={open:false,step:0,photo:null,unlocked:false,c:{service:'deratizacia',sub:'potkany',place:'byt',area:70,severity:'stredne',visit:'weekday',loc:'',psc:'',addons:[],addonText:'',ineSize:1,ineText:''}};
+const state={open:false,step:0,photo:null,priceGross:false,priceAnim:0,c:{service:'deratizacia',sub:'potkany',place:'byt',area:70,severity:'stredne',visit:'weekday',loc:'',psc:'',addons:[],addonText:'',ineSize:1,ineText:''}};
 
 /* =========================================================
    3) POMOCNÉ
@@ -961,20 +963,21 @@ if(CONFIG.emailjs.publicKey&&window.emailjs){try{emailjs.init({publicKey:CONFIG.
 
 const eur=n=>Math.round(n).toLocaleString('sk-SK')+' €';
 const eur2=n=>Number(n).toLocaleString('sk-SK',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+const priceRange=(low,high,gross)=>(low===high?'Orientačne '+eur(low):'Odhad '+eur(low)+' – '+eur(high))+' '+(gross?'s DPH':'bez DPH');
 const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const attr=s=>esc(s).replace(/`/g,'&#96;');
 const unit=()=>SERVICES[state.c.service].unit;
 const defaultQty=(place,service)=>SERVICES[service].unit==='m³'?Math.round(PLACES[place].a*2.6/10)*10:PLACES[place].a;
 function travelForPsc(value){
   const digits=String(value||'').replace(/\D/g,'');
-  if(digits.length<3)return{known:false,km:0,price:0,label:'Zadajte aspoň prvé 3 číslice PSČ.'};
+  if(digits.length<3)return{known:false,km:0,price:0,label:'Bratislava je naša hlavná oblasť. Mimo Bratislavy účtujeme doplatok za dojazd podľa vzdialenosti.'};
   const p3=digits.slice(0,3),p2=digits.slice(0,2);
   let km=POSTAL_KM[p3];
   if(km==null&&/^8[1-5]/.test(p2))km=0;
   if(km==null)km=POSTAL_FALLBACK[p2];
-  if(km==null)return{known:false,km:0,price:0,label:'PSČ sa nepodarilo zaradiť. Dopravu potvrdíme podľa presnej adresy.'};
+  if(km==null)return{known:false,km:0,price:0,label:'Mimo Bratislavy sa pripočíta doplatok za dojazd. Presnú sumu potvrdíme podľa adresy.'};
   const price=Math.round(km*2*CONFIG.travelRate);
-  return{known:true,km,price,label:km===0?'Bratislava: doprava je zahrnutá v minimálnej cene.':`Odhad ${km} km jedným smerom · ${eur2(CONFIG.travelRate)}/km · tam aj späť`};
+  return{known:true,km,price,label:km===0?'Bratislava je naša hlavná oblasť. Dojazd je zahrnutý v minimálnej cene.':'Mimo Bratislavy sa k zásahu pripočíta doplatok za dojazd podľa vzdialenosti.'};
 }
 
 function add(html,who){const r=document.createElement('div');r.className='dr-row '+(who||'bot');r.innerHTML=(who==='me'?'':'<span class="dr-av">'+MOUSE+'</span>')+'<div class="dr-b '+(who||'bot')+'">'+html+'</div>';msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;}
@@ -991,14 +994,14 @@ function bot(html){const r=document.createElement('div');r.className='dr-row bot
   const b=r.querySelector('.dr-b'),total=visLen(html);
   setTimeout(()=>{let n=0;(function tick(){n++;b.innerHTML=htmlSlice(html,n)+'<span class="dr-cur"></span>';msgs.scrollTop=msgs.scrollHeight;if(n<total)setTimeout(tick,14);else{b.innerHTML=html;chat.classList.remove('thinking');}})();},760);}
 function reply(t){const x=t.toLowerCase();
-  if(/(cena|stoj|koľko|kolko|cenn|lacn)/.test(x))return 'Minimálna cena výjazdu a práce je <b>60 € bez DPH</b>. Mimo Bratislavy sa doprava počíta <b>0,40 €/km bez DPH</b>. Presnejší odhad podľa služby, rozlohy, zamorenia a PSČ získate v kalkulačke.';
+  if(/(cena|stoj|koľko|kolko|cenn|lacn)/.test(x))return 'Minimálna cena výjazdu a práce je <b>60 € bez DPH</b>. Bratislava je naša hlavná oblasť; mimo nej sa pripočíta doplatok za dojazd. Presnejší odhad získate v kalkulačke.';
   if(/(my[šs]|potkan|hlodav|hraboš|hrabos|hryz)/.test(x))return 'Hlodavce (potkany, myši, hraboše) riešime <b>deratizáciou</b> — chemickými nástrahami alebo odchytovými klietkami a pascami. V kalkulačke vyberte Deratizáciu.';
   if(/(šváb|svab|rus|hmyz|mravc|ploštic|plostic|blch|much)/.test(x))return 'Lezúci aj lietajúci hmyz likvidujeme <b>dezinsekciou</b> — postrekom, zadymovaním, plynovaním či nástrahami. Pri plošticiach odporúčame opakovaný zásah.';
   if(/(os[ay]|sršn|srsn|včel|hniezd)/.test(x))return 'Hniezda ôs a sršňov odstraňujeme bezpečne. V kalkulačke zvoľte Dezinsekcia → Osy alebo Sršne; orientačná cena podľa cenníka je 120 € pri osách a 130 € pri sršňoch bez DPH.';
   if(/(plesn|baktér|bakter|vírus|virus|dezinf|covid|holub|kanaliz)/.test(x))return 'Robíme <b>polymérovú dezinfekciu</b> proti plesniam, vírusom a baktériám — vhodnú aj počas COVID-19, po havárii kanalizácie či pri výskyte holubov.';
   if(/(postup|prebieha|ako to|obhliad|zásah|zasah|garanc)/.test(x))return PROCESS;
   if(/(bezpeč|bezpec|deti|dieťa|dieta|zviera|domác|pes|mač)/.test(x))return 'Používame certifikované prípravky a moderné technológie s ohľadom na účinnosť aj životné prostredie. Po zásahu odovzdáme pokyny ohľadom detí a domácich zvierat.';
-  if(/(kde|región|region|okres|mesto|bratislav|dojazd|cestuj|kilomet)/.test(x))return 'Pôsobíme po celom Slovensku, ťažisko je Bratislava a okolie. Mimo Bratislavy účtujeme <b>0,40 €/km bez DPH</b>; kalkulačka pridá orientačnú dopravu podľa PSČ.';
+  if(/(kde|región|region|okres|mesto|bratislav|dojazd|cestuj|kilomet)/.test(x))return 'Pôsobíme po celom Slovensku. Bratislava je naša hlavná oblasť a mimo nej sa k zásahu pripočíta doplatok za dojazd podľa vzdialenosti.';
   if(/(ahoj|dobrý|dobry|zdrav|čau|cau)/.test(x))return 'Dobrý deň 👋 Akého škodcu riešite — myši, šváby, ploštice, plesne? Alebo otvorte <b>kalkulačku</b> pre orientačnú cenu.';
   return 'Pomôžem so škodcami — deratizácia, dezinsekcia a dezinfekcia. Napíšte konkrétneho škodcu, otvorte <b>kalkulačku</b>, alebo zavolajte na '+CONFIG.phoneText+'.';
 }
@@ -1073,10 +1076,6 @@ function compute(){
 /* =========================================================
    5) RENDER
    ========================================================= */
-function hero(){
-  const c=state.c,img=(flow()[state.step]==='place')?IMG[c.place]:IMG[c.service];
-  return img?`<div class="dr-hero-img" style="background-image:url('${img}')"></div>`:`<div class="dr-hero-svg">${I.biz}</div>`;
-}
 function info(html){return `<div class="dr-info"><button type="button" class="dr-info-h" onclick="this.parentNode.classList.toggle('open')"><span class="i">i</span><span class="dr-info-lead">Prečo sa pýtame / ako to počítame</span><span class="dr-info-ar">▾</span></button><div class="dr-info-txt"><p>${html}</p></div></div>`;}
 let TIPS=[];
 function ihint(t){const i=TIPS.push(t)-1;return `<span class="dr-ih" role="button" tabindex="0" aria-label="Vysvetlenie" onclick="DERAT.tip(event,${i})">i</span>`;}
@@ -1084,7 +1083,7 @@ function ihint(t){const i=TIPS.push(t)-1;return `<span class="dr-ih" role="butto
 function rService(){return `<div class="dr-first-min"><span>€</span>Minimálna cena výjazdu a práce je 60 € bez DPH.</div>`+Object.keys(SERVICES).map((id,i)=>{const s=SERVICES[id],sel=state.c.service===id;
   return `<button class="dr-rowcard${sel?' sel':''}" data-grp="service" data-id="${id}" style="animation-delay:${i*60}ms" onclick="DERAT.pickService('${id}',this)"><span class="dr-rowcard-img" style="background-image:url('${IMG[id]}')"></span><span class="dr-rowcard-bd"><b>${s.name}</b><span>${s.desc}</span></span><span class="dr-rowcard-pr">${eur(s.base)}<small>od</small></span></button>`;}).join('');}
 function rSub(){const sv=SERVICES[state.c.service];return Object.keys(sv.subs).map((id,i)=>{const it=sv.subs[id],sel=state.c.sub===id;
-  return `<button class="dr-scard${sel?' sel':''}" data-grp="sub" data-id="${id}" style="animation-delay:${i*35}ms" onclick="DERAT.pickSub('${id}',this)"><span class="dr-scard-ic">${I[it.ic]||I.spray}</span><b>${it.n}</b></button>`;}).join('');}
+  return `<button class="dr-scard${sel?' sel':''}" data-grp="sub" data-id="${id}" onclick="DERAT.pickSub('${id}',this)"><span class="dr-scard-ic">${I[it.ic]||I.spray}</span><b>${it.n}</b></button>`;}).join('');}
 function rPlace(){return Object.keys(PLACES).map((id,i)=>{const p=PLACES[id],sel=state.c.place===id;
   const vis=IMG[id]?`<span class="dr-pcard-img" style="background-image:url('${IMG[id]}')"></span>`:`<span class="dr-pcard-svg">${I.biz}</span>`;
   return `<button class="dr-pcard${sel?' sel':''}" data-grp="place" data-id="${id}" style="animation-delay:${i*40}ms" onclick="DERAT.pickPlace('${id}',this)">${vis}<span class="dr-pcard-bd"><b>${p.n}</b><span>${p.d}</span></span></button>`;}).join('');}
@@ -1115,17 +1114,22 @@ function rIne(){const c=state.c,a=ANIMALS[c.ineSize],p=Math.round(c.ineSize/(ANI
   </div>`;}
 function rLocation(){const c=state.c,t=travelForPsc(c.psc);return `<div class="dr-location">
   <div class="dr-lf-r"><input class="dr-ine-txt" placeholder="Mesto / obec" value="${attr(c.loc)}" oninput="DERAT.locationField('loc',this.value)"><input class="dr-ine-txt" placeholder="PSČ" inputmode="numeric" maxlength="6" value="${attr(c.psc)}" oninput="DERAT.locationField('psc',this.value)"></div>
-  <div id="dr-trip" class="dr-trip${c.psc&&!t.known?' warn':''}">${t.label}${t.known&&t.km?`<small>Odhad dopravy bez DPH: ${eur(t.price)}</small>`:''}</div>
+  <div id="dr-trip" class="dr-trip${c.psc&&!t.known?' warn':''}">${t.label}</div>
   <div class="dr-visit-grid">${Object.keys(VISITS).map(id=>{const v=VISITS[id],sel=c.visit===id;return `<button class="dr-visit${sel?' sel':''}" data-grp="visit" data-id="${id}" onclick="DERAT.pickVisit('${id}',this)"><b>${v.n}</b><span>${v.d}</span></button>`;}).join('')}</div>
-  <div class="dr-method-note">Kilometre sú orientačný odhad podľa PSČ z Bratislavy, počítaný tam aj späť. Presná doprava sa potvrdí podľa adresy.</div>
+  <div class="dr-method-note">PSČ používame iba na orientačný výpočet dojazdu. Konečný doplatok potvrdíme podľa presnej adresy.</div>
 </div>`;}
 function rAddons(){const set=new Set(state.c.addons);return `<div class="dr-addon-grid">`+Object.keys(ADDONS).map(id=>{const a=ADDONS[id],sel=set.has(id);
   return `<button class="dr-addon${sel?' sel':''}" data-grp="addon" data-id="${id}" onclick="DERAT.addon('${id}',this)"><b>${a.n}</b><span>+${eur(a.p)} bez DPH</span></button>`;}).join('')+`</div><textarea class="dr-addon-custom" placeholder="Iná požiadavka alebo služba..." oninput="DERAT.addonText(this.value)">${esc(state.c.addonText)}</textarea>`;}
-function rResult(){const r=compute(),c=state.c;
-  return `<div class="dr-result${state.unlocked?'':' locked'}">
-    <div class="lbl">Orientačná cena bez DPH ${ihint('Odhad vychádza z cenníka, rozlohy alebo objemu, PSČ, termínu a zvoleného materiálu. Presná cena sa potvrdí podľa adresy a stavu priestoru.')}</div>
-    <div class="price"><span class="from">od</span><span id="dr-price" data-t="${r.total}">${eur(r.total)}</span></div>
-    <div class="rng">Odhad ${eur(r.low)} – ${eur(r.high)} · s DPH približne ${eur(r.vat)} ${ihint('DPH 23 % sa pripočítava k výslednej cene bez DPH.')}</div>
+function rResult(){const r=compute(),c=state.c,gross=state.priceGross;
+  const shown=gross?r.vat:r.total,shownLow=gross?Math.round(r.low*(1+VAT)):r.low,shownHigh=gross?Math.round(r.high*(1+VAT)):r.high;
+  return `<div class="dr-result">
+    <div class="dr-vat-switch" role="group" aria-label="Zobrazenie ceny">
+      <button class="${gross?'':'on'}" onclick="DERAT.setVat(false)">Bez DPH</button>
+      <button class="${gross?'on':''}" onclick="DERAT.setVat(true)">S DPH</button>
+    </div>
+    <div class="lbl" id="dr-price-label">Orientačná cena ${gross?'s DPH':'bez DPH'}</div>
+    <div class="price"><span class="from">od</span><span id="dr-price" data-t="${shown}">${eur(shown)}</span></div>
+    <div class="rng" id="dr-price-range">${priceRange(shownLow,shownHigh,gross)}</div>
     ${r.multi?`<div class="dr-plan-note">${c.service==='deratizacia'
       ?'Hlodavce sa po prvom zásahu môžu vracať k nástrahám — preto je súčasťou aj <b>kontrolný (opakovaný) zásah</b> a doplnenie nástrah. Cena to už zahŕňa.'
       :'Tohto škodcu zvyčajne <b>nejde odstrániť na jediný raz</b> — z vajíčok a lariev sa liahnu nové jedince, preto patrí k zásahu aj <b>opakované ošetrenie</b>. Cena ho už zahŕňa.'} ${ihint(c.service==='deratizacia'?'Po položení nástrah sa stav po pár dňoch kontroluje a nástrahy sa dopĺňajú, kým aktivita úplne neustane.':'Postrek nezničí vajíčka — z nich sa po čase vyliahnu ďalšie jedince, preto sa zásah o 1–2 týždne zopakuje.')}</div>`:''}
@@ -1139,7 +1143,7 @@ function rResult(){const r=compute(),c=state.c;
       ${r.sub.pricing!=='fixed'?`<div class="dr-bd-r"><span>Miera zamorenia</span><b>${r.sev.n}</b></div>`:''}
       <div class="dr-bd-r"><span>Trvanie zásahu na mieste</span><b>~ ${r.dur}</b></div>
       ${r.surcharge?`<div class="dr-bd-r"><span>${r.visit.n} · príplatok ${Math.round(r.visit.pct*100)} %</span><b>+${eur(r.surcharge)}</b></div>`:''}
-      ${r.travel.known?`<div class="dr-bd-r"><span>Doprava${r.travel.km?' · '+r.travel.km+' km jedným smerom':' · Bratislava'}</span><b>${r.travel.price?eur(r.travel.price):'zahrnutá'}</b></div>`:`<div class="dr-bd-r subtle"><span>Doprava</span><b>nie je započítaná – chýba PSČ</b></div>`}
+      ${r.travel.known?`<div class="dr-bd-r"><span>Dojazd</span><b>${r.travel.km?'orientačne započítaný':'Bratislava · zahrnutý'}</b></div>`:`<div class="dr-bd-r subtle"><span>Dojazd</span><b>potvrdíme podľa adresy</b></div>`}
       ${r.pricedAdds?`<div class="dr-bd-r"><span>Doplnky</span><b>+${eur(r.pricedAdds)}</b></div>`:''}
       ${r.customAdds.length?`<div class="dr-bd-r subtle"><span>${r.customAdds.join(', ')}</span><b>cena dohodou</b></div>`:''}
       <div class="dr-bd-r tot"><span>Spolu bez DPH</span><b>${eur(r.total)}</b></div>
@@ -1147,14 +1151,13 @@ function rResult(){const r=compute(),c=state.c;
       </div>
     </details>
     <div class="dr-incl"><span>✓ Obhliadka</span><span>✓ Certifikované prípravky</span><span>✓ Poradenstvo</span>${r.multi?'<span>✓ Opakované ošetrenie</span>':''}<span>✓ Záruka výsledku</span></div>
-    <div class="dr-lock"><span class="dr-lock-ic"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5Zm-3 8V7a3 3 0 0 1 6 0v3H9Z"/></svg></span><b>Cena je pripravená 🎉</b><span>Zadajte <b>meno a telefón</b> nižšie a cena sa hneď odomkne.</span></div>
     <div class="dr-disc">Ide o orientačný odhad. Konečnú cenu potvrdíme po obhliadke alebo telefonicky podľa stavu priestoru a dostupnosti.</div>
   </div>
   <div class="dr-lead">
     <div class="dr-lead-h"><span class="ic"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z"/></svg></span><span><b>Zadajte kontakt — cenu hneď uvidíte aj pošleme</b><small>Ozveme sa s presnou cenou a termínom.</small></span></div>
     <div class="dr-lf">
-      <input id="dr-name" placeholder="Meno a priezvisko *" oninput="DERAT.checkLock()">
-      <div class="dr-lf-r"><input id="dr-phone" placeholder="Telefón *" oninput="DERAT.checkLock()"><input id="dr-email" placeholder="E-mail"></div>
+      <input id="dr-name" placeholder="Meno a priezvisko *">
+      <div class="dr-lf-r"><input id="dr-phone" placeholder="Telefón *"><input id="dr-email" placeholder="E-mail"></div>
       <div class="dr-contact-location">Miesto zásahu: <b>${esc(c.loc)||'neuvedené'}${c.psc?' · '+esc(c.psc):''}</b><br>${r.travel.label}</div>
       <details class="dr-optional">
         <summary>Ďalšie údaje a fotka (nepovinné)</summary>
@@ -1178,7 +1181,7 @@ function rResult(){const r=compute(),c=state.c;
   </div>`;}
 function stepInner(){const k=flow()[state.step];
   if(k==='service')return '<div class="dr-rows">'+rService()+'</div>';
-  if(k==='sub')return info(SERVICES[state.c.service].info)+'<div class="dr-grid tri">'+rSub()+'</div>'+(state.c.sub==='ine'?rIne():'');
+  if(k==='sub')return info(SERVICES[state.c.service].info)+'<div class="dr-grid tri">'+rSub()+'</div><div id="dr-ine-wrap">'+(state.c.sub==='ine'?rIne():'')+'</div>';
   if(k==='place')return '<div class="dr-grid">'+rPlace()+'</div>';
   if(k==='area')return info(unit()==='m³'?'<b>Objem v m³</b> je hlavný údaj pre dezinfekciu. Ak poznáte iba podlahovú plochu, orientačne ju vynásobte výškou miestnosti 2,6 m.':'<b>Rozloha v m²</b> je hlavný údaj výpočtu. Nemusíte ju vedieť úplne presne — technik ju spresní pri obhliadke.')+rArea();
   if(k==='severity')return info('Stačí <b>odhad miery zamorenia</b> — pomôže nám určiť náročnosť a cenu zásahu. Pri silnejšom zamorení (a pri škodcoch ako ploštice či šváby) je súčasťou aj potrebné opakované ošetrenie.')+rSeverity();
@@ -1196,13 +1199,12 @@ function render(keep){
   <div class="dr-chead"><b>Cenová kalkulačka</b><button class="dr-x" onclick="DERAT.closeCalc()">×</button></div>
   <div class="dr-prog"><button class="dr-back" onclick="DERAT.prev()" ${first?'disabled':''}>‹</button><div class="dr-prog-track"><div class="dr-prog-fill" style="width:${prog}%"></div></div><div class="dr-prog-n">${state.step+1}/${n}</div></div>
   <div class="dr-body">
-    ${last?'':`<div class="dr-hero" data-img="${((k==='place')?IMG[state.c.place]:IMG[state.c.service])||''}">${hero()}</div>`}
     <h3 class="dr-q">${title}</h3><div class="dr-q-sub">${q[1]}</div>
     <div class="dr-stepbox" style="animation:drStepIn .42s cubic-bezier(.2,.85,.3,1)">${stepInner()}</div>
     <div class="dr-more" aria-hidden="true"><span>ďalej nižšie ▾</span></div>
   </div>
   <div class="dr-actions">
-    ${state.step>=1&&!last?`<div class="dr-live-price"><small>od</small><b>${eur(r.total)}</b></div>`:''}
+    ${state.step>=1&&!last?`<div class="dr-live-price"><small>bez DPH od</small><b>${eur(r.total)}</b></div>`:''}
     <button class="dr-next" onclick="DERAT.next()">${last?'↺ Začať odznova':'Pokračovať ›'}</button>
   </div>`;
   const nb=calc.querySelector('.dr-body');if(nb){nb.scrollTop=sc;nb.onscroll=()=>scrollHint(nb);requestAnimationFrame(()=>scrollHint(nb));}
@@ -1211,8 +1213,8 @@ function render(keep){
 function scrollHint(b){const rest=b.scrollHeight-b.clientHeight-b.scrollTop;
   b.classList.toggle('scrollable',b.scrollHeight>b.clientHeight+8);
   b.classList.toggle('atbottom',rest<26);}
-function countUp(){const el=$('dr-price');if(!el)return;const t=+el.dataset.t,t0=performance.now(),dur=1100;
-  (function tick(now){const p=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-p,4),v=Math.round(t*e);el.textContent=v.toLocaleString('sk-SK')+' €';
+function countUp(){const el=$('dr-price');if(!el)return;const token=++state.priceAnim,t=+el.dataset.t,t0=performance.now(),dur=1100;
+  (function tick(now){if(token!==state.priceAnim)return;const p=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-p,4),v=Math.round(t*e);el.textContent=v.toLocaleString('sk-SK')+' €';
     if(p<1)requestAnimationFrame(tick);else{el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');}})(t0);}
 
 /* =========================================================
@@ -1229,11 +1231,11 @@ window.DERAT={
   open(){state.open=true;chat.classList.add('show');chat.setAttribute('aria-hidden','false');$('derat-bubble').classList.add('open');this.hideTeaser();
     if(!msgs.dataset.i){msgs.dataset.i='1';botType(WELCOME,()=>{const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('reveal');});}
     else{const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('reveal');}},
-  reset(){if(chat.classList.contains('calc'))this.closeCalc();msgs.innerHTML='';msgs.dataset.i='1';state.unlocked=false;
+  reset(){if(chat.classList.contains('calc'))this.closeCalc();msgs.innerHTML='';msgs.dataset.i='1';
     const ch=document.querySelector('.dr-chips');if(ch)ch.classList.remove('reveal','gone');
     botType(WELCOME,()=>{if(ch)ch.classList.add('reveal');});},
   close(){state.open=false;chat.classList.remove('show','calc');chat.setAttribute('aria-hidden','true');$('derat-bubble').classList.remove('open');},
-  openCalc(){this.open();chat.classList.add('calc');state.unlocked=false;render();},
+  openCalc(){this.open();chat.classList.add('calc');render();},
   closeCalc(){chat.classList.remove('calc');},
   _hideChips(){const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('gone');},
   submit(e){if(e&&e.preventDefault)e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';add(esc(v),'me');this._hideChips();bot(reply(v));},
@@ -1250,22 +1252,22 @@ window.DERAT={
     tb.style.left=x+'px';tb.style.top=y+'px';},
   _markOne(grp,el){document.querySelectorAll('.dr-body [data-grp="'+grp+'"]').forEach(b=>b.classList.toggle('sel',b===el));},
   _livePrice(){const lp=document.querySelector('.dr-live-price b');if(lp){lp.textContent=eur(compute().total);lp.classList.remove('bump');void lp.offsetWidth;lp.classList.add('bump');}},
-  _hero(){const h=calc.querySelector('.dr-hero');if(!h)return;
-    const ni=(flow()[state.step]==='place')?IMG[state.c.place]:IMG[state.c.service];
-    if((h.getAttribute('data-img')||'')!==(ni||'')){h.setAttribute('data-img',ni||'');h.innerHTML=hero();}},
-  pickService(id,el){state.c.service=id;state.c.sub=Object.keys(SERVICES[id].subs)[0];state.c.area=defaultQty(state.c.place,id);this._markOne('service',el);this._hero();this._livePrice();},
-  pickSub(id,el){const was=state.c.sub;state.c.sub=id;
-    if(id==='ine'||was==='ine'){render(true);}else{this._markOne('sub',el);this._hero();this._livePrice();}},
-  pickPlace(id,el){state.c.place=id;state.c.area=defaultQty(id,state.c.service);this._markOne('place',el);this._hero();this._livePrice();},
+  pickService(id,el){state.c.service=id;state.c.sub=Object.keys(SERVICES[id].subs)[0];state.c.area=defaultQty(state.c.place,id);this._markOne('service',el);this._livePrice();},
+  pickSub(id,el){state.c.sub=id;this._markOne('sub',el);const wrap=$('dr-ine-wrap');if(wrap)wrap.innerHTML=id==='ine'?rIne():'';this._livePrice();},
+  pickPlace(id,el){state.c.place=id;state.c.area=defaultQty(id,state.c.service);this._markOne('place',el);this._livePrice();},
   pickSeverity(id,el){state.c.severity=id;this._markOne('severity',el);this._livePrice();},
-  pickVisit(id,el){state.c.visit=id;this._markOne('visit',el);this._livePrice();const trip=$('dr-trip');if(trip){const t=travelForPsc(state.c.psc);trip.className='dr-trip'+(state.c.psc&&!t.known?' warn':'');trip.innerHTML=t.label+(t.known&&t.km?'<small>Odhad dopravy bez DPH: '+eur(t.price)+'</small>':'');}},
-  locationField(k,v){state.c[k]=v;const trip=$('dr-trip');if(trip&&k==='psc'){const t=travelForPsc(v);trip.className='dr-trip'+(v&&!t.known?' warn':'');trip.innerHTML=t.label+(t.known&&t.km?'<small>Odhad dopravy bez DPH: '+eur(t.price)+'</small>':'');}this._livePrice();},
+  pickVisit(id,el){state.c.visit=id;this._markOne('visit',el);this._livePrice();},
+  locationField(k,v){state.c[k]=v;const trip=$('dr-trip');if(trip&&k==='psc'){const t=travelForPsc(v);trip.className='dr-trip'+(v&&!t.known?' warn':'');trip.textContent=t.label;}this._livePrice();},
   ineText(v){state.c.ineText=v;this._livePrice();},
   ineSize(v){state.c.ineSize=v;const a=ANIMALS[v],e=$('dr-size-emoji'),l=$('dr-size-lbl'),s=document.querySelector('.dr-size .dr-slider');
     if(e){e.innerHTML=a.e;e.style.transform='scale('+(1+v*0.08)+')';}if(l)l.innerHTML='<b>'+a.n+'</b><span>'+a.sz+'</span>';
     if(s)s.style.setProperty('--p',Math.round(v/(ANIMALS.length-1)*100)+'%');this._livePrice();},
-  checkLock(){if(state.unlocked)return;const n=$('dr-name'),p=$('dr-phone');
-    if(n&&p&&n.value.trim()&&p.value.replace(/\s/g,'').length>=6){state.unlocked=true;const card=document.querySelector('.dr-result');if(card)card.classList.remove('locked');}},
+  setVat(gross){state.priceAnim++;state.priceGross=!!gross;const r=compute(),price=gross?r.vat:r.total,low=gross?Math.round(r.low*(1+VAT)):r.low,high=gross?Math.round(r.high*(1+VAT)):r.high;
+    document.querySelectorAll('.dr-vat-switch button').forEach((b,i)=>b.classList.toggle('on',i===(gross?1:0)));
+    const label=$('dr-price-label'),el=$('dr-price'),range=$('dr-price-range');
+    if(label)label.textContent='Orientačná cena '+(gross?'s DPH':'bez DPH');
+    if(el){el.dataset.t=price;el.textContent=eur(price);el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');}
+    if(range)range.textContent=priceRange(low,high,gross);},
   checkArea(){this.locationField('psc',state.c.psc);},
   photoPick(e){const f=e.target.files&&e.target.files[0];const box=$('dr-photo-prev');if(!f){state.photo=null;if(box)box.innerHTML='';return;}
     state.photo=f.name;const rd=new FileReader();rd.onload=()=>{if(box)box.innerHTML='<img src="'+rd.result+'" alt=""><span>'+f.name+'</span><button type="button" onclick="DERAT.photoClear()">×</button>';};rd.readAsDataURL(f);},
@@ -1273,7 +1275,7 @@ window.DERAT={
   area(v){state.c.area=v;const u=unit(),el=$('dr-av');if(el){el.innerHTML=v+' <small>'+u+'</small>';const s=document.querySelector('.dr-slider');if(s){const vol=u==='m³',min=vol?20:10,max=vol?2000:1000;s.style.setProperty('--p',Math.round((v-min)/(max-min)*100)+'%');s.value=v;}document.querySelectorAll('.dr-quick button').forEach(b=>b.classList.toggle('on',b.textContent.trim()===v+' '+u));this._livePrice();}},
   addon(id,el){const a=state.c.addons,i=a.indexOf(id);i>=0?a.splice(i,1):a.push(id);if(el)el.classList.toggle('sel',i<0);this._livePrice();},
   addonText(v){state.c.addonText=v;},
-  next(){state.step<flow().length-1?state.step++:(state.step=0,state.unlocked=false);render(false);},
+  next(){state.step<flow().length-1?state.step++:(state.step=0);render(false);},
   prev(){if(state.step>0)state.step--;render(false);},
   _payload(){const r=compute(),c=state.c,p={
     name:$('dr-name').value.trim(),phone:$('dr-phone').value.trim(),email:$('dr-email').value.trim(),
