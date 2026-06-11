@@ -14,13 +14,11 @@ Dizajn a UX sú inšpirované konfigurátorom **„Môj plot"**, prefarbené do 
   1. *Akú službu potrebujete?* – deratizácia / dezinsekcia / dezinfekcia (karty s **fotkami**)
   2. *Čoho presne sa potrebujete zbaviť?* – konkrétny škodca + info box s vysvetlením
   3. *Kde máme zasiahnuť?* – byt / dom / prevádzka / HoReCa / sklad / exteriér (karty s **fotkami**)
-  4. *Koľko izieb má byt?* – pomocný výber; rozloha zostáva dôležitejšia
-  5. *Aká je veľkosť priestoru?* – m² alebo pri dezinfekcii m³
-  6. *Aký materiál použiť?* – nástrahy a pasce z cenníka, ak ide o hlodavce
-  7. *Ako veľký je problém?* – mierne / stredné / silné
-  8. *Kde a kedy?* – PSČ, doprava 0,40 €/km, víkend a sviatok
-  9. *Chcete doplnkové služby?* – protokol alebo celoročný monitoring
-  10. *Vaša orientačná cena* – rozpis bez DPH, s DPH a formulár dopytu
+  4. *Aká je veľkosť priestoru?* – rozhodujúca rozloha v m² alebo pri dezinfekcii objem v m³
+  5. *Ako veľký je problém?* – mierne / stredné / silné; podľa toho sa automaticky zvolí materiál
+  6. *Kde a kedy?* – PSČ, doprava 0,40 €/km, víkend a sviatok
+  7. *Chcete doplnkové služby?* – šesť orientačne nacenených možností + vlastná požiadavka
+  8. *Vaša orientačná cena* – kompaktný rozpis bez DPH, s DPH a formulár dopytu
 - 📷 **Reálne fotky** – fotka služby/priestoru v hero náhľade (jemný Ken Burns zoom),
   fotky na výberových kartách. Zdroje: oficiálne fotky derat.sk + Wikimedia Commons (voľná licencia).
 - 💶 **Živá cena** – počas vypĺňania vidíte priebežnú orientačnú sumu; na konci animovaný súčet + rozpis.
@@ -54,7 +52,8 @@ const CONFIG={
 ```
 - **Ceny** sú orientačné a všetky vstupy z cenníka sú bez DPH. Minimum výjazdu a práce je
   `60 €`, doprava mimo Bratislavy `0,40 €/km`, víkend `+20 %` a sviatok `+50 %`.
-- Ploštice používajú cenníkové minimá podľa izieb, ale väčšia rozloha môže výsledok zvýšiť.
+- Ploštice sa počítajú podľa rozlohy; rodinný dom má zachované cenníkové minimum `200 €`.
+- Pri hlodavcoch kalkulačka sama vyberie vhodný materiál podľa škodcu a miery zamorenia.
 - PSČ určuje orientačnú vzdialenosť z Bratislavy tam aj späť. Presná doprava sa potvrdí
   podľa úplnej adresy.
 - Dopyt obsahuje cenu bez DPH, rozsah odhadu, cenu s DPH, dopravu, príplatok aj materiál.
