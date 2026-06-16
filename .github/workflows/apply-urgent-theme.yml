@@ -1,0 +1,197 @@
+name: Apply DERAT urgent theme
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-urgent-theme.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply-theme:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch index.html with urgent visual theme
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          html = path.read_text(encoding='utf-8')
+          marker = '/* === DERAT URGENT THEME v3 === */'
+          if marker in html:
+              print('Urgent theme already applied.')
+              raise SystemExit(0)
+
+          css = r'''
+
+/* === DERAT URGENT THEME v3 === */
+:root{
+  --g:#4f7f13;--g-dk:#101913;--g-700:#263b12;--g-lt:#78a928;--g-50:#f5f0e6;--g-100:#e7dac4;
+  --red:#dc2626;--red-dk:#991b1b;--red-50:#fff1ee;--red-100:#fecaca;
+  --accent:#eab308;--accent-dk:#b56b09;--accent-50:#fff7d6;
+  --ink:#17130d;--muted:#6d6557;--line:#e3d7c3;--paper:#fffaf1;--bg:#f5f0e6;
+  --sh:0 24px 70px rgba(17,17,17,.28);--r:20px;
+}
+body{background:#f5f0e6;color:var(--ink)}
+.demo{background:
+  radial-gradient(circle at 12% 12%,rgba(234,179,8,.16),transparent 32%),
+  radial-gradient(circle at 84% 0,rgba(220,38,38,.10),transparent 34%),
+  linear-gradient(180deg,#1a1711 0%,#2a2114 36%,#f5f0e6 36%,#eee1cc 100%)}
+.guide{background:linear-gradient(155deg,#fffaf1,#fff);border-color:rgba(234,179,8,.28);box-shadow:0 30px 80px rgba(17,17,17,.18)}
+.guide h1,.gh2,.guide .lead b,.gstep b,.guide .note b,.gnote p,.gnote li b{color:#17130d}
+.gstep{background:linear-gradient(135deg,#fffaf1,#fff4df);border-color:#ead7aa;box-shadow:0 10px 24px rgba(17,17,17,.06)}
+.gnum,.gicon,.gico-c{background:linear-gradient(135deg,#eab308,#dc2626 55%,#17130d);box-shadow:0 10px 22px rgba(220,38,38,.20)}
+.gnote{background:#fff8e8;border-color:#eed498;border-left-color:#dc2626;color:#4d3a1e}
+.dr-point-t{background:#17130d;box-shadow:0 14px 32px rgba(17,17,17,.34)}
+.dr-point-a{color:#dc2626}
+
+@keyframes drPulse{0%,100%{box-shadow:0 18px 40px rgba(17,17,17,.34),0 0 0 0 rgba(234,179,8,.38)}50%{box-shadow:0 18px 40px rgba(17,17,17,.34),0 0 0 16px rgba(234,179,8,0)}}
+#derat-bubble{background:
+  radial-gradient(circle at 30% 20%,#ffe082,#eab308 30%,#dc2626 62%,#17130d 100%)!important;
+  box-shadow:0 18px 42px rgba(17,17,17,.40),0 0 0 6px rgba(255,250,241,.82)!important}
+#derat-bubble:hover{transform:translateY(-3px) scale(1.07)}
+.dr-mouse circle{fill:#17130d}
+#dr-teaser{background:linear-gradient(155deg,#fffaf1,#fff);border-color:#ead7aa;box-shadow:0 24px 58px rgba(17,17,17,.24)}
+#dr-teaser b{color:#17130d}
+#dr-teaser span{color:#6d5740}
+.dr-teaser-x{background:#fff0d0;color:#7c2d12}
+
+#derat-chat{border-color:rgba(234,179,8,.35);background:#fffaf1;box-shadow:0 28px 80px rgba(17,17,17,.35)}
+.dr-head{position:relative;isolation:isolate;background:linear-gradient(115deg,#10100d 0%,#20170e 35%,#5f160f 68%,#d97706 100%)!important;box-shadow:inset 0 -1px 0 rgba(255,255,255,.12)}
+.dr-head::before{content:"";position:absolute;inset:-65% -25%;z-index:-1;background:
+  radial-gradient(circle at 16% 30%,rgba(234,179,8,.46),transparent 20%),
+  radial-gradient(circle at 78% 18%,rgba(220,38,38,.34),transparent 23%),
+  radial-gradient(circle at 58% 80%,rgba(120,169,40,.22),transparent 22%);
+  animation:drHeaderGlow 7s ease-in-out infinite alternate}
+.dr-head::after{display:block!important;content:"";position:absolute;left:0;right:0;bottom:0;height:3px;z-index:2;background:linear-gradient(90deg,#dc2626,#eab308,#fef3c7,#eab308,#dc2626);background-size:260% 100%;animation:drHeaderLine 3.2s ease-in-out infinite}
+@keyframes drHeaderGlow{0%{transform:translateX(-4%) rotate(0deg);opacity:.75}100%{transform:translateX(5%) rotate(8deg);opacity:1}}
+@keyframes drHeaderLine{0%{background-position:0% 0}100%{background-position:100% 0}}
+.dr-head-logo{background:linear-gradient(135deg,#eab308,#dc2626 58%,#17130d)!important;box-shadow:0 8px 18px rgba(0,0,0,.35),inset 0 0 0 2px rgba(255,255,255,.28),0 0 0 4px rgba(234,179,8,.18)!important}
+.dr-hbtn{background:rgba(255,250,241,.92);color:#17130d}
+.dr-hbtn:hover{background:#fff7d6;transform:translateY(-1px)}
+.dr-hbtn.ghost{background:rgba(255,255,255,.13);color:#fff}
+.dr-hbtn.ghost:hover,.dr-hbtn.ghost:active{background:#dc2626;color:#fff}
+.dr-live{background:#eab308;box-shadow:0 0 10px rgba(234,179,8,.95)}
+@keyframes drLive{0%,100%{box-shadow:0 0 0 0 rgba(234,179,8,.75),0 0 8px rgba(234,179,8,.95)}50%{box-shadow:0 0 0 6px rgba(234,179,8,0),0 0 8px rgba(234,179,8,.95)}}
+
+.dr-top{background:#fffaf1;border-bottom-color:#ead7aa}
+.dr-cta{border-color:#eab308;background:linear-gradient(135deg,#fff7d6,#fffaf1 48%,#ffe3b0);box-shadow:0 14px 30px rgba(234,179,8,.18)}
+.dr-cta:hover{box-shadow:0 20px 42px rgba(217,119,6,.24);transform:translateY(-2px)}
+.dr-cta-ic{background:linear-gradient(135deg,#dc2626,#eab308)!important;box-shadow:0 10px 22px rgba(220,38,38,.28)!important}
+.dr-cta:hover .dr-cta-ic,.dr-cta:active .dr-cta-ic{background:linear-gradient(135deg,#17130d,#dc2626 65%,#eab308)!important}
+.dr-cta b,.dr-cta .ar{color:#17130d}
+.dr-cta:hover .ar{color:#dc2626}
+
+.dr-msgs{background:
+  radial-gradient(circle at 12% 0%,rgba(234,179,8,.14),transparent 34%),
+  radial-gradient(circle at 100% 80%,rgba(220,38,38,.08),transparent 36%),
+  linear-gradient(180deg,#fffaf1,#f4ead8)!important}
+.dr-b.bot{background:linear-gradient(145deg,#fff,#fff8e8)!important;border:1px solid #ecd7aa!important;border-left:4px solid #eab308!important;box-shadow:0 10px 24px rgba(17,17,17,.08)}
+.dr-b.bot b{color:#b45309}
+.dr-b.me{background:linear-gradient(135deg,#17130d,#5f160f 65%,#dc2626)!important;box-shadow:0 10px 24px rgba(17,17,17,.22)}
+.dr-av{background:linear-gradient(135deg,#eab308,#dc2626 70%,#17130d)!important}
+.dr-cur{background:#dc2626}
+.dr-typing span{background:linear-gradient(180deg,#facc15,#dc2626)!important}
+.dr-beam{height:3px;background:linear-gradient(90deg,transparent,#dc2626 18%,#facc15 50%,#dc2626 82%,transparent);filter:drop-shadow(0 0 8px rgba(250,204,21,.9))}
+
+.dr-chips{background:#f4ead8}
+.dr-chip{border-color:#ead7aa;color:#17130d;background:linear-gradient(145deg,#fffaf1,#fff0cf)!important;box-shadow:0 8px 18px rgba(17,17,17,.08)}
+.dr-chip:hover{background-size:0!important;background:linear-gradient(135deg,#17130d,#dc2626 68%,#eab308)!important;color:#fff;border-color:#eab308;box-shadow:0 12px 26px rgba(220,38,38,.22)}
+.dr-inbar{background:#fffaf1;border-color:#ead7aa;box-shadow:0 12px 24px rgba(17,17,17,.08)}
+.dr-inbar input{background:#fff8e8;border-color:#ead7aa;color:#17130d}
+.dr-inbar input:focus{border-color:#eab308;box-shadow:0 0 0 3px rgba(234,179,8,.18)}
+.dr-inbar button,.dr-submit,.dr-next{background:linear-gradient(135deg,#17130d,#dc2626 65%,#eab308)!important;box-shadow:0 12px 24px rgba(220,38,38,.20)!important}
+.dr-next:hover,.dr-submit:hover{filter:brightness(1.06);box-shadow:0 17px 34px rgba(220,38,38,.30)!important}
+
+.dr-cbar{background:linear-gradient(180deg,#fffaf1,#ebdcc4);border-top-color:#ead7aa}
+.dr-c{border-color:#ead7aa;background:#fffaf1;box-shadow:0 8px 18px rgba(17,17,17,.07)}
+.dr-c:hover{background:#fff3cf;border-color:#eab308;box-shadow:0 14px 28px rgba(217,119,6,.18)}
+.dr-c-ic{background:#fff0cf}
+.dr-c-ic svg{fill:#b45309}
+.dr-c:hover .dr-c-ic{background:linear-gradient(135deg,#dc2626,#eab308)}
+.dr-c-lbl{color:#17130d}
+
+.dr-calc{background:linear-gradient(180deg,#fffaf1,#f4ead8)!important}
+.dr-chead{background:linear-gradient(180deg,#fffaf1,#fff4df);border-bottom:1px solid #ead7aa}
+.dr-chead b,.dr-q,.dr-area-v,.dr-live-price b,.dr-room b,.dr-visit b{color:#17130d!important}
+.dr-q-sub,.dr-method-note,.dr-scale,.dr-opt-m span,.dr-room span,.dr-visit span{color:#6d6557}
+.dr-x,.dr-back{background:#fffaf1;border-color:#ead7aa;color:#17130d}
+.dr-x:hover,.dr-back:hover{background:#fff0cf;border-color:#eab308;color:#dc2626}
+.dr-prog-track{background:#ead7aa}
+.dr-prog-fill{background:linear-gradient(90deg,#dc2626,#eab308,#fef3c7)!important;box-shadow:0 0 12px rgba(234,179,8,.62)}
+.dr-prog-fill::after{background:#fef3c7;box-shadow:0 0 12px rgba(250,204,21,.95)}
+.dr-prog-n{color:#b45309!important}
+.dr-body{background:linear-gradient(180deg,#fffaf1,#f4ead8)}
+.dr-first-min,.dr-info,.dr-trip{background:linear-gradient(135deg,#fff7d6,#fffaf1)!important;border-color:#ead7aa!important;color:#17130d!important}
+.dr-info .i{background:#dc2626;color:#fff}
+.dr-info-h{color:#17130d}
+.dr-info-txt p{color:#4d3a1e}
+
+.dr-rowcard,.dr-pcard,.dr-scard,.dr-opt,.dr-addon,.dr-room,.dr-visit,.dr-area,.dr-lead,.dr-ine,.dr-photo-prev{background:#fffaf1!important;border-color:#e7d8bd!important;box-shadow:0 8px 18px rgba(17,17,17,.055)}
+.dr-rowcard:hover,.dr-pcard:hover,.dr-scard:hover,.dr-opt:hover,.dr-addon:hover,.dr-room:hover,.dr-visit:hover{border-color:#eab308!important;box-shadow:0 14px 30px rgba(217,119,6,.16)!important;transform:translateY(-2px)}
+.dr-rowcard.sel,.dr-pcard.sel,.dr-scard.sel,.dr-opt.sel,.dr-addon.sel,.dr-room.sel,.dr-visit.sel{background:linear-gradient(145deg,#fff7d6,#fffaf1)!important;border-color:#dc2626!important;box-shadow:0 0 0 2px rgba(220,38,38,.16),0 14px 30px rgba(217,119,6,.17)!important}
+.dr-rowcard.sel:after,.dr-pcard.sel:after,.dr-scard.sel:after,.dr-addon.sel:after{background:linear-gradient(135deg,#dc2626,#eab308);color:#fff;box-shadow:0 4px 10px rgba(17,17,17,.22)}
+.dr-rowcard-bd b,.dr-pcard-bd b,.dr-scard b,.dr-opt-m b,.dr-addon b{color:#17130d!important}
+.dr-rowcard-pr,.dr-rowcard-pr small,.dr-pcard-bd .pr,.dr-opt-p,.dr-addon span,.dr-result .price .from{color:#b45309!important}
+.dr-pcard-img,.dr-rowcard-img{filter:saturate(1.08) contrast(1.02)}
+.dr-pcard-svg{background:linear-gradient(135deg,#fff7d6,#ead7aa)}
+
+.dr-slider{background:linear-gradient(90deg,#dc2626 var(--p,30%),#ead7aa var(--p,30%))!important}
+.dr-slider::-webkit-slider-thumb{background:#eab308;border-color:#fffaf1;box-shadow:0 4px 12px rgba(217,119,6,.48)}
+.dr-slider::-moz-range-thumb{background:#eab308;border-color:#fffaf1}
+.dr-quick button{background:#fffaf1;border-color:#ead7aa;color:#17130d}
+.dr-quick button:hover,.dr-quick button.on{background:#fff0cf;border-color:#eab308;color:#7c2d12}
+.dr-rb{border-color:#d3b884}
+.dr-opt.sel .dr-rb{border-color:#dc2626}
+.dr-opt.sel .dr-rb:after{background:#dc2626}
+.dr-opt.sel .dr-rb.sq:after{border-color:#dc2626;background:none}
+.dr-sev-meter i{background:#e7d8bd}.dr-sev-meter i.on:nth-child(1){background:#eab308}.dr-sev-meter i.on:nth-child(2){background:#f97316}.dr-sev-meter i.on:nth-child(3){background:#dc2626}
+
+.dr-result{background:
+  radial-gradient(circle at 94% 0%,rgba(234,179,8,.24),transparent 34%),
+  linear-gradient(145deg,#17130d,#2b1b10 62%,#fffaf1 62%,#fff7d6)!important;
+  border-color:#eab308!important;box-shadow:0 18px 42px rgba(17,17,17,.18)!important}
+.dr-result .lbl{color:#facc15!important}.dr-result .price{color:#fff!important;text-shadow:0 2px 10px rgba(0,0,0,.28)}
+.dr-result .rng{color:#fff3c4!important}.dr-bd{border-color:rgba(234,179,8,.35)}
+.dr-bd-r{color:#5a4f3d}.dr-bd-r b,.dr-bd-r.tot b{color:#17130d!important}
+.dr-vat-switch{background:#ead7aa}.dr-vat-switch button.on{color:#17130d;background:#fffaf1;box-shadow:0 4px 10px rgba(17,17,17,.12)}
+.dr-breakdown summary,.dr-optional summary{color:#7c2d12!important}
+.dr-lead-h .ic{background:linear-gradient(135deg,#dc2626,#eab308)!important}
+.dr-lf input,.dr-lf textarea,.dr-sel,.dr-ine-txt,.dr-addon-custom{background:#fff8e8!important;border-color:#e7d8bd!important;color:#17130d!important}
+.dr-lf input:focus,.dr-lf textarea:focus,.dr-ine-txt:focus,.dr-addon-custom:focus{border-color:#eab308!important;box-shadow:0 0 0 3px rgba(234,179,8,.18)}
+.dr-contact-location,.dr-optional{background:#fff8e8!important;border-color:#ead7aa!important;color:#4d3a1e!important}
+.dr-trip.warn{background:#fff1ee!important;border-color:#fecaca!important;color:#991b1b!important}
+.dr-photo-b{background:#fff8e8;border-color:#eab308;color:#7c2d12}.dr-photo-b svg{fill:#dc2626}
+.dr-wabtn{background:#25d366!important;box-shadow:0 10px 22px rgba(37,211,102,.18)}
+.dr-stat.ok{background:#ecfdf5;color:#166534;border-color:#bbf7d0}.dr-stat.err{background:#fff1ee;color:#991b1b;border-color:#fecaca}
+.dr-tipbox{background:#17130d;color:#fffaf1}.dr-tipbox b{color:#facc15}
+@media(max-width:520px){.dr-head{box-shadow:0 10px 28px rgba(17,17,17,.18)}}
+/* === /DERAT URGENT THEME v3 === */
+'''
+
+          insert_before = '@media (prefers-reduced-motion: reduce)'
+          if insert_before in html:
+              html = html.replace(insert_before, css + '\n' + insert_before, 1)
+          else:
+              html = html.replace('</style>', css + '\n</style>', 1)
+
+          html = html.replace('Vpravo dole kliknite na <b>zelené tlačidlo s ikonou chatu</b>.', 'Vpravo dole kliknite na <b>výrazné tlačidlo s ikonou chatu</b>.')
+          path.write_text(html, encoding='utf-8')
+          print('Urgent theme inserted into index.html')
+          PY
+      - name: Commit theme update
+        run: |
+          if git diff --quiet index.html; then
+            echo "No index.html changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Apply urgent visual theme"
+          git push
