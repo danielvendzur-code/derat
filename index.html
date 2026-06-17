@@ -89,7 +89,7 @@ img{max-width:100%}
 @media(max-width:480px){#dr-teaser{right:16px;bottom:90px;max-width:220px}}
 
 /* ===== Okno ===== */
-#derat-chat{position:fixed;right:20px;bottom:96px;z-index:99999;width:464px;height:min(840px,calc(100vh - 104px));max-height:840px;border-radius:24px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh);display:flex;flex-direction:column;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(20px) scale(.96);transform-origin:bottom right;transition:.3s cubic-bezier(.2,.8,.2,1)}
+#derat-chat{position:fixed;right:20px;bottom:24px;z-index:99999;width:464px;height:min(1040px,calc(100vh - 44px));max-height:calc(100vh - 44px);border-radius:24px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh);display:flex;flex-direction:column;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(20px) scale(.96);transform-origin:bottom right;transition:.3s cubic-bezier(.2,.8,.2,1)}
 #derat-chat.show{opacity:1;pointer-events:auto;transform:none}
 
 /* hlavička – zarovnaná */
@@ -444,11 +444,11 @@ img{max-width:100%}
 /* ============================================================
    VIZUÁLNE OŽIVENIE + KOMPAKTNEJŠIE ROZLOŽENIE (menej scrollu)
    ============================================================ */
-:root{--accent:#c9a24a;--accent-dk:#a37c1f;--accent-50:#faf3e2;--gold-soft:#f6edd6}
+:root{--accent:#5a8a24;--accent-dk:#3f6a18;--accent-50:#eff7e2;--gold-soft:#d8ebbe}
 
 /* hlavička: teplý akcentový prúžok dole */
 .dr-head{position:relative;background:linear-gradient(122deg,#22400b,#3d6817 48%,#62a128)}
-.dr-head::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;z-index:2;background:linear-gradient(90deg,transparent,var(--accent) 16%,#ffe9b0 50%,var(--accent) 84%,transparent);box-shadow:0 0 8px rgba(201,162,74,.6);animation:drBreath 3.6s ease-in-out infinite}
+.dr-head::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;z-index:2;background:linear-gradient(90deg,transparent,#5a8a24 14%,#bdf78a 50%,#5a8a24 86%,transparent);box-shadow:0 0 10px rgba(166,240,111,.6);animation:drBreath 3.6s ease-in-out infinite}
 @keyframes drBreath{0%,100%{opacity:.4}50%{opacity:1}}
 .dr-reset svg{transition:transform .5s cubic-bezier(.3,1.4,.5,1)}
 .dr-reset:hover svg{transform:rotate(-180deg)}
@@ -497,25 +497,35 @@ img{max-width:100%}
 .dr-lf{gap:7px}
 .dr-disc{margin-top:8px}
 
-/* ===== LIGHT LUXE — biely základ + zlaté akcenty, jemné detaily ===== */
-/* krajšie bubliny */
-.dr-b{border-radius:18px;box-shadow:0 6px 18px rgba(31,40,18,.08)}
-.dr-b.bot{background:linear-gradient(180deg,#ffffff,#f6f9f0);border:1px solid #e7ede0;border-left:3px solid var(--accent);border-bottom-left-radius:6px}
-.dr-b.me{background:linear-gradient(135deg,#5f9028,#2e4a11);box-shadow:0 8px 20px rgba(46,74,17,.26)}
+/* ===== SVIEŽA ZELEŇ — biely základ + zelené/limetkové akcenty, viac života ===== */
+/* obyčajné bubliny (jednofarebné, ako v správach) */
+.dr-b{border-radius:18px;box-shadow:0 5px 14px rgba(31,40,18,.07)}
+.dr-b.bot{background:#f1f5ea;border:1px solid #e3ead8;border-bottom-left-radius:6px}
+.dr-b.bot b{color:var(--g)}
+.dr-b.me{background:linear-gradient(135deg,#6fa12c,#2e4a11);box-shadow:0 7px 18px rgba(46,74,17,.24)}
 .dr-av{box-shadow:0 4px 10px rgba(46,74,17,.22),inset 0 0 0 2px rgba(255,255,255,.16)}
+
+/* živšie interaktívne prvky (zeleň → limetka) */
+.dr-next,.dr-submit{background:linear-gradient(135deg,#6fa12c,#37601a)}
+.dr-next:hover,.dr-submit:hover{box-shadow:0 13px 26px rgba(90,138,36,.4);filter:brightness(1.05)}
+.dr-cta-ic{background:linear-gradient(135deg,#7bbf3a,#37601a)}
+.dr-prog-fill{background:linear-gradient(90deg,#37601a,#6fa12c,#a6f06f)}
+.dr-rowcard.sel,.dr-scard.sel,.dr-pcard.sel,.dr-opt.sel{box-shadow:0 0 0 3px rgba(122,191,58,.28),0 10px 22px rgba(46,74,17,.14)}
+.dr-chip:hover{box-shadow:0 7px 18px rgba(90,138,36,.3)}
+.dr-msgs{background:linear-gradient(180deg,#fbfdf7,#f1f7e8)}
 
 /* prominentnejší posledný krok (kontakt) — aby zákazník hneď vyplnil */
 .dr-lead{border:1.5px solid var(--gold-soft);box-shadow:0 12px 30px rgba(46,74,17,.10);position:relative;overflow:hidden}
-.dr-lead::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--accent),#ffe6a8 50%,var(--accent))}
+.dr-lead::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#406618,#a6f06f 50%,#406618)}
 .dr-lead-h b{font-size:14.5px;color:var(--g-dk)}
-.dr-lead-h .ic{background:linear-gradient(135deg,#caa24c,#a37c1f)}
+.dr-lead-h .ic{background:linear-gradient(135deg,#7bbf3a,#2e4a11)}
 .dr-lf #dr-name:focus,.dr-lf #dr-phone:focus{box-shadow:0 0 0 3px var(--gold-soft)}
 
-/* prémiový dotyk: cena a doplnky */
+/* cena a doplnky */
 .dr-result{box-shadow:0 14px 34px rgba(46,74,17,.10)}
 .dr-result .lbl{color:var(--accent-dk)}
 .dr-bd-r.tot b{color:var(--g-dk)}
-.dr-incl span{border-color:#e7e0cb;background:var(--accent-50);color:var(--accent-dk)}
+.dr-incl span{border-color:#d8ebbe;background:var(--accent-50);color:var(--accent-dk)}
 </style>
 </head>
 <body>
@@ -609,7 +619,7 @@ const IMG={
 
 /* Maskot – chatová bublina (biela na zelenom) */
 const WELCOME='Dobrý deň 👋 Som <b>DERAT asistent</b>. Pomôžem so škodcami — <b>deratizácia, dezinsekcia a dezinfekcia</b>. Napíšte, čo riešite, alebo si v <b>kalkulačke</b> spočítajte orientačnú cenu.';
-const MOUSE='<svg class="dr-mouse" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4 4.7 5.1v5.9c0 4.5 3 7.9 7.3 9.5 4.3-1.6 7.3-5 7.3-9.5V5.1L12 2.4Z" fill="#d8bd76"/><path d="M12 6.9c-2.7 0-4.5 1.8-4.5 4.3 0 1.9 1.1 3.4 2.8 4.1.1-2.8 1.3-4.6 3.6-5.9-1.8 1.8-2.5 3.7-2.5 6.2 2.9-.3 5-2.4 5-5.1 0-2.4-1.7-3.6-4.4-3.6Z" fill="#15200d"/></svg>';
+const MOUSE='<svg class="dr-mouse" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4 4.7 5.1v5.9c0 4.5 3 7.9 7.3 9.5 4.3-1.6 7.3-5 7.3-9.5V5.1L12 2.4Z" fill="#ffffff"/><path d="M12 6.9c-2.7 0-4.5 1.8-4.5 4.3 0 1.9 1.1 3.4 2.8 4.1.1-2.8 1.3-4.6 3.6-5.9-1.8 1.8-2.5 3.7-2.5 6.2 2.9-.3 5-2.4 5-5.1 0-2.4-1.7-3.6-4.4-3.6Z" fill="#3f6a18"/></svg>';
 
 /* Ikony škodcov / priestorov (jednotná veľkosť, viewBox 64) */
 const I={
