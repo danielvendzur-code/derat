@@ -499,55 +499,174 @@ img{max-width:100%}
 .dr-lead-h{margin-bottom:10px}
 .dr-lf{gap:7px}
 .dr-disc{margin-top:8px}
+
+/* ============================================================
+   DARK LUXE — tmavý luxus + zlato (štít s lístkom, dýchajúca linka)
+   ============================================================ */
+:root{
+  --gold:#d8bd76;--gold-2:#ecd9a0;--gold-dk:#bf9f53;--gold-soft:rgba(216,189,118,.13);--gold-line:rgba(216,189,118,.30);
+  --accent:#d8bd76;--accent-dk:#ecd9a0;
+  --dl-text:#edf1e6;--dl-mut:#a3b095;--dl-line:rgba(216,189,118,.16);--dl-surf:#1b2514;--dl-ink:#12190c;
+}
+body{background:radial-gradient(130% 90% at 82% -12%,#1b2614,#0b0f08 68%) fixed,#0b0f08}
+
+/* panel */
+#derat-chat{bottom:84px;width:468px;height:min(900px,calc(100vh - 92px));max-height:900px;background:linear-gradient(180deg,#1a2413,#10160d 58%,#0d120a);border:1px solid var(--gold-line);box-shadow:0 44px 96px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.05)}
+
+/* hlavička + dýchajúca zlatá linka */
+.dr-head{background:linear-gradient(120deg,#15200c,#22320f 52%,#15200c)}
+.dr-head::before{background:radial-gradient(circle,rgba(216,189,118,.30),transparent 70%)}
+.dr-head::after{height:1.6px;background:linear-gradient(90deg,transparent,var(--gold) 28%,var(--gold-2) 50%,var(--gold) 72%,transparent);background-size:100% 100%;animation:drBreath 3.6s ease-in-out infinite}
+@keyframes drBreath{0%,100%{opacity:.32}50%{opacity:1}}
+.dr-head-t b{color:#fff}.dr-head-t span{color:var(--gold)}
+.dr-live{background:var(--gold);box-shadow:0 0 7px var(--gold)}
+.dr-head-logo,.dr-av{background:radial-gradient(circle at 38% 30%,#28361b,#10160b);border:1px solid var(--gold-line);box-shadow:0 5px 14px rgba(0,0,0,.45),inset 0 0 0 1px rgba(216,189,118,.1)}
+#derat-bubble{background:radial-gradient(circle at 38% 28%,#28361b,#0f150a);box-shadow:0 16px 38px rgba(0,0,0,.55),0 0 0 1px var(--gold-line),inset 0 0 20px rgba(216,189,118,.08)}
+.dr-hbtn{background:rgba(216,189,118,.12);color:var(--gold)}
+.dr-hbtn:hover{background:rgba(216,189,118,.22)}
+.dr-hbtn.ghost{background:rgba(255,255,255,.06);color:#d3dcc8}
+.dr-hbtn.ghost:hover,.dr-hbtn.ghost:active{background:var(--red);color:#fff}
+
+/* trust + CTA */
+.dr-trust{background:rgba(0,0,0,.22);border-bottom:1px solid var(--dl-line)}
+.dr-trust span{color:var(--gold)}
+.dr-top{background:transparent;border-bottom:1px solid var(--dl-line)}
+.dr-cta{background:linear-gradient(135deg,rgba(216,189,118,.13),rgba(216,189,118,.02));border:1px solid var(--gold-line);box-shadow:0 12px 28px rgba(0,0,0,.42)}
+.dr-cta:hover{box-shadow:0 18px 34px rgba(0,0,0,.5)}
+.dr-cta b{color:#fff}.dr-cta span{color:var(--dl-mut)}
+.dr-cta-ic,.dr-cta:hover .dr-cta-ic,.dr-cta:active .dr-cta-ic{background:linear-gradient(135deg,var(--gold-2),var(--gold-dk));box-shadow:0 6px 14px rgba(0,0,0,.4)}
+.dr-cta-ic svg{fill:#15200d}
+.dr-cta .ar,.dr-cta:hover .ar{color:var(--gold)}
+
+/* správy */
+.dr-msgs{background:transparent}
+.dr-b{box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.dr-b.bot{background:#1d2815;border:1px solid var(--dl-line);border-left:3px solid var(--gold-line);color:var(--dl-text)}
+.dr-b.bot b{color:var(--gold)}
+.dr-b.me{background:linear-gradient(135deg,#3f6a18,#233d0b);color:#fff}
+.dr-typing span{background:var(--gold)}.dr-cur{background:var(--gold)}
+
+/* chips — pomalší fill */
+.dr-chips{background:transparent}
+.dr-chip{background-color:rgba(216,189,118,.06);border:1.3px solid var(--gold-line);color:#e8edde;background-image:radial-gradient(circle at center,var(--gold) 60%,var(--gold-2));transition:background-size .95s cubic-bezier(.22,.61,.36,1),color .5s ease,border-color .3s,transform .25s,opacity .3s}
+.dr-chip:hover{background-size:280% 280%;color:#15200d;border-color:var(--gold);box-shadow:0 8px 18px rgba(0,0,0,.4)}
+
+/* input bar + contact bar */
+.dr-inbar{background:rgba(255,255,255,.03);border:1px solid var(--dl-line)}
+.dr-inbar input{background:rgba(0,0,0,.26);border:1.4px solid var(--dl-line);color:var(--dl-text)}
+.dr-inbar input::placeholder{color:#8a977e}
+.dr-inbar input:focus{border-color:var(--gold);background:rgba(0,0,0,.36)}
+.dr-inbar button{background:linear-gradient(135deg,var(--gold-2),var(--gold-dk))}
+.dr-inbar button svg{fill:#15200d}
+.dr-cbar{background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.3));border-top:1px solid var(--gold-line)}
+.dr-cbar-h{color:var(--dl-mut)}
+.dr-c{background:var(--dl-surf);border:1.4px solid var(--dl-line);box-shadow:0 6px 14px rgba(0,0,0,.35)}
+.dr-c:hover{background:rgba(216,189,118,.08);border-color:var(--gold-line);box-shadow:0 12px 22px rgba(0,0,0,.45)}
+.dr-c-ic{background:rgba(216,189,118,.12)}
+.dr-c:hover .dr-c-ic{background:var(--gold)}
+.dr-c-ic svg{fill:var(--gold)}
+.dr-c:hover .dr-c-ic svg{fill:#15200d}
+.dr-c-lbl{color:#e8edde}
+
+/* kalkulačka — okno, kroky */
+.dr-calc{background:transparent}
+.dr-q{color:#fff}.dr-q-sub{color:var(--dl-mut)}
+.dr-prog-track{background:rgba(255,255,255,.08)}
+.dr-prog-fill{background:linear-gradient(90deg,var(--gold-dk),var(--gold),var(--gold-2));box-shadow:0 0 8px rgba(216,189,118,.5)}
+.dr-prog-n{color:var(--gold)}
+.dr-back{background:rgba(216,189,118,.1);border:1px solid var(--gold-line);color:var(--gold)}
+.dr-back:hover{background:rgba(216,189,118,.2);border-color:var(--gold);color:var(--gold-2)}
+
+/* výberové karty */
+.dr-rowcard,.dr-scard,.dr-pcard,.dr-opt,.dr-ine{background:var(--dl-surf);border-color:var(--dl-line)}
+.dr-rowcard{background:#15200d}
+.dr-scard b,.dr-pcard-bd b,.dr-opt-m b{color:#fff}
+.dr-rowcard-bd b{color:#fff}
+.dr-pcard-bd span,.dr-opt-m span,.dr-scale,.dr-size-hint{color:var(--dl-mut)}
+.dr-rowcard-pr,.dr-rowcard-pr small,.dr-opt-p,.dr-pcard-bd .pr{color:var(--gold)}
+.dr-rowcard:hover,.dr-scard:hover,.dr-pcard:hover,.dr-opt:hover{border-color:var(--gold-line);box-shadow:0 10px 22px rgba(0,0,0,.42)}
+.dr-rowcard.sel,.dr-scard.sel,.dr-pcard.sel,.dr-opt.sel{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold-soft),0 12px 26px rgba(0,0,0,.45)}
+.dr-rowcard.sel:after,.dr-scard.sel:after,.dr-pcard.sel:after{background:var(--gold);color:#15200d}
+.dr-rb{border-color:#5f6c4f}
+.dr-opt.sel .dr-rb{border-color:var(--gold)}
+.dr-opt.sel .dr-rb:after{background:var(--gold)}
+.dr-opt.sel .dr-rb.sq:after{border-color:var(--gold)}
+
+/* slider + ine */
+.dr-slider{background:linear-gradient(90deg,var(--gold) var(--p,30%),rgba(255,255,255,.1) var(--p,30%))}
+.dr-slider::-webkit-slider-thumb{background:var(--gold);border-color:#15200d}
+.dr-slider::-moz-range-thumb{background:var(--gold);border-color:#15200d}
+.dr-area-v{color:#fff}.dr-area-v small{color:var(--dl-mut)}
+.dr-quick button{background:var(--dl-surf);border-color:var(--dl-line);color:var(--gold)}
+.dr-quick button:hover,.dr-quick button.on{background:var(--gold-soft);border-color:var(--gold)}
+.dr-size-lbl b{color:#fff}.dr-size-lbl span{color:var(--dl-mut)}
+.dr-ine-txt{background:rgba(0,0,0,.26);border-color:var(--dl-line);color:var(--dl-text)}
+.dr-ine-txt::placeholder{color:#8a977e}.dr-ine-txt:focus{border-color:var(--gold)}
+
+/* info box */
+.dr-info{background:rgba(216,189,118,.06);border:1px solid var(--gold-line)}
+.dr-info .i{background:var(--gold);color:#15200d}
+.dr-info-h{color:var(--gold)}.dr-info-txt p{color:#cfd8c4}.dr-info-txt b{color:var(--gold-2)}
+.dr-sev-meter i{background:rgba(255,255,255,.12)}
+
+/* výsledok */
+.dr-result{background:linear-gradient(150deg,#202c14,#141c0c);border:1px solid var(--gold-line);box-shadow:0 18px 44px rgba(0,0,0,.46)}
+.dr-result .lbl{color:var(--gold)}
+.dr-result .price{color:#fff}.dr-result .price .from{color:var(--gold)}
+.dr-result .rng{color:var(--dl-mut)}
+.dr-bd{border-top-color:var(--dl-line)}
+.dr-bd-r{color:var(--dl-mut)}.dr-bd-r b{color:#e8edde}
+.dr-bd-r.tot{border-top-color:var(--dl-line)}.dr-bd-r.tot b{color:var(--gold-2)}
+.dr-plan-note{background:rgba(216,189,118,.07);border-color:var(--gold-line);color:#cfd8c4}.dr-plan-note b{color:var(--gold-2)}
+.dr-incl span{background:rgba(216,189,118,.1);border-color:var(--gold-line);color:var(--gold)}
+.dr-disc{color:#8a977e}
+.dr-result.locked .price,.dr-result.locked .rng,.dr-result.locked .dr-bd,.dr-result.locked .dr-plan-note{opacity:.35}
+.dr-result.locked .dr-lock{background:linear-gradient(180deg,rgba(20,28,12,.72),rgba(13,18,9,.93))}
+.dr-lock-ic{background:linear-gradient(135deg,var(--gold-2),var(--gold-dk))}
+.dr-lock-ic svg{fill:#15200d}
+.dr-lock>b{color:#fff}.dr-lock>span:not(.dr-lock-ic){color:var(--dl-mut)}.dr-lock>span:not(.dr-lock-ic) b{color:var(--gold)}
+
+/* lead form */
+.dr-lead{background:#17200e;border:1px solid var(--dl-line)}
+.dr-lead-h .ic{background:linear-gradient(135deg,var(--gold-2),var(--gold-dk))}
+.dr-lead-h .ic svg{fill:#15200d}
+.dr-lead-h b{color:#fff}.dr-lead-h small{color:var(--dl-mut)}
+.dr-lf input,.dr-lf textarea,.dr-sel{background:rgba(0,0,0,.26);border-color:var(--dl-line);color:var(--dl-text)}
+.dr-lf input::placeholder,.dr-lf textarea::placeholder{color:#8a977e}
+.dr-lf input:focus,.dr-lf textarea:focus{border-color:var(--gold);background:rgba(0,0,0,.36)}
+.dr-sel{color:var(--dl-text)}
+.dr-cons{color:var(--dl-mut)}.dr-cons input{accent-color:var(--gold)}
+.dr-area-msg.ok{color:var(--gold-2)}
+.dr-photo-b{color:var(--gold);border-color:var(--gold-line);background:rgba(216,189,118,.05)}
+.dr-photo-b small{color:var(--dl-mut)}.dr-photo-b svg{fill:var(--gold)}
+.dr-photo:hover .dr-photo-b{background:rgba(216,189,118,.1);border-color:var(--gold)}
+.dr-photo-prev{background:rgba(255,255,255,.04);border-color:var(--dl-line)}
+.dr-photo-prev span{color:var(--dl-text)}
+
+/* akcie + tlačidlá (zlaté) */
+.dr-actions{background:transparent;border-top:1px solid var(--dl-line)}
+.dr-live-price small{color:var(--dl-mut)}.dr-live-price b{color:var(--gold)}
+.dr-next,.dr-submit{background:linear-gradient(135deg,var(--gold-2),var(--gold-dk));color:#15200d;box-shadow:0 10px 22px rgba(0,0,0,.42)}
+.dr-next svg,.dr-submit svg{fill:#15200d}
+.dr-next:hover,.dr-submit:hover{filter:brightness(1.06)}
+
+/* scroll hint + teaser + tooltip */
+.dr-more{background:linear-gradient(transparent,rgba(13,18,9,.96) 78%)}
+.dr-more span{background:var(--gold);color:#15200d}
+#dr-teaser{background:linear-gradient(165deg,#1d2715,#11180c);border:1px solid var(--gold-line);box-shadow:0 24px 54px rgba(0,0,0,.55)}
+#dr-teaser:after{background:#1d2715;border-right-color:var(--gold-line);border-bottom-color:var(--gold-line)}
+#dr-teaser b{color:var(--gold)}#dr-teaser span{color:var(--dl-mut)}
+.dr-teaser-x{background:rgba(255,255,255,.1);color:#d3dcc8}
+.dr-teaser-x:hover{background:rgba(255,255,255,.2)}
+.dr-tipbox b{color:var(--gold-2)}
+.dr-chead b{color:#fff}
+.dr-x{background:rgba(216,189,118,.12);border:1px solid var(--gold-line);color:var(--gold)}
+.dr-x:hover{background:rgba(216,189,118,.22)}
+.dr-hero{border-color:var(--dl-line)}
 </style>
 </head>
 <body>
 
-<!-- Sprievodca (na ostrej stránke môžete blok .demo odstrániť) -->
-<div class="demo">
-  <div class="guide">
-    <h1>Asistent a cenová kalkulačka pre vašu stránku</h1>
-    <p class="lead">Toto je <b>ukážka</b>, ako by to fungovalo u vás. Pokojne si všetko vyskúšajte — <b>nič nepokazíte</b>.</p>
-
-    <h2 class="gh2"><span class="gicon"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg></span>1. Cenová kalkulačka</h2>
-    <div class="guide-steps">
-      <div class="gstep"><span class="gnum">1</span><div>Vpravo dole kliknite na <b>zelené tlačidlo s ikonou chatu</b>.</div></div>
-      <div class="gstep"><span class="gnum">2</span><div>Stlačte <b>„Cenová kalkulačka"</b> a <b>klikáte odpovede</b> — služba, škodca, priestor, plocha.</div></div>
-      <div class="gstep"><span class="gnum">3</span><div>Zobrazí sa <b>orientačná cena</b> a zákazník vám nechá svoje údaje.</div></div>
-    </div>
-
-    <h2 class="gh2"><span class="gicon"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><circle cx="8" cy="9" r="1.3"/><circle cx="12" cy="9" r="1.3"/><circle cx="16" cy="9" r="1.3"/></svg></span>2. Asistent (chat)</h2>
-    <div class="guide-steps">
-      <div class="gstep"><span class="gico-c"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><circle cx="8" cy="9" r="1.3"/><circle cx="12" cy="9" r="1.3"/><circle cx="16" cy="9" r="1.3"/></svg></span><div>Odpovedá na <b>bežné otázky</b> — kde všade <b>pôsobíte</b>, v akých <b>pracovných hodinách</b>, aké <b>druhy pascí a prípravkov</b> používate a podobne.</div></div>
-      <div class="gstep"><span class="gico-c"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><circle cx="8" cy="9" r="1.3"/><circle cx="12" cy="9" r="1.3"/><circle cx="16" cy="9" r="1.3"/></svg></span><div>Podľa toho, čo zákazník napíše (<b>myši, šváby, ploštice…</b>), mu <b>odporučí správnu službu</b>.</div></div>
-      <div class="gstep"><span class="gico-c"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><circle cx="8" cy="9" r="1.3"/><circle cx="12" cy="9" r="1.3"/><circle cx="16" cy="9" r="1.3"/></svg></span><div><b>Navedie ho</b> na cenovú kalkulačku alebo na priamy kontakt — telefón, e-mail či WhatsApp.</div></div>
-    </div>
-
-    <h2 class="gh2">Ako vám to pomôže</h2>
-    <div class="guide-steps">
-      <div class="gstep"><span class="gico">🕐</span><div>Pracuje za vás <b>nonstop — 24/7</b>, aj v noci a cez víkend.</div></div>
-      <div class="gstep"><span class="gico">⚡</span><div>Zákazník má <b>cenu do jednej minúty</b>, bez čakania na telefón.</div></div>
-      <div class="gstep"><span class="gico">🔧</span><div>Získava zákazníkov, <b>aj keď ste na montáži</b>.</div></div>
-      <div class="gstep"><span class="gico">📩</span><div>Dopyty vám prídu <b>na e-mail so všetkými údajmi</b> — len si vyberiete a idete robiť.</div></div>
-    </div>
-
-    <div class="gnote">
-      <p><b>Aby ste sa nepomýlili:</b></p>
-      <ul>
-        <li><b>AI asistent zatiaľ nie je hotový</b> — pripravená je kalkulačka a vzhľad, chat je zatiaľ ukážkový. Inteligentnú časť doplníme.</li>
-        <li><b>Ceny sú len vymyslené</b> — nastavíme ich podľa vás.</li>
-        <li><b>Všetko sa dá zmeniť podľa vás</b> — farby, texty, ceny aj fotky.</li>
-      </ul>
-    </div>
-
-    <p class="note">Prejdite si to v pokoji a všetko vyskúšajte. Keď budete vedieť, čo by ste chceli inak, doladíme to presne podľa vás.</p>
-  </div>
-</div>
-
-<div class="dr-point" aria-hidden="true">
-  <span class="dr-point-t">Skúste to tu<br><small>otvorte pomocníka</small></span>
-  <span class="dr-point-a">→</span>
-</div>
 
 <!-- ====================== WIDGET ====================== -->
 
@@ -639,7 +758,7 @@ const IMG={
 
 /* Maskot – chatová bublina (biela na zelenom) */
 const WELCOME='Dobrý deň 👋 Som <b>DERAT asistent</b>. Pomôžem so škodcami — <b>deratizácia, dezinsekcia a dezinfekcia</b>. Napíšte, čo riešite, alebo si v <b>kalkulačke</b> spočítajte orientačnú cenu.';
-const MOUSE='<svg class="dr-mouse" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><circle cx="8" cy="9" r="1.5"/><circle cx="12" cy="9" r="1.5"/><circle cx="16" cy="9" r="1.5"/></svg>';
+const MOUSE='<svg class="dr-mouse" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4 4.7 5.1v5.9c0 4.5 3 7.9 7.3 9.5 4.3-1.6 7.3-5 7.3-9.5V5.1L12 2.4Z" fill="#d8bd76"/><path d="M12 6.9c-2.7 0-4.5 1.8-4.5 4.3 0 1.9 1.1 3.4 2.8 4.1.1-2.8 1.3-4.6 3.6-5.9-1.8 1.8-2.5 3.7-2.5 6.2 2.9-.3 5-2.4 5-5.1 0-2.4-1.7-3.6-4.4-3.6Z" fill="#15200d"/></svg>';
 
 /* Ikony škodcov / priestorov (jednotná veľkosť, viewBox 64) */
 const I={
