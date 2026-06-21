@@ -89,7 +89,7 @@ img{max-width:100%}
 @media(max-width:480px){#dr-teaser{right:16px;bottom:90px;max-width:220px}}
 
 /* ===== Okno ===== */
-#derat-chat{position:fixed;right:22px;bottom:26px;z-index:99999;width:540px;height:min(904px,calc(100vh - 52px));max-height:calc(100vh - 52px);border-radius:24px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh);display:flex;flex-direction:column;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(20px) scale(.96);transform-origin:bottom right;transition:.3s cubic-bezier(.2,.8,.2,1)}
+#derat-chat{position:fixed;right:22px;bottom:26px;z-index:99999;width:402px;height:min(800px,calc(100vh - 52px));max-height:calc(100vh - 52px);border-radius:22px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh);display:flex;flex-direction:column;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(20px) scale(.96);transform-origin:bottom right;transition:.3s cubic-bezier(.2,.8,.2,1)}
 #derat-chat.show{opacity:1;pointer-events:auto;transform:none}
 
 /* hlavička – zarovnaná */
@@ -342,7 +342,7 @@ img{max-width:100%}
 .dr-next{flex:1;border:0;border-radius:13px;background:linear-gradient(135deg,#406618,#2e4a11);color:#fff;font:900 13px var(--font);padding:13px;cursor:pointer;transition:.15s}
 .dr-next:hover{filter:brightness(1.08)}
 
-@media(max-width:600px){
+@media(max-width:460px){
   #derat-chat{inset:0!important;width:100%!important;height:100dvh!important;max-height:100dvh!important;border-radius:0;transform:translateY(100%)}
   #derat-chat.show{transform:none}
   #derat-bubble{right:16px;bottom:16px}
@@ -547,14 +547,14 @@ img{max-width:100%}
 .dr-head{box-shadow:0 6px 18px rgba(31,45,12,.16)}
 .dr-submit{padding:14px;font-size:13.5px;box-shadow:0 8px 18px rgba(46,74,17,.26)}
 
-/* ===== Modernejšie chatové bubliny ===== */
-.dr-b{max-width:84%;padding:11px 14px;border-radius:20px;font:500 13.5px/1.55 var(--font);box-shadow:0 4px 16px rgba(31,40,18,.07)}
-.dr-b.bot{background:#fff;border:1px solid #ebefe4;border-bottom-left-radius:7px;color:#2b3327}
-.dr-b.bot b{color:var(--g)}
-.dr-b.me{background:linear-gradient(135deg,#69a228,#34590f);color:#fff;border-bottom-right-radius:7px;box-shadow:0 7px 18px rgba(46,74,17,.28)}
-.dr-row{gap:9px;margin-bottom:1px;align-items:flex-end}
-.dr-av{width:33px;height:33px;box-shadow:0 3px 10px rgba(46,74,17,.3),inset 0 0 0 1.5px rgba(255,255,255,.22)}
-.dr-av .dr-mouse{width:19px}
+/* ===== Jednoduché, čisté chatové bubliny ===== */
+.dr-b{max-width:82%;padding:10px 14px;border-radius:18px;font:500 13px/1.5 var(--font);box-shadow:none;border:0}
+.dr-b.bot{background:#f3f6ee;color:#2b3327;border-bottom-left-radius:6px}
+.dr-b.bot b{color:var(--g);font-weight:700}
+.dr-b.me{background:var(--g);color:#fff;border-bottom-right-radius:6px;box-shadow:none}
+.dr-row{gap:8px;margin-bottom:1px;align-items:flex-end}
+.dr-av{width:30px;height:30px;box-shadow:0 2px 7px rgba(46,74,17,.22)}
+.dr-av .dr-mouse{width:16px}
 
 /* predajné prvky + jemné animácie */
 .dr-reassure{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 12px;margin-top:9px}
@@ -645,8 +645,8 @@ const CONFIG={
 /* Reálne fotky (derat.sk + Wikimedia Commons, voľná licencia) */
 const C='https://commons.wikimedia.org/wiki/Special:FilePath/';
 const IMG={
-  deratizacia:'https://www.derat.sk/images/box-1.jpg',
-  dezinsekcia:'https://www.derat.sk/images/box-2.jpg',
+  deratizacia:C+'Rattus_norvegicus_1.jpg?width=900',
+  dezinsekcia:C+'American_cockroach.jpg?width=900',
   dezinfekcia:'https://images.unsplash.com/photo-1584744982491-665216d95f8b?w=900&q=72',
   byt:C+'Modern_living_room_with_stylish_furniture_and_a_view_of_the_outdoors_in_a_cozy_apartment_setting.jpg?width=900',
   dom:C+'20120922010DR_Dresden_Doppelhaus_Wieckestra%C3%9Fe_43%2B45.jpg?width=900',
@@ -657,8 +657,8 @@ const IMG={
 };
 
 /* Maskot – chatová bublina (biela na zelenom) */
-const WELCOME='Dobrý deň 👋 Som <b>DERAT asistent</b>. Pomôžem so škodcami — <b>deratizácia, dezinsekcia, dezinfekcia</b>. Napíšte, čo Vás trápi, alebo si v <b>kalkulačke</b> zistite <b>orientačnú cenu za 30 sekúnd</b> — nezáväzne.';
-const MOUSE='<svg class="dr-mouse" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h3.6c4 0 7.1 3 7.1 7s-3.1 7-7.1 7H8V5Zm3.4 3v8h.4c2.3 0 3.9-1.7 3.9-4s-1.6-4-3.9-4h-.4Z" fill="#fff" fill-rule="evenodd"/></svg>';
+const WELCOME='Dobrý deň! 👋 Pomôžem vám so škodcami a do 30 sekúnd zistíte orientačnú cenu. S čím vám môžem pomôcť?';
+const MOUSE='<svg class="dr-mouse" viewBox="0 0 24 24" aria-hidden="true"><g fill="#fff"><circle cx="6.4" cy="7.2" r="3.4"/><circle cx="17.6" cy="7.2" r="3.4"/><path d="M12 7.8c-3.7 0-6.5 2.5-6.5 6 0 3.2 2.9 5.4 6.5 5.4s6.5-2.2 6.5-5.4c0-3.5-2.8-6-6.5-6Z"/></g><circle cx="6.4" cy="7.2" r="1.6" fill="#bcd99a"/><circle cx="17.6" cy="7.2" r="1.6" fill="#bcd99a"/><circle cx="9.4" cy="12.4" r="1.25" fill="#2e4a11"/><circle cx="14.6" cy="12.4" r="1.25" fill="#2e4a11"/><ellipse cx="12" cy="15.1" rx="1.5" ry="1.15" fill="#2e4a11"/></svg>';
 
 /* Ikony škodcov / priestorov (jednotná veľkosť, viewBox 64) */
 const I={
