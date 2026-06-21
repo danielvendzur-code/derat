@@ -238,7 +238,7 @@ img{max-width:100%}
 .dr-rowcard-pr{flex:0 0 auto;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding:0 14px;font:900 14px var(--font);color:var(--g);white-space:nowrap}
 .dr-rowcard-pr small{font:600 9px var(--font);color:var(--muted);letter-spacing:.3px;margin-top:1px}
 .dr-rowcard.sel:after{content:"✓";position:absolute;left:8px;top:8px;z-index:3;width:21px;height:21px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;font:900 12px var(--font);animation:drPop .3s ease;box-shadow:0 2px 6px rgba(0,0,0,.4)}
-.dr-pcard{position:relative;border:1.8px solid var(--line);background:#fff;border-radius:15px;overflow:hidden;cursor:pointer;text-align:left;transition:.16s;animation:drStep .35s ease both;display:flex;flex-direction:column;height:122px}
+.dr-pcard{position:relative;border:1.8px solid var(--line);background:#fff;border-radius:15px;overflow:hidden;cursor:pointer;text-align:left;transition:.16s;animation:drStep .35s ease both;display:flex;flex-direction:column;height:104px}
 .dr-pcard:hover{border-color:var(--g-lt);transform:translateY(-2px);box-shadow:0 10px 20px rgba(10,95,60,.12)}
 .dr-pcard.sel{border-color:var(--g);box-shadow:0 0 0 3px rgba(14,138,85,.16)}
 .dr-pcard-img{height:78px;flex:0 0 78px;background-size:cover;background-position:center;background-color:#cfeede}
@@ -486,7 +486,7 @@ img{max-width:100%}
 .dr-incl span{font:700 9.5px var(--font);color:var(--g);background:var(--g-50);border:1px solid var(--g-100);padding:4px 8px;border-radius:999px}
 
 /* --- kompaktnejšie rozostupy (menej scrollovania) --- */
-.dr-hero{height:182px;margin-bottom:11px}
+.dr-hero{height:130px;margin-bottom:9px}
 .dr-q{font-size:15.5px;margin-bottom:2px}
 .dr-q-sub{margin-bottom:9px}
 .dr-grid,.dr-rows,.dr-list{gap:8px}
@@ -563,6 +563,18 @@ img{max-width:100%}
 .dr-submit::after{content:"";position:absolute;top:0;left:-45%;width:32%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-18deg);animation:drSheen 3.4s ease-in-out infinite;pointer-events:none}
 @keyframes drSheen{0%{left:-45%}58%,100%{left:135%}}
 .dr-rowcard,.dr-scard,.dr-pcard,.dr-opt,.dr-chip,.dr-c{will-change:transform}
+
+/* ===== kompaktnejšie kroky (cieľ: bez scrollu, no fotka stále vidieť) ===== */
+.dr-hero{height:130px;margin-bottom:9px}
+.dr-q{font-size:15px;margin-bottom:1px}
+.dr-q-sub{margin-bottom:7px;line-height:1.35}
+.dr-grid{gap:8px}
+.dr-rows,.dr-list{gap:7px}
+.dr-info{margin-bottom:8px}
+.dr-rowcard{min-height:80px}
+.dr-scard{padding:9px 7px}
+.dr-opt{padding:10px}
+.dr-body{padding:0 13px 6px}
 </style>
 </head>
 <body>
@@ -645,7 +657,7 @@ const CONFIG={
 /* Reálne fotky (derat.sk + Wikimedia Commons, voľná licencia) */
 const C='https://commons.wikimedia.org/wiki/Special:FilePath/';
 const IMG={
-  deratizacia:'https://images.unsplash.com/photo-1577099608295-f11bbd6fed32?w=900&q=72',
+  deratizacia:'https://www.derat.sk/images/box-1.jpg',
   dezinsekcia:'https://images.unsplash.com/photo-1651711612826-fabe412c7d8f?w=900&q=72',
   dezinfekcia:'https://images.unsplash.com/photo-1584813470613-5b1c1cad3d69?w=900&q=72',
   byt:C+'Modern_living_room_with_stylish_furniture_and_a_view_of_the_outdoors_in_a_cozy_apartment_setting.jpg?width=900',
