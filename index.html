@@ -363,7 +363,7 @@ img{max-width:100%}
 /* hlavička – dekoratívne svetlá + hĺbka */
 .dr-head{position:relative;overflow:hidden;background:linear-gradient(120deg,#23400c,#3f6a18 52%,#62a028)}
 .dr-head::before{content:"";position:absolute;left:0;right:0;top:-54px;height:175px;background:radial-gradient(135% 100% at 50% 0%,rgba(166,240,111,.34),rgba(166,240,111,.06) 45%,transparent 64%);pointer-events:none}
-.dr-head::after{content:"";position:absolute;left:32%;bottom:-70px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.12),transparent 70%);pointer-events:none}
+/* (dekoračný spodný glow odstránený — ::after je teraz celosírkový shimmer) */
 .dr-head-t,.dr-head-logo,.dr-head-act{position:relative;z-index:1}
 .dr-head-logo{box-shadow:0 5px 14px rgba(0,0,0,.25),inset 0 0 0 2px rgba(255,255,255,.3),0 0 0 4px rgba(166,240,111,.18)}
 
@@ -448,7 +448,7 @@ img{max-width:100%}
 
 /* hlavička: teplý akcentový prúžok dole */
 .dr-head{position:relative;background:linear-gradient(122deg,#22400b,#3d6817 48%,#62a128)}
-.dr-head::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;z-index:2;background:linear-gradient(90deg,rgba(255,255,255,.18),rgba(255,255,255,.18)),linear-gradient(90deg,transparent,rgba(255,255,255,.95) 50%,transparent);background-size:100% 100%,42% 100%;background-repeat:no-repeat;background-position:0 0,-42% 0;animation:drSweep 2.8s linear infinite}
+.dr-head::after{content:"";position:absolute;left:0;right:0;bottom:0;width:auto;border-radius:0;height:2px;z-index:2;background:linear-gradient(90deg,rgba(255,255,255,.18),rgba(255,255,255,.18)),linear-gradient(90deg,transparent,rgba(255,255,255,.95) 50%,transparent);background-size:100% 100%,42% 100%;background-repeat:no-repeat;background-position:0 0,-42% 0;animation:drSweep 2.8s linear infinite}
 @keyframes drSweep{0%{background-position:0 0,-42% 0}100%{background-position:0 0,142% 0}}
 .dr-reset svg{transition:transform .5s cubic-bezier(.3,1.4,.5,1)}
 .dr-reset:hover svg{transform:rotate(-180deg)}
@@ -546,6 +546,23 @@ img{max-width:100%}
 /* modern header — jemná hĺbka + výraznejšie tlačidlo */
 .dr-head{box-shadow:0 6px 18px rgba(31,45,12,.16)}
 .dr-submit{padding:14px;font-size:13.5px;box-shadow:0 8px 18px rgba(46,74,17,.26)}
+
+/* ===== Modernejšie chatové bubliny ===== */
+.dr-b{max-width:84%;padding:11px 14px;border-radius:20px;font:500 13.5px/1.55 var(--font);box-shadow:0 4px 16px rgba(31,40,18,.07)}
+.dr-b.bot{background:#fff;border:1px solid #ebefe4;border-bottom-left-radius:7px;color:#2b3327}
+.dr-b.bot b{color:var(--g)}
+.dr-b.me{background:linear-gradient(135deg,#69a228,#34590f);color:#fff;border-bottom-right-radius:7px;box-shadow:0 7px 18px rgba(46,74,17,.28)}
+.dr-row{gap:9px;margin-bottom:1px;align-items:flex-end}
+.dr-av{width:33px;height:33px;box-shadow:0 3px 10px rgba(46,74,17,.3),inset 0 0 0 1.5px rgba(255,255,255,.22)}
+.dr-av .dr-mouse{width:19px}
+
+/* predajné prvky + jemné animácie */
+.dr-reassure{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 12px;margin-top:9px}
+.dr-reassure span{font:700 9.5px var(--font);color:var(--muted);letter-spacing:.2px}
+.dr-submit{position:relative;overflow:hidden}
+.dr-submit::after{content:"";position:absolute;top:0;left:-45%;width:32%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-18deg);animation:drSheen 3.4s ease-in-out infinite;pointer-events:none}
+@keyframes drSheen{0%{left:-45%}58%,100%{left:135%}}
+.dr-rowcard,.dr-scard,.dr-pcard,.dr-opt,.dr-chip,.dr-c{will-change:transform}
 </style>
 </head>
 <body>
@@ -577,7 +594,7 @@ img{max-width:100%}
   <div class="dr-top">
     <button class="dr-cta" onclick="DERAT.openCalc()">
       <span class="dr-cta-ic"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg></span>
-      <span><b>Cenová kalkulačka</b><span>Orientačná cena za pár klikov.</span></span>
+      <span><b>Zistite cenu za 30 sekúnd</b><span>Nezáväzne a zadarmo — bez čakania na telefón.</span></span>
       <span class="ar">›</span>
     </button>
   </div>
@@ -618,6 +635,8 @@ const CONFIG={
   phone:'+421905648129', phoneText:'+421 905 648 129',
   email:'info@derat.sk', whatsapp:'421905648129',
   leadEndpoint:'',
+  // AI chat: URL backend endpointu (napr. /api/chat). Prázdne = používa sa lokálny fallback.
+  chatApi:'',
   // sídlo Bratislava — cestovné podľa vzdialenosti (Bratislavský kraj zdarma, ďalej ~0,45 €/km)
   travelPerKm:0.45, travelFreeKm:30,
   emailjs:{publicKey:'', serviceId:'', templateId:''}
@@ -638,8 +657,8 @@ const IMG={
 };
 
 /* Maskot – chatová bublina (biela na zelenom) */
-const WELCOME='Dobrý deň 👋 Som <b>DERAT asistent</b>. Pomôžem so škodcami — <b>deratizácia, dezinsekcia a dezinfekcia</b>. Napíšte, čo riešite, alebo si v <b>kalkulačke</b> spočítajte orientačnú cenu.';
-const MOUSE='<svg class="dr-mouse" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4 4.7 5.1v5.9c0 4.5 3 7.9 7.3 9.5 4.3-1.6 7.3-5 7.3-9.5V5.1L12 2.4Z" fill="#ffffff" stroke="#cfe0b8" stroke-width="0.5"/><path d="M12 6.6c-2.9 0-4.8 1.9-4.8 4.6 0 2 1.2 3.7 3 4.4.1-3 1.5-5 4-6.3-2 1.9-2.8 4-2.8 6.6 3.1-.3 5.4-2.5 5.4-5.4 0-2.5-1.9-3.9-4.8-3.9Z" fill="#3f6a18"/><path d="M10.4 15.2c.5-2.4 1.8-4.1 3.9-5.2" stroke="#fff" stroke-width="0.7" fill="none" stroke-linecap="round"/><path d="M7.6 5.4v4.2" stroke="#eaf3dc" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.65"/></svg>';
+const WELCOME='Dobrý deň 👋 Som <b>DERAT asistent</b>. Pomôžem so škodcami — <b>deratizácia, dezinsekcia, dezinfekcia</b>. Napíšte, čo Vás trápi, alebo si v <b>kalkulačke</b> zistite <b>orientačnú cenu za 30 sekúnd</b> — nezáväzne.';
+const MOUSE='<svg class="dr-mouse" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 4.5h4.2c4 0 7 3.2 7 7.5s-3 7.5-7 7.5H7.5V4.5Zm3.3 3.2v8.6h.9c2.2 0 3.7-1.8 3.7-4.3s-1.5-4.3-3.7-4.3h-.9Z" fill="#fff" fill-rule="evenodd"/><circle cx="17.8" cy="6.4" r="1.7" fill="#9cd665"/></svg>';
 
 /* Ikony škodcov / priestorov (jednotná veľkosť, viewBox 64) */
 const I={
@@ -724,7 +743,7 @@ const QUESTIONS={
 };
 
 const MIN=59;
-const state={open:false,step:0,photo:null,unlocked:false,c:{service:'deratizacia',sub:'potkany',place:'byt',area:60,severity:'stredne',addons:[],ineSize:1,ineText:''}};
+const state={open:false,step:0,photo:null,unlocked:false,chatHistory:[],c:{service:'deratizacia',sub:'potkany',place:'byt',area:60,severity:'stredne',addons:[],ineSize:1,ineText:''}};
 
 /* =========================================================
    3) POMOCNÉ
@@ -752,6 +771,22 @@ function botType(html,done){const r=document.createElement('div');r.className='d
   const b=r.querySelector('.dr-b'),total=visLen(html);
   setTimeout(()=>{let n=0;(function tick(){n++;b.innerHTML=htmlSlice(html,n)+'<span class="dr-cur"></span>';msgs.scrollTop=msgs.scrollHeight;if(n<total)setTimeout(tick,8);else{b.innerHTML=html;done&&done();}})();},300);}
 function bot(html){const r=document.createElement('div');r.className='dr-row bot';r.innerHTML='<span class="dr-av">'+MOUSE+'</span><div class="dr-b bot"><div class="dr-typing"><span></span><span></span><span></span></div></div>';msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;setTimeout(()=>{r.querySelector('.dr-b').innerHTML=html;msgs.scrollTop=msgs.scrollHeight;},380);}
+/* AI odpoveď: ak je nastavený CONFIG.chatApi, volá backend; inak lokálny fallback reply() */
+function botReply(userText){
+  const r=document.createElement('div');r.className='dr-row bot';
+  r.innerHTML='<span class="dr-av">'+MOUSE+'</span><div class="dr-b bot"><div class="dr-typing"><span></span><span></span><span></span></div></div>';
+  msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;
+  const show=(content,trusted)=>{const html=trusted?content:esc(content).replace(/\n/g,'<br>');const b=r.querySelector('.dr-b');if(b)b.innerHTML=html;msgs.scrollTop=msgs.scrollHeight;state.chatHistory.push({role:'assistant',content:html.replace(/<[^>]+>/g,' ').trim()});};
+  state.chatHistory.push({role:'user',content:userText});
+  if(CONFIG.chatApi){
+    fetch(CONFIG.chatApi,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:userText,history:state.chatHistory.slice(-12)})})
+      .then(res=>res.ok?res.json():Promise.reject(res.status))
+      .then(data=>{const t=(data&&(data.reply||data.text||''))+'';t.trim()?show(t.trim(),false):show(reply(userText),true);})
+      .catch(()=>setTimeout(()=>show(reply(userText),true),200));
+  }else{
+    setTimeout(()=>show(reply(userText),true),440);
+  }
+}
 function reply(t){const x=t.toLowerCase();
   if(/(cena|stoj|koľko|kolko|cenn|lacn)/.test(x))return 'Cena závisí od služby, druhu škodcu, plochy a rozsahu. Najrýchlejšie ju zistíte v <b>kalkulačke</b> — kliknite na „Spočítať cenu". Presnú ponuku potvrdíme po obhliadke.';
   if(/(my[šs]|potkan|hlodav|hraboš|hrabos|hryz)/.test(x))return 'Hlodavce (potkany, myši, hraboše) riešime <b>deratizáciou</b> — chemickými nástrahami alebo odchytovými klietkami a pascami. V kalkulačke vyberte Deratizáciu.';
@@ -862,9 +897,10 @@ function rResult(){const r=compute(),c=state.c;
       <label class="dr-cons"><input id="dr-consent" type="checkbox"><span>Súhlasím so spracovaním osobných údajov za účelom vybavenia dopytu.</span></label>
       <div id="dr-stat" class="dr-stat"></div>
       <div class="dr-lf-btns">
-        <button class="dr-submit" onclick="DERAT.send()"><svg viewBox="0 0 24 24"><path d="M2 21 23 12 2 3v7l15 2-15 2v7Z"/></svg> Odoslať dopyt</button>
+        <button class="dr-submit" onclick="DERAT.send()"><svg viewBox="0 0 24 24"><path d="M2 21 23 12 2 3v7l15 2-15 2v7Z"/></svg> Získať nezáväznú ponuku</button>
         <button class="dr-wabtn" onclick="DERAT.sendWa()" title="Poslať cez WhatsApp"><svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01c-1.52 0-3.01-.41-4.31-1.18l-.31-.18-3.2.84.85-3.12-.2-.32a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.55-3.7 8.24-8.24 8.24Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.17.25-.64.8-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.48-1.38-1.72-.14-.25-.01-.39.11-.51.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.42-.14-.01-.31-.01-.48-.01-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.74 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.1-.22-.16-.47-.28Z"/></svg></button>
       </div>
+      <div class="dr-reassure"><span>✓ Nezáväzne</span><span>✓ Odpoveď zvyčajne do hodiny</span><span>✓ Bez skrytých poplatkov</span></div>
       <details class="dr-extra"><summary>Pridať ďalšie údaje — mesto, termín, fotka (nepovinné)</summary>
         <div class="dr-extra-in">
           <div class="dr-lf-r"><input id="dr-loc" placeholder="Mesto / obec"><input id="dr-psc" placeholder="PSČ" inputmode="numeric" maxlength="6" oninput="DERAT.checkArea()"></div>
@@ -934,15 +970,15 @@ window.DERAT={
   open(){state.open=true;chat.classList.add('show');chat.setAttribute('aria-hidden','false');$('derat-bubble').classList.add('open');this.hideTeaser();
     if(!msgs.dataset.i){msgs.dataset.i='1';botType(WELCOME,()=>{const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('reveal');});}
     else{const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('reveal');}},
-  reset(){if(chat.classList.contains('calc'))this.closeCalc();msgs.innerHTML='';msgs.dataset.i='1';state.unlocked=false;
+  reset(){if(chat.classList.contains('calc'))this.closeCalc();msgs.innerHTML='';msgs.dataset.i='1';state.unlocked=false;state.chatHistory=[];
     const ch=document.querySelector('.dr-chips');if(ch)ch.classList.remove('reveal');
     botType(WELCOME,()=>{if(ch)ch.classList.add('reveal');});},
   close(){state.open=false;chat.classList.remove('show','calc');chat.setAttribute('aria-hidden','true');$('derat-bubble').classList.remove('open');},
   openCalc(){this.open();chat.classList.add('calc');state.unlocked=false;render();},
   closeCalc(){chat.classList.remove('calc');},
   _hideChips(){const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('gone');},
-  submit(e){e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';add(esc(v),'me');this._hideChips();bot(reply(v));},
-  quick(t){this.open();add(esc(t),'me');this._hideChips();bot(reply(t));},
+  submit(e){e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';add(esc(v),'me');this._hideChips();botReply(v);},
+  quick(t){this.open();add(esc(t),'me');this._hideChips();botReply(t);},
   tip(e,i){e.stopPropagation();const b=e.currentTarget,tb=$('dr-tipbox');if(!tb)return;
     const wasOn=b.classList.contains('on');
     document.querySelectorAll('.dr-ih.on').forEach(x=>x.classList.remove('on'));
