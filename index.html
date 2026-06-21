@@ -564,17 +564,22 @@ img{max-width:100%}
 @keyframes drSheen{0%{left:-45%}58%,100%{left:135%}}
 .dr-rowcard,.dr-scard,.dr-pcard,.dr-opt,.dr-chip,.dr-c{will-change:transform}
 
-/* ===== kompaktnejšie kroky (cieľ: bez scrollu, no fotka stále vidieť) ===== */
-.dr-hero{height:130px;margin-bottom:9px}
-.dr-q{font-size:15px;margin-bottom:1px}
-.dr-q-sub{margin-bottom:7px;line-height:1.35}
-.dr-grid{gap:8px}
-.dr-rows,.dr-list{gap:7px}
-.dr-info{margin-bottom:8px}
-.dr-rowcard{min-height:80px}
-.dr-scard{padding:9px 7px}
-.dr-opt{padding:10px}
+/* ===== kompaktnejšie kroky (cieľ: bez scrollu okrem výsledku, no fotka stále vidieť) ===== */
+.dr-hero{height:116px;margin-bottom:8px}
+.dr-q{font-size:14.5px;margin-bottom:1px}
+.dr-q-sub{margin-bottom:6px;line-height:1.3;font-size:11px}
+.dr-grid{gap:7px}
+.dr-rows,.dr-list{gap:6px}
+.dr-info{margin-bottom:7px}
+.dr-rowcard{min-height:76px}
+.dr-scard{padding:8px 6px;gap:5px}
+.dr-scard-ic,.dr-scard-ic svg{width:34px;height:34px}
+.dr-opt{padding:9px}
+.dr-pcard{height:94px}
+.dr-pcard-bd{padding:6px 9px}
 .dr-body{padding:0 13px 6px}
+.dr-prog{padding:0 13px 8px}
+.dr-chead{padding:11px 13px 7px}
 </style>
 </head>
 <body>
@@ -645,12 +650,12 @@ img{max-width:100%}
    ========================================================= */
 const CONFIG={
   phone:'+421905648129', phoneText:'+421 905 648 129',
-  email:'info@derat.sk', whatsapp:'421905648129',
+  email:'farkas.ivan@centrum.sk', whatsapp:'421905648129',
   leadEndpoint:'',
   // AI chat: URL backend endpointu (napr. /api/chat). Prázdne = používa sa lokálny fallback.
   chatApi:'',
   // sídlo Bratislava — cestovné podľa vzdialenosti (Bratislavský kraj zdarma, ďalej ~0,45 €/km)
-  travelPerKm:0.45, travelFreeKm:30,
+  travelPerKm:0.40, travelFreeKm:30,
   emailjs:{publicKey:'', serviceId:'', templateId:''}
 };
 
@@ -696,22 +701,22 @@ const I={
    Ceny ORIENTAČNÉ (€, bez DPH): base=výjazd, rate=€/jednotku, m=násobiteľ
    ========================================================= */
 const SERVICES={
-  deratizacia:{name:'Deratizácia',desc:'Likvidácia hlodavcov',base:39,rate:.40,unit:'m²',
+  deratizacia:{name:'Deratizácia',desc:'Likvidácia hlodavcov',base:48,rate:.35,unit:'m²',
     q:'Ktorý hlodavec vás trápi?',
     info:'Eliminujeme <b>potkany, myši či hraboše</b> – chemicky (umiestnenie nástrah) alebo mechanicky (odchytové klietky a pasce). Hlodavce prenášajú ochorenia a spôsobujú hospodárske škody.',
-    subs:{potkany:{n:'Potkany',ic:'rat',m:1.35,v:2},mysi:{n:'Myši',ic:'mouse',m:1.1,v:2},hrabose:{n:'Hraboše',ic:'mouse',m:1.2,v:1},ine:{n:'Iné / neviem',ic:'spray',ine:true}}},
-  dezinsekcia:{name:'Dezinsekcia',desc:'Likvidácia hmyzu',base:39,rate:.50,unit:'m²',
+    subs:{potkany:{n:'Potkany',ic:'rat',m:1.15,v:2},mysi:{n:'Myši',ic:'mouse',m:1,v:2},hrabose:{n:'Hraboše',ic:'mouse',m:1.05,v:1},ine:{n:'Iné / neviem',ic:'spray',ine:true}}},
+  dezinsekcia:{name:'Dezinsekcia',desc:'Likvidácia hmyzu',base:72,rate:.30,unit:'m²',
     q:'Ktorý hmyz potrebujete vyriešiť?',
     info:'Likvidujeme <b>lietajúci aj lezúci hmyz všetkých druhov</b> – postrekom, zadymovaním, plynovaním či požerovými nástrahami. Odborník zvolí najvhodnejší spôsob alebo ich kombináciu.',
-    subs:{svaby:{n:'Šváby / rusy',ic:'roach',m:1.3,v:2},plostice:{n:'Ploštice',ic:'bug',m:2.15,v:3},mravce:{n:'Mravce',ic:'ant',m:1.3,v:1},blchy:{n:'Blchy',ic:'flea',m:1.85,v:2},muchy:{n:'Muchy',ic:'fly',m:1.05,v:1},komare:{n:'Komáre',ic:'mosquito',m:1.15,v:1},osy:{n:'Osy / sršne',ic:'wasp',m:1.45,v:1},kliest:{n:'Kliešte',ic:'tick',m:1.2,v:1},ine:{n:'Iné / neviem',ic:'spray',ine:true}}},
-  dezinfekcia:{name:'Dezinfekcia',desc:'Plesne, vírusy, baktérie',base:45,rate:.55,unit:'m²',
+    subs:{svaby:{n:'Šváby / rusy',ic:'roach',m:1,v:2},plostice:{n:'Ploštice',ic:'bug',m:1.78,v:3},mravce:{n:'Mravce',ic:'ant',m:1,v:1},blchy:{n:'Blchy',ic:'flea',m:1.44,v:2},muchy:{n:'Muchy',ic:'fly',m:1,v:1},komare:{n:'Komáre',ic:'mosquito',m:1.05,v:1},osy:{n:'Osy / sršne',ic:'wasp',m:1.4,v:1},kliest:{n:'Kliešte',ic:'tick',m:1,v:1},ine:{n:'Iné / neviem',ic:'spray',ine:true}}},
+  dezinfekcia:{name:'Dezinfekcia',desc:'Plesne, vírusy, baktérie',base:45,rate:.40,unit:'m²',
     q:'Čo potrebujete vydezinfikovať?',
     info:'Špeciálna <b>polymérová dezinfekcia</b> vás zbaví plesní, vírusov a iných nežiaducich mikroorganizmov. Vhodná aj počas pandémie COVID-19, po havárii kanalizácie či pri zvýšenom výskyte holubov.',
-    subs:{plesne:{n:'Plesne',ic:'mold',m:1.1,v:1},virusy:{n:'Vírusy / baktérie',ic:'virus',m:1,v:1},holuby:{n:'Holuby / kanalizácia',ic:'pigeon',m:1.25,v:1},ine:{n:'Iné / neviem',ic:'spray',ine:true}}}
+    subs:{plesne:{n:'Plesne',ic:'mold',m:1.15,v:1},virusy:{n:'Vírusy / baktérie',ic:'virus',m:1,v:1},holuby:{n:'Holuby / kanalizácia',ic:'pigeon',m:1.3,v:1},ine:{n:'Iné / neviem',ic:'spray',ine:true}}}
 };
 const PLACES={
   byt:{n:'Byt',d:'do ~80 m²',m:1,a:60},
-  dom:{n:'Rodinný dom',d:'vrátane okolia',m:1.1,a:120},
+  dom:{n:'Rodinný dom',d:'vrátane okolia',m:1.05,a:120},
   prevadzka:{n:'Firma',d:'kancelárie, predajňa',m:1.2,a:200},
   horeca:{n:'Reštaurácia',d:'kuchyňa, gastro prevádzka',m:1.3,a:150},
   sklad:{n:'Sklad / hala',d:'väčšie priestory',m:1.15,a:400},
@@ -720,9 +725,9 @@ const PLACES={
 /* Rozsah = počet potrebných zásahov → výrazne ovplyvňuje cenu */
 /* miera zamorenia ovplyvňuje náročnosť a cenu zásahu (lvl = vizuálny indikátor 1–3) */
 const SEVERITY={
-  mierne:{n:'Mierne zamorenie',d:'Škodcu vidím len výnimočne — skôr prevencia.',m:.82,lvl:1},
+  mierne:{n:'Mierne zamorenie',d:'Škodcu vidím len výnimočne — skôr prevencia.',m:.85,lvl:1},
   stredne:{n:'Stredné zamorenie',d:'Objavuje sa opakovane na viacerých miestach.',m:1,lvl:2},
-  silne:{n:'Silné zamorenie',d:'Premnoženie — škodca je takmer všade.',m:1.5,lvl:3}
+  silne:{n:'Silné zamorenie',d:'Premnoženie — škodca je takmer všade.',m:1.35,lvl:3}
 };
 /* slider pre voľbu „Iné": veľkosť škodcu → náročnosť/cena (rastúca animácia od hmyzu po väčšie zvieratá) */
 const ANIMALS=[
@@ -754,7 +759,7 @@ const QUESTIONS={
   result:['Vaša orientačná cena','Pošlite kontakt a ozveme sa s presnou ponukou.']
 };
 
-const MIN=59;
+const MIN=60;
 const state={open:false,step:0,photo:null,unlocked:false,chatHistory:[],c:{service:'deratizacia',sub:'potkany',place:'byt',area:60,severity:'stredne',addons:[],ineSize:1,ineText:''}};
 
 /* =========================================================
