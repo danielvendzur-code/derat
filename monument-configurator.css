@@ -3874,3 +3874,207 @@ body{background:transparent!important}
     font-size:11.6px!important;
   }
 }
+
+/* v34: final send-ready pass - SK only, visible actions, safe inscription placement. */
+#mojplot-chat .mc-lang{
+  display:none!important;
+}
+
+#mojplot-chat .mc-hdr-actions{
+  gap:0!important;
+}
+
+#mojplot-chat.kp-mode-config{
+  height:min(720px, calc(100vh - 22px))!important;
+  max-height:calc(100vh - 22px)!important;
+  bottom:11px!important;
+}
+
+#mojplot-chat.kp-mode-config #calcContainer[data-open="true"]{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow:hidden!important;
+  display:flex!important;
+  flex-direction:column!important;
+}
+
+#mojplot-chat.kp-mode-config #calcContent{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow-y:auto!important;
+  padding:12px 14px 14px!important;
+  scrollbar-width:thin;
+  scrollbar-color:#d8c7b2 transparent;
+}
+
+#mojplot-chat.kp-mode-config .kp-step-card{
+  min-height:100%!important;
+  display:flex!important;
+  flex-direction:column!important;
+}
+
+#mojplot-chat.kp-mode-config .mc-actions{
+  position:sticky!important;
+  bottom:0!important;
+  z-index:30!important;
+  margin-top:auto!important;
+  padding-top:10px!important;
+  background:linear-gradient(180deg,rgba(255,250,244,0),#fffaf4 34%,#fffaf4 100%)!important;
+}
+
+#mojplot-chat.kp-mode-config .kp-preview.kp-preview-photo{
+  height:258px!important;
+  min-height:258px!important;
+  flex:0 0 auto!important;
+}
+
+#mojplot-chat .kp-preview-inscription{
+  min-width:0!important;
+  width:auto!important;
+  max-height:3.32em!important;
+  overflow:hidden!important;
+  display:block!important;
+  text-wrap:balance!important;
+  hyphens:auto!important;
+}
+
+#mojplot-chat .kp-insc-classic.kp-insc-urn{
+  left:50%!important;
+  top:40.7%!important;
+  max-width:16.5%!important;
+  font-size:10.5px!important;
+}
+
+#mojplot-chat .kp-insc-classic.kp-insc-single{
+  left:50%!important;
+  top:37.5%!important;
+  max-width:19%!important;
+  font-size:12.4px!important;
+}
+
+#mojplot-chat .kp-insc-classic.kp-insc-double{
+  left:50%!important;
+  top:37.1%!important;
+  max-width:21%!important;
+  font-size:12.8px!important;
+}
+
+#mojplot-chat .kp-insc-arch.kp-insc-urn{
+  left:50%!important;
+  top:43.5%!important;
+  max-width:16.5%!important;
+  font-size:10.2px!important;
+}
+
+#mojplot-chat .kp-insc-arch.kp-insc-single{
+  left:50%!important;
+  top:40.7%!important;
+  max-width:18.5%!important;
+  font-size:12px!important;
+}
+
+#mojplot-chat .kp-insc-arch.kp-insc-double{
+  left:50%!important;
+  top:40%!important;
+  max-width:20%!important;
+  font-size:12.2px!important;
+}
+
+#mojplot-chat .kp-insc-book.kp-insc-urn{
+  left:64.5%!important;
+  top:41.2%!important;
+  max-width:13.8%!important;
+  font-size:9.8px!important;
+}
+
+#mojplot-chat .kp-insc-book.kp-insc-single{
+  left:63.1%!important;
+  top:39.4%!important;
+  max-width:15.2%!important;
+  font-size:10.9px!important;
+}
+
+#mojplot-chat .kp-insc-book.kp-insc-double{
+  left:61.8%!important;
+  top:38.7%!important;
+  max-width:16.4%!important;
+  font-size:11.2px!important;
+}
+
+#mojplot-chat .kp-preview-inscription.kp-insc-mid{
+  font-size:10.2px!important;
+  max-width:20%!important;
+  line-height:1.02!important;
+  letter-spacing:.015em!important;
+}
+
+#mojplot-chat .kp-preview-inscription.kp-insc-long{
+  font-size:8.7px!important;
+  max-width:22%!important;
+  line-height:1!important;
+  letter-spacing:0!important;
+}
+
+#mojplot-chat .kp-insc-book.kp-insc-mid{
+  font-size:8.9px!important;
+  max-width:15.8%!important;
+}
+
+#mojplot-chat .kp-insc-book.kp-insc-long{
+  font-size:7.8px!important;
+  max-width:16.5%!important;
+}
+
+@media(max-height:760px){
+  #mojplot-chat.kp-mode-config .kp-preview.kp-preview-photo{
+    height:218px!important;
+    min-height:218px!important;
+  }
+  #mojplot-chat.kp-mode-config .kp-option-card .mc-product-img{
+    height:104px!important;
+  }
+  #mojplot-chat.kp-mode-config .kp-stone-card .mc-color-photo{
+    height:94px!important;
+  }
+  #mojplot-chat.kp-mode-config .kp-step-card{
+    padding:12px!important;
+  }
+  #mojplot-chat .mc-step-title{
+    font-size:20px!important;
+  }
+  #mojplot-chat .mc-step-sub{
+    font-size:12px!important;
+    margin-bottom:8px!important;
+  }
+}
+
+@media(max-height:660px){
+  #mojplot-chat.kp-mode-config .kp-preview.kp-preview-photo{
+    height:178px!important;
+    min-height:178px!important;
+  }
+  #mojplot-chat.kp-mode-config .kp-option-card .mc-product-img{
+    height:86px!important;
+  }
+  #mojplot-chat.kp-mode-config .kp-stone-card .mc-color-photo{
+    height:80px!important;
+  }
+  #mojplot-chat.kp-mode-config .mc-step-sub{
+    display:none!important;
+  }
+}
+
+@media(max-width:480px){
+  #mojplot-chat.kp-mode-config{
+    height:calc(100dvh - 14px)!important;
+    max-height:calc(100dvh - 14px)!important;
+    bottom:7px!important;
+  }
+  #mojplot-chat.kp-mode-config #calcContent{
+    padding:10px 12px 12px!important;
+  }
+  #mojplot-chat.kp-mode-config .kp-preview.kp-preview-photo{
+    height:198px!important;
+    min-height:198px!important;
+  }
+}
