@@ -74,7 +74,7 @@
   }
 
   function assetUrl(shape, color, size){
-    return 'assets/monument-' + shape + '-' + color + '-' + size + '.webp?v=31';
+    return 'assets/monument-' + shape + '-' + color + '-' + size + '.webp?v=33';
   }
 
   function configLabel(shape, color, size){
@@ -615,8 +615,8 @@
   function brandMarkHtml(sizeClass){
     return '<div class="kp-brand-logo kp-simple-logo '+(sizeClass || '')+'">' +
       '<svg class="kp-simple-logo-svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false">' +
-        '<path class="kp-logo-chat-outline" d="M17 24.5C17 19.8 20.8 16 25.5 16h13C43.2 16 47 19.8 47 24.5v9.6c0 4.7-3.8 8.5-8.5 8.5h-7.1L20.8 49v-8.1A8.4 8.4 0 0 1 17 33.8v-9.3Z"/>' +
-        '<path class="kp-logo-chat-line" d="M25.5 28.2h13M25.5 34.8h9.4"/>' +
+        '<path class="kp-logo-chat-outline" d="M10 22C10 15.1 15.6 9.5 22.5 9.5h19C48.4 9.5 54 15.1 54 22v13.4C54 42.3 48.4 48 41.5 48h-9.8L15 57.2V45.6A12.5 12.5 0 0 1 10 35.4V22Z"/>' +
+        '<path class="kp-logo-chat-line" d="M22.5 27.2h19M22.5 35.8h14.6"/>' +
       '</svg>' +
     '</div>';
   }
@@ -675,8 +675,8 @@
     if(hs) hs.textContent = 'AI asistent a konfigurátor';
     if(ctaTitle) ctaTitle.textContent = 'Konfigurátor pomníka Jantár';
     if(ctaSub) ctaSub.textContent = 'Tvar, veľkosť, kameň, nápis a AI asistent v pár krokoch.';
-    if(teaserTitle) teaserTitle.textContent = 'Kamenárstvo Jantár online';
-    if(teaserText) teaserText.innerHTML = 'Vyberte <b>tvar, materiál a nápis</b> jednoducho.';
+    if(teaserTitle) teaserTitle.textContent = 'Kalkulačka + AI chatbot';
+    if(teaserText) teaserText.innerHTML = 'Vyberte <b>tvar, kameň a nápis</b>. Bot poradí s cenou.';
     if(window.MC && MC.s && MC.s.sk){
       MC.s.sk.hdrTitle = 'Kamenárstvo Jantár';
       MC.s.sk.welcome = 'Dobrý deň. Som <b>AI asistent Kamenárstva Jantár</b>. Pomôžem vám vybrať tvar, veľkosť, kameň a nápis pre dôstojný pomník.';
