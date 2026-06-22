@@ -74,7 +74,7 @@
   }
 
   function assetUrl(shape, color, size){
-    return 'assets/monument-' + shape + '-' + color + '-' + size + '.webp?v=34';
+    return 'assets/monument-' + shape + '-' + color + '-' + size + '.webp?v=36';
   }
 
   function configLabel(shape, color, size){

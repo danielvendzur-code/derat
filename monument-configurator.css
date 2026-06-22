@@ -4078,3 +4078,114 @@ body{background:transparent!important}
     min-height:198px!important;
   }
 }
+
+/* v35: brown contact controls and tighter book inscription placement. */
+#mojplot-chat .mc-cbar .mc-ct,
+#mojplot-chat.kp-mode-chat .mc-cbar .mc-ct{
+  color:#33251b!important;
+  background:#fffaf4!important;
+  border-color:#d8c7b2!important;
+}
+
+#mojplot-chat .mc-cbar .mc-ct:hover,
+#mojplot-chat .mc-cbar .mc-ct.wa:hover,
+#mojplot-chat .mc-cbar .mc-ct.ph:hover,
+#mojplot-chat .mc-cbar .mc-ct.em:hover,
+#mojplot-chat.kp-mode-chat .mc-cbar .mc-ct:hover{
+  color:#241a14!important;
+  background:#f1e6d9!important;
+  border-color:#80603d!important;
+}
+
+#mojplot-chat .mc-cbar .mc-ct .mc-ci,
+#mojplot-chat .mc-cbar .mc-ct.wa .mc-ci,
+#mojplot-chat .mc-cbar .mc-ct.ph .mc-ci,
+#mojplot-chat .mc-cbar .mc-ct.em .mc-ci,
+#mojplot-chat .mc-cbar .mc-ct.wa .mc-wa-icon,
+#mojplot-chat.kp-mode-chat .mc-cbar .mc-ct .mc-ci,
+#mojplot-chat.kp-mode-chat .mc-cbar .mc-ct.wa .mc-ci{
+  background:#6f5134!important;
+  background-image:none!important;
+  box-shadow:0 6px 14px rgba(51,37,27,.16)!important;
+}
+
+#mojplot-chat .mc-cbar .mc-ct .mc-ci:before,
+#mojplot-chat .mc-cbar .mc-ct .mc-ci::before,
+#mojplot-chat .mc-cbar .mc-ct.wa .mc-ci:before,
+#mojplot-chat .mc-cbar .mc-ct.ph .mc-ci:before,
+#mojplot-chat .mc-cbar .mc-ct.em .mc-ci:before{
+  background:#3f2d22!important;
+}
+
+#mojplot-chat .mc-cbar .mc-ct .mc-ci svg,
+#mojplot-chat .mc-cbar .mc-ct.wa .mc-ci svg,
+#mojplot-chat .mc-cbar .mc-ct.ph .mc-ci svg,
+#mojplot-chat .mc-cbar .mc-ct.em .mc-ci svg,
+#mojplot-chat .mc-cbar .mc-ct.wa .mc-wa-icon svg{
+  fill:#fffaf4!important;
+}
+
+#mojplot-chat .kp-insc-book.kp-insc-urn{
+  left:63.1%!important;
+  top:40.8%!important;
+  max-width:10.6%!important;
+  font-size:8.8px!important;
+}
+
+#mojplot-chat .kp-insc-book.kp-insc-single{
+  left:62.3%!important;
+  top:39.1%!important;
+  max-width:12.1%!important;
+  font-size:9.8px!important;
+}
+
+#mojplot-chat .kp-insc-book.kp-insc-double{
+  left:61.1%!important;
+  top:38.6%!important;
+  max-width:13.3%!important;
+  font-size:10.1px!important;
+}
+
+#mojplot-chat .kp-insc-book.kp-insc-mid{
+  font-size:7.9px!important;
+  max-width:12.6%!important;
+  line-height:1!important;
+}
+
+#mojplot-chat .kp-insc-book.kp-insc-long{
+  font-size:6.9px!important;
+  max-width:13.4%!important;
+  line-height:.98!important;
+}
+
+/* v36: book shape inscription is intentionally smaller and centred on the right slab. */
+#mojplot-chat .kp-insc-book.kp-insc-urn{
+  left:61.8%!important;
+  top:41.1%!important;
+  max-width:9.8%!important;
+  font-size:8.2px!important;
+}
+
+#mojplot-chat .kp-insc-book.kp-insc-single{
+  left:61.2%!important;
+  top:39.5%!important;
+  max-width:11.2%!important;
+  font-size:9.1px!important;
+}
+
+#mojplot-chat .kp-insc-book.kp-insc-double{
+  left:60.6%!important;
+  top:38.9%!important;
+  max-width:12.4%!important;
+  font-size:9.4px!important;
+}
+
+#mojplot-chat .kp-insc-book.kp-insc-mid{
+  font-size:7.2px!important;
+  max-width:11.2%!important;
+}
+
+#mojplot-chat .kp-insc-book.kp-insc-long{
+  font-size:6.4px!important;
+  max-width:12.2%!important;
+}
