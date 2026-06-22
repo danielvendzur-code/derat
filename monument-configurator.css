@@ -3736,3 +3736,42 @@ body{background:transparent!important}
     max-width:26%!important;
   }
 }
+
+/* v30: final clean single-ring launcher mark. */
+#mojplot-bubble .kp-brand-logo,
+#mojplot-bubble .kp-brand-logo.kp-brand-config,
+#mojplot-bubble .kp-simple-logo{
+  width:100%!important;
+  height:100%!important;
+  border:0!important;
+  outline:0!important;
+  background:#ffffff!important;
+  background-image:none!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
+
+#mojplot-bubble .kp-simple-logo-svg{
+  width:56%!important;
+  height:56%!important;
+  filter:none!important;
+}
+
+#mojplot-bubble .kp-logo-chat-outline,
+#mojplot-bubble .kp-logo-chat-line{
+  fill:none!important;
+  stroke:#33251b!important;
+  stroke-width:4!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+
+/* v31: keep the launcher circular; only the outer button owns the border/fill. */
+#mojplot-bubble .kp-brand-logo,
+#mojplot-bubble .kp-brand-logo.kp-brand-config,
+#mojplot-bubble .kp-simple-logo{
+  background:transparent!important;
+  background-image:none!important;
+  border-radius:50%!important;
+  overflow:visible!important;
+}
