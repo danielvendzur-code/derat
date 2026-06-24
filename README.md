@@ -10,6 +10,7 @@ Dizajn a UX sú inšpirované konfigurátorom **„Môj plot"**, prefarbené do 
 ## Čo widget vie
 - 💬 **Chatbot** – odpovedá na časté otázky (hlodavce, hmyz, osy, plesne/vírusy,
   postup zásahu, bezpečnosť, cena, doprava a región) s „typing" indikátorom.
+  Konverzácia sa lokálne uloží v prehliadači a dá sa vymazať resetom.
 - 🧮 **Dynamická kalkulačka** s peknými, stručnými otázkami:
   1. *Akú službu potrebujete?* – deratizácia / dezinsekcia / dezinfekcia (karty s **fotkami**)
   2. *Čoho presne sa potrebujete zbaviť?* – konkrétny škodca + info box s vysvetlením
@@ -25,7 +26,8 @@ Dizajn a UX sú inšpirované konfigurátorom **„Môj plot"**, prefarbené do 
 - 🔁 **Prepínač DPH** – výslednú cenu možno jedným klikom zobraziť bez DPH alebo s DPH.
 - 📝 **Vysvetlenia presne podľa derat.sk** – info boxy a postup zásahu.
 - 📩 **Odoslanie dopytu** – funguje hneď (predvyplnený **e-mail** alebo **WhatsApp**),
-  voliteľne cez **EmailJS** alebo vlastný backend.
+  voliteľne cez **EmailJS** alebo vlastný backend. Payload obsahuje aj štruktúrovanú
+  cenu zásahu, DPH, dopravu, materiál, doplnky, stránku a session ID.
 - ✨ Animácie (bublina, prechody krokov, count-up ceny) · rešpektuje `prefers-reduced-motion`.
 - 📱 Plne responzívne (na mobile fullscreen).
 
@@ -42,12 +44,21 @@ web normálne klikateľný. Ak sa použije `iframe`, jeho desktopový rám má b
 `470 × 760 px` a umiestnený vpravo dole; priehľadný celostránkový iframe by blokoval kliknutia
 na stránke pod ním.
 
+Widget pri behu v `iframe` posiela rodičovskej stránke správy:
+`{ source:'derat-chat', type:'ready' | 'open' | 'open-calc' | 'close' | 'lead-sent' }`.
+Rodič môže poslať späť `{ source:'derat-parent', type:'open' | 'open-calc' | 'close' }`,
+aby chat otvoril alebo zavrel bez vlastného hackovania DOM-u.
+
 ## Nastavenia (na začiatku `<script>`)
 ```js
 const CONFIG={
   phone:'+421905648129', phoneText:'+421 905 648 129',
   email:'info@derat.sk', whatsapp:'421905648129',
   leadEndpoint:'',                                   // voliteľný backend (POST JSON)
+  requestTimeoutMs:6000,                             // fallback po 6 sekundách
+  storageKey:'derat_chat_history_v1',                // lokálna história chatu
+  sessionKey:'derat_session_id',                     // stále ID dopytu/session
+  embedOrigin:'*',                                   // postMessage origin pri iframe embede
   emailjs:{publicKey:'', serviceId:'', templateId:''} // voliteľný EmailJS
 };
 ```
