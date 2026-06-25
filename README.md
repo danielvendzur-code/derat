@@ -30,7 +30,7 @@ Na začiatku `<script>` je objekt `CONFIG` — upravte podľa firmy:
 ```js
 const CONFIG = {
   phone:'+421905648129', phoneText:'+421 905 648 129',
-  email:'info@derat.sk', whatsapp:'421905648129',
+  email:'farkas.ivan@centrum.sk', whatsapp:'421905648129',
   leadEndpoint:'',            // URL kam sa POST-ne dopyt z formulára (alebo nechajte EmailJS / mailto)
   chatApi:'',                 // URL AI backendu, napr. '/api/chat' (prázdne = lokálne odpovede)
   travelPerKm:0.45, travelFreeKm:30,   // cestovné podľa PSČ (sídlo Bratislava)
@@ -79,3 +79,10 @@ Reálne ceny, oblasti pôsobenia, otváracie hodiny a ďalšie údaje — pozri
 **`OTAZKY-PRE-MAJITELA.md`**.
 
 > Ceny v kalkulačke sú **orientačné**; konečná suma sa potvrdzuje po obhliadke.
+
+
+## 4) História konverzácie
+
+Chat si **pamätá konverzáciu** aj po obnovení stránky — ukladá sa do prehliadača
+návštevníka (`localStorage`, drží sa 7 dní). Pri opätovnom otvorení sa správy obnovia.
+Tlačidlo **↻ (reset)** v hlavičke históriu vymaže a začne odznova.

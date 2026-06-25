@@ -785,21 +785,25 @@ const PSC_KM={'80':0,'81':0,'82':0,'83':0,'84':0,'85':0,'90':25,'91':80,'92':70,
 function pscKm(psc){const p=String(psc).replace(/\s/g,'');if(p.length<2)return null;const t=p.slice(0,2);if(t in PSC_KM)return PSC_KM[t];const F={'8':0,'9':120,'0':300};return p[0] in F?F[p[0]]:120;}
 function travelFee(km){if(km==null)return null;return km<=CONFIG.travelFreeKm?0:Math.round(km*CONFIG.travelPerKm);}
 
-function add(html,who){const r=document.createElement('div');r.className='dr-row '+(who||'bot');r.innerHTML=(who==='me'?'':'<span class="dr-av">'+MOUSE+'</span>')+'<div class="dr-b '+(who||'bot')+'">'+html+'</div>';msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;}
+function add(html,who){const r=document.createElement('div');r.className='dr-row '+(who||'bot');r.innerHTML=(who==='me'?'':'<span class="dr-av">'+MOUSE+'</span>')+'<div class="dr-b '+(who||'bot')+'">'+html+'</div>';msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;saveChat();}
+/* ===== História konverzácie (uložená v prehliadači, drží sa aj po obnovení stránky) ===== */
+function saveChat(){if(!msgs||!msgs.dataset.i)return;try{localStorage.setItem('derat_chat',JSON.stringify({h:msgs.innerHTML,k:state.chatHistory,t:Date.now()}));}catch(e){}}
+function loadChat(){try{const d=JSON.parse(localStorage.getItem('derat_chat')||'null');if(d&&d.h&&(Date.now()-(d.t||0))<6048e5){msgs.innerHTML=d.h;state.chatHistory=Array.isArray(d.k)?d.k:[];msgs.dataset.i='1';msgs.scrollTop=msgs.scrollHeight;return true;}}catch(e){}return false;}
+function clearChat(){try{localStorage.removeItem('derat_chat');}catch(e){}}
 /* HTML-bezpečný výrez na n viditeľných znakov (tagy ostávajú celé) */
 function htmlSlice(html,n){let out='',c=0,i=0;while(i<html.length&&c<n){const ch=html[i];if(ch==='<'){const j=html.indexOf('>',i);out+=html.slice(i,j+1);i=j+1;}else if(ch==='&'){const j=html.indexOf(';',i);out+=html.slice(i,j+1);i=j+1;c++;}else{out+=ch;i++;c++;}}while(i<html.length&&html[i]==='<'){const j=html.indexOf('>',i);out+=html.slice(i,j+1);i=j+1;}return out;}
 function visLen(html){let c=0,i=0;while(i<html.length){if(html[i]==='<'){i=html.indexOf('>',i)+1;}else if(html[i]==='&'){i=html.indexOf(';',i)+1;c++;}else{i++;c++;}}return c;}
 /* uvítacia správa s typewriter efektom + chipy nabehnú po jednom */
 function botType(html,done){const r=document.createElement('div');r.className='dr-row bot';r.innerHTML='<span class="dr-av">'+MOUSE+'</span><div class="dr-b bot"><div class="dr-typing"><span></span><span></span><span></span></div></div>';msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;
   const b=r.querySelector('.dr-b'),total=visLen(html);
-  setTimeout(()=>{let n=0;(function tick(){n++;b.innerHTML=htmlSlice(html,n)+'<span class="dr-cur"></span>';msgs.scrollTop=msgs.scrollHeight;if(n<total)setTimeout(tick,8);else{b.innerHTML=html;done&&done();}})();},300);}
-function bot(html){const r=document.createElement('div');r.className='dr-row bot';r.innerHTML='<span class="dr-av">'+MOUSE+'</span><div class="dr-b bot"><div class="dr-typing"><span></span><span></span><span></span></div></div>';msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;setTimeout(()=>{r.querySelector('.dr-b').innerHTML=html;msgs.scrollTop=msgs.scrollHeight;},380);}
+  setTimeout(()=>{let n=0;(function tick(){n++;b.innerHTML=htmlSlice(html,n)+'<span class="dr-cur"></span>';msgs.scrollTop=msgs.scrollHeight;if(n<total)setTimeout(tick,8);else{b.innerHTML=html;saveChat();done&&done();}})();},300);}
+function bot(html){const r=document.createElement('div');r.className='dr-row bot';r.innerHTML='<span class="dr-av">'+MOUSE+'</span><div class="dr-b bot"><div class="dr-typing"><span></span><span></span><span></span></div></div>';msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;setTimeout(()=>{r.querySelector('.dr-b').innerHTML=html;msgs.scrollTop=msgs.scrollHeight;saveChat();},380);}
 /* AI odpoveď: ak je nastavený CONFIG.chatApi, volá backend; inak lokálny fallback reply() */
 function botReply(userText){
   const r=document.createElement('div');r.className='dr-row bot';
   r.innerHTML='<span class="dr-av">'+MOUSE+'</span><div class="dr-b bot"><div class="dr-typing"><span></span><span></span><span></span></div></div>';
   msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;
-  const show=(content,trusted)=>{const html=trusted?content:esc(content).replace(/\n/g,'<br>');const b=r.querySelector('.dr-b');if(b)b.innerHTML=html;msgs.scrollTop=msgs.scrollHeight;state.chatHistory.push({role:'assistant',content:html.replace(/<[^>]+>/g,' ').trim()});};
+  const show=(content,trusted)=>{const html=trusted?content:esc(content).replace(/\n/g,'<br>');const b=r.querySelector('.dr-b');if(b)b.innerHTML=html;msgs.scrollTop=msgs.scrollHeight;state.chatHistory.push({role:'assistant',content:html.replace(/<[^>]+>/g,' ').trim()});saveChat();};
   state.chatHistory.push({role:'user',content:userText});
   if(CONFIG.chatApi){
     fetch(CONFIG.chatApi,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:userText,history:state.chatHistory.slice(-12)})})
@@ -819,6 +823,15 @@ function reply(t){const x=t.toLowerCase();
   if(/(postup|prebieha|ako to|obhliad|zásah|zasah|garanc)/.test(x))return PROCESS;
   if(/(bezpeč|bezpec|deti|dieťa|dieta|zviera|domác|pes|mač)/.test(x))return 'Používame certifikované prípravky a moderné technológie s ohľadom na účinnosť aj životné prostredie. Po zásahu odovzdáme pokyny ohľadom detí a domácich zvierat.';
   if(/(kde|región|region|okres|mesto|bratislav|dojazd|cestuj)/.test(x))return 'Pôsobíme po celom Slovensku, ťažisko Bratislava a okolie. Termín a dojazd potvrdíme telefonicky na '+CONFIG.phoneText+'.';
+  if(/(termín|termin|objedn|rezerv|prísť|prist|prídete|pridete|kedy.*môž|dohodn)/.test(x))return 'Termín radi dohodneme — najrýchlejšie telefonicky na <b>'+CONFIG.phoneText+'</b>, alebo vyplňte dopyt v <b>kalkulačke</b> a ozveme sa vám.';
+  if(/(hodin|otvor|dostupn|víkend|vikend|nonstop|24\/7|pohotov|sviatok)/.test(x))return 'Ozvite sa kedykoľvek cez formulár; telefonicky vás kontaktujeme čo najskôr. Súrne prípady a víkendy vieme riešiť po dohode (môže byť príplatok).';
+  if(/(záruk|zaruk|garan)/.test(x))return 'Na zásah dávame záruku — pri škodcoch, ktorí vyžadujú opakované ošetrenie (ploštice, šváby, hlodavce), je kontrolný zásah súčasťou. Detaily potvrdíme pri obhliadke.';
+  if(/(platb|platit|hotovos|kartou|karta|faktúr|faktur|prevod)/.test(x))return 'Platba je možná v hotovosti aj na faktúru/prevodom. Firmám vystavíme doklad o zásahu (vhodné pre HACCP/hygienu).';
+  if(/(diskrét|diskret|anonym|nenápad|nenapad|sused|nezbada)/.test(x))return 'Pracujeme <b>diskrétne</b> — bez nápadného označenia. Vaše súkromie je pre nás dôležité.';
+  if(/(kuna|lasic|kun)/.test(x))return 'Kuny a lasice riešime odchytom a zábranami. Napíšte lokalitu a rozsah, prípadne v kalkulačke zvoľte Deratizácia → „Iné".';
+  if(/(moľ|mole|mol\b|moley)/.test(x))return 'Mole (potravinové aj šatové) likvidujeme dezinsekciou — postrekom a feromónovými lapačmi. V kalkulačke zvoľte Dezinsekcia.';
+  if(/(kontakt|telefón|telefon|e-?mail|mail|zavol|čísl|cisl)/.test(x))return 'Kontakt: 📞 <b>'+CONFIG.phoneText+'</b> · ✉️ '+CONFIG.email+'. Napíšte aj cez WhatsApp alebo nechajte dopyt v kalkulačke.';
+  if(/(ďakuj|dakuj|vďak|vdak|super|skvel|ok\b|dík|dik)/.test(x))return 'Nie je za čo! 🙂 Ak budete potrebovať cenu, otvorte <b>kalkulačku</b> — alebo zavolajte na '+CONFIG.phoneText+'.';
   if(/(ahoj|dobrý|dobry|zdrav|čau|cau)/.test(x))return 'Dobrý deň 👋 Akého škodcu riešite — myši, šváby, ploštice, plesne? Alebo otvorte <b>kalkulačku</b> pre orientačnú cenu.';
   return 'Pomôžem so škodcami — deratizácia, dezinsekcia a dezinfekcia. Napíšte konkrétneho škodcu, otvorte <b>kalkulačku</b>, alebo zavolajte na '+CONFIG.phoneText+'.';
 }
@@ -991,9 +1004,12 @@ window.DERAT={
   toggle(){state.open?this.close():this.open();},
   hideTeaser(){const t=$('dr-teaser');if(t)t.classList.remove('show');const p=document.querySelector('.dr-point');if(p)p.classList.add('gone');},
   open(){state.open=true;chat.classList.add('show');chat.setAttribute('aria-hidden','false');$('derat-bubble').classList.add('open');this.hideTeaser();
-    if(!msgs.dataset.i){msgs.dataset.i='1';botType(WELCOME,()=>{const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('reveal');});}
-    else{const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('reveal');}},
-  reset(){if(chat.classList.contains('calc'))this.closeCalc();msgs.innerHTML='';msgs.dataset.i='1';state.unlocked=false;state.chatHistory=[];
+    const reveal=()=>{const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('reveal');};
+    if(msgs.dataset.i)reveal();                       // už beží v tejto relácii
+    else if(loadChat())reveal();                      // obnov uloženú históriu (po reloade stránky)
+    else{msgs.dataset.i='1';botType(WELCOME,reveal);} // prvá návšteva → privítanie
+  },
+  reset(){if(chat.classList.contains('calc'))this.closeCalc();msgs.innerHTML='';msgs.dataset.i='1';state.unlocked=false;state.chatHistory=[];clearChat();
     const ch=document.querySelector('.dr-chips');if(ch)ch.classList.remove('reveal');
     botType(WELCOME,()=>{if(ch)ch.classList.add('reveal');});},
   close(){state.open=false;chat.classList.remove('show','calc');chat.setAttribute('aria-hidden','true');$('derat-bubble').classList.remove('open');},
