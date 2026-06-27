@@ -1,82 +1,88 @@
-# DERAT.sk – AI asistent & cenová kalkulačka
+# DERAT — chatbot + cenová kalkulačka
 
-Samostatný widget (jeden súbor `index.html`) pre web **derat.sk**. Plávajúca bublina
-vpravo dole otvorí asistenta, ktorý poradí so škodcami a obsahuje prepracovanú
-**cenovú kalkulačku s reálnymi fotkami**.
+Samostatný widget (chat asistent + cenová kalkulačka) pre web firmy na deratizáciu,
+dezinsekciu a dezinfekciu. Celý frontend je v jednom súbore **`index.html`** (HTML + CSS + JS,
+bez závislostí). AI odpovede chatu zabezpečuje malý backend (`api/chat.js` alebo `api/chat.php`).
 
-Dizajn a UX sú inšpirované konfigurátorom **„Môj plot"**, prefarbené do brandu
-**derat.sk**: zelená `#406618`, červená `#c63a27`, font **Poppins**.
+---
 
-## Čo widget vie
-- 💬 **Chatbot** – odpovedá na časté otázky (hlodavce, hmyz, osy, plesne/vírusy,
-  postup zásahu, bezpečnosť, cena, doprava a región) s „typing" indikátorom.
-  Konverzácia sa lokálne uloží v prehliadači a dá sa vymazať resetom.
-- 🧮 **Dynamická kalkulačka** s peknými, stručnými otázkami:
-  1. *Akú službu potrebujete?* – deratizácia / dezinsekcia / dezinfekcia (karty s **fotkami**)
-  2. *Čoho presne sa potrebujete zbaviť?* – konkrétny škodca + info box s vysvetlením
-  3. *Kde máme zasiahnuť?* – byt / dom / prevádzka / HoReCa / sklad / exteriér (karty s **fotkami**)
-  4. *Aká je veľkosť priestoru?* – rozhodujúca rozloha v m² alebo pri dezinfekcii objem v m³
-  5. *Ako veľký je problém?* – mierne / stredné / silné; podľa toho sa automaticky zvolí materiál
-  6. *Kde a kedy?* – Bratislava ako hlavná oblasť, PSČ, dojazd, víkend a sviatok
-  7. *Chcete doplnkové služby?* – šesť orientačne nacenených možností + vlastná požiadavka
-  8. *Vaša orientačná cena* – kompaktný rozpis bez DPH, s DPH a formulár dopytu
-- 📷 **Reálne fotky vo výberoch** – fotografie sú priamo v kartách služieb a priestorov,
-  bez samostatného horného náhľadu. Zdroje: oficiálne fotky derat.sk + Wikimedia Commons.
-- 💶 **Živá cena** – počas vypĺňania vidíte priebežnú orientačnú sumu; na konci animovaný súčet + rozpis.
-- 🔁 **Prepínač DPH** – výslednú cenu možno jedným klikom zobraziť bez DPH alebo s DPH.
-- 📝 **Vysvetlenia presne podľa derat.sk** – info boxy a postup zásahu.
-- 📩 **Odoslanie dopytu** – funguje hneď (predvyplnený **e-mail** alebo **WhatsApp**),
-  voliteľne cez **EmailJS** alebo vlastný backend. Payload obsahuje aj štruktúrovanú
-  cenu zásahu, DPH, dopravu, materiál, doplnky, stránku a session ID.
-- ✨ Animácie (bublina, prechody krokov, count-up ceny) · rešpektuje `prefers-reduced-motion`.
-- 📱 Plne responzívne (na mobile fullscreen).
+## 1) Rýchle nasadenie na stránku
 
-- 🐭 **Maskot** – usmievavá myš ako ikona asistenta (bublina, hlavička, avatary).
-- 💰 **Logické ceny** – počíta sa *cena za 1 zásah × počet zásahov* (rozsah), takže väčší problém = výrazne vyššia cena.
+**Možnosť A – celá stránka / iframe (najjednoduchšie)**
+Nahrajte `index.html` na hosting a vložte ho na web cez `<iframe>`, alebo ho použite ako
+samostatnú „pomocníkovu" stránku.
 
-## Vloženie do stránky
-Skopírujte blok medzi `<!-- WIDGET -->` (vrátane `<style>`, `<section>` a `<script>`)
-do šablóny webu. Blok `<div class="demo">…</div>` je len ukážkové pozadie – na ostrej
-stránke ho vynechajte. Súbor `@emailjs/browser` v `<head>` načítajte len ak chcete EmailJS.
+**Možnosť B – vloženie widgetu do existujúcej stránky (odporúčané)**
+Z `index.html` skopírujte tieto tri časti do svojej šablóny:
+1. obsah `<style>…</style>` (do `<head>`),
+2. widget markup — bloky `#dr-teaser`, `#derat-bubble` a `<section id="derat-chat">…</section>`
+   (tesne pred `</body>`),
+3. obsah `<script>…</script>` (tesne pred `</body>`).
 
-Priame vloženie kódu je vhodnejšie než celostránkový `iframe`: mimo otvoreného okna zostáva
-web normálne klikateľný. Ak sa použije `iframe`, jeho desktopový rám má byť najviac približne
-`470 × 760 px` a umiestnený vpravo dole; priehľadný celostránkový iframe by blokoval kliknutia
-na stránke pod ním.
+Widget je fixne ukotvený vpravo dole a nezasahuje do zvyšku stránky. Na mobile je fullscreen.
 
-Widget pri behu v `iframe` posiela rodičovskej stránke správy:
-`{ source:'derat-chat', type:'ready' | 'open' | 'open-calc' | 'close' | 'lead-sent' }`.
-Rodič môže poslať späť `{ source:'derat-parent', type:'open' | 'open-calc' | 'close' }`,
-aby chat otvoril alebo zavrel bez vlastného hackovania DOM-u.
+---
 
-## Nastavenia (na začiatku `<script>`)
+## 2) Nastavenia (`CONFIG` v `index.html`)
+
+Na začiatku `<script>` je objekt `CONFIG` — upravte podľa firmy:
+
 ```js
-const CONFIG={
+const CONFIG = {
   phone:'+421905648129', phoneText:'+421 905 648 129',
-  email:'info@derat.sk', whatsapp:'421905648129',
-  leadEndpoint:'',                                   // voliteľný backend (POST JSON)
-  requestTimeoutMs:6000,                             // fallback po 6 sekundách
-  storageKey:'derat_chat_history_v1',                // lokálna história chatu
-  sessionKey:'derat_session_id',                     // stále ID dopytu/session
-  embedOrigin:'*',                                   // postMessage origin pri iframe embede
-  emailjs:{publicKey:'', serviceId:'', templateId:''} // voliteľný EmailJS
+  email:'farkas.ivan@centrum.sk', whatsapp:'421905648129',
+  leadEndpoint:'',            // URL kam sa POST-ne dopyt z formulára (alebo nechajte EmailJS / mailto)
+  chatApi:'',                 // URL AI backendu, napr. '/api/chat' (prázdne = lokálne odpovede)
+  travelPerKm:0.45, travelFreeKm:30,   // cestovné podľa PSČ (sídlo Bratislava)
+  emailjs:{ publicKey:'', serviceId:'', templateId:'' }   // voliteľné odosielanie dopytu cez EmailJS
 };
 ```
-- **Ceny** sú orientačné a vstupy z cenníka sú bez DPH. Minimum výjazdu a práce je
-  `60 €`; výsledok sa dá prepnúť na cenu s DPH. Bratislava je hlavná oblasť a mimo nej
-  sa do výsledku orientačne pripočíta doplatok za dojazd.
-- Ploštice sa počítajú podľa rozlohy; rodinný dom má zachované cenníkové minimum `200 €`.
-- Pri hlodavcoch kalkulačka sama vyberie vhodný materiál podľa škodcu a miery zamorenia.
-- PSČ určuje orientačnú vzdialenosť z Bratislavy tam aj späť. Presná doprava sa potvrdí
-  podľa úplnej adresy.
-- Dopyt obsahuje cenu bez DPH, rozsah odhadu, cenu s DPH, dopravu, príplatok aj materiál.
-- **Fotky** sú v objekte `IMG` – stačí vymeniť URL (ideálne za vlastné fotky derat.sk).
-- **Texty** chatbota v `reply()`, vysvetlenia v poli `info` služieb a v `PROCESS`,
-  otázky v `QUESTIONS`.
+
+Ďalej v JS môžete upraviť: **`SERVICES`** (služby, škodcovia, ceny `base`/`rate`/`m`),
+**`PLACES`**, **`SEVERITY`**, **`ADDONS`**, **`IMG`** (fotky) a **`reply()`** (lokálne odpovede chatu).
+
+---
+
+## 3) AI odpovede chatu (backend)
+
+Bez backendu chat funguje na jednoduchých kľúčových slovách (`reply()`).
+Pre **plnohodnotné AI odpovede** nasaďte jeden z backendov a nastavte `CONFIG.chatApi`.
+
+### Vercel / Netlify / Node hosting
+1. Nasaďte `api/chat.js` ako serverless funkciu (na Verceli automaticky `/api/chat`).
+2. V projekte pridajte premennú prostredia `ANTHROPIC_API_KEY = sk-ant-…`.
+3. V `index.html`: `CONFIG.chatApi = '/api/chat'`.
+
+### Bežný webhosting (PHP)
+1. Nahrajte `api/chat.php` (napr. `https://vasadomena.sk/api/chat.php`).
+2. Nastavte `ANTHROPIC_API_KEY` (env premenná hostingu, alebo priamo v súbore).
+3. V `index.html`: `CONFIG.chatApi = 'https://vasadomena.sk/api/chat.php'`.
+
+> ⚠️ API kľúč **nikdy** nedávajte do frontendu — vždy len na backend.
+> Model je predvolene `claude-haiku-4-5` (rýchly a lacný); pre vyššiu kvalitu prepnite na
+> `claude-sonnet-4-6` v backende. Systémový prompt (čo bot vie o firme) upravte v backende.
+
+---
+
+## 4) Dopyty z kalkulačky
+
+Po vyplnení kontaktu sa dopyt odošle podľa nastavenia:
+- **`leadEndpoint`** – POST JSON na vašu URL (uložíte do DB / pošlete e-mail), alebo
+- **EmailJS** (`CONFIG.emailjs`) – odoslanie e-mailu z prehliadača, alebo
+- **fallback** – otvorí e-mailového klienta (mailto) / WhatsApp s predvyplneným dopytom.
+
+---
+
+## 5) Čo treba doplniť od firmy
+
+Reálne ceny, oblasti pôsobenia, otváracie hodiny a ďalšie údaje — pozri
+**`OTAZKY-PRE-MAJITELA.md`**.
 
 > Ceny v kalkulačke sú **orientačné**; konečná suma sa potvrdzuje po obhliadke.
 
-## Kredit k fotkám
-Fotografie priestorov, buriny, stromu a fogovania pochádzajú z **Wikimedia Commons**
-(voľná licencia, bez nutnosti platby). Fotky myši/švábov sú z derat.sk. Pred ostrým
-nasadením odporúčame nahradiť ich vlastnými fotkami z realizácií.
+
+## 4) História konverzácie
+
+Chat si **pamätá konverzáciu** aj po obnovení stránky — ukladá sa do prehliadača
+návštevníka (`localStorage`, drží sa 7 dní). Pri opätovnom otvorení sa správy obnovia.
+Tlačidlo **↻ (reset)** v hlavičke históriu vymaže a začne odznova.
