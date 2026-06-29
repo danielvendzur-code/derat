@@ -700,14 +700,15 @@ img{max-width:100%}
 .dr-bd-r.save b,.dr-bd-r.save span{color:var(--g)}
 
 /* Mojplot-inspired visual pass: fotky a výbery nech sú výrazné, nie zmenšené */
-#derat-chat{width:min(480px,calc(100vw - 36px));height:min(760px,calc(100dvh - 92px));max-height:760px;border-radius:22px;border:1px solid rgba(47,125,50,.24);box-shadow:0 22px 62px rgba(31,41,55,.24)}
-#derat-chat.calc{height:min(760px,calc(100dvh - 92px));max-height:760px}
+#derat-chat{top:14px!important;bottom:14px!important;right:18px!important;width:min(410px,calc(100vw - 32px));height:auto!important;max-height:calc(100dvh - 28px);border-radius:22px;border:1px solid rgba(47,125,50,.24);box-shadow:0 22px 62px rgba(31,41,55,.24)}
+#derat-chat.calc{top:14px!important;bottom:14px!important;width:min(410px,calc(100vw - 32px));height:auto!important;max-height:calc(100dvh - 28px)}
 .dr-head{background:linear-gradient(135deg,#2f7d32 0%,#256f29 58%,#1f5f23 100%)!important}
 .dr-head::before{content:"";position:absolute;right:-42px;top:-48px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.20),transparent 68%);pointer-events:none}
 .dr-head-logo{background:#fff!important;border-radius:15px!important;box-shadow:0 6px 16px rgba(47,125,50,.26),0 0 0 4px rgba(255,255,255,.16)}
 .dr-head-logo .dr-mouse path:first-of-type{fill:#2f7d32!important}
 .dr-head-logo .dr-mouse path:nth-of-type(2){fill:#fff!important;opacity:1}
 .dr-head-logo .dr-mouse path:nth-of-type(3){stroke:#2f7d32!important}
+.dr-head-logo .dr-calc-logo path:nth-of-type(3){stroke:#2f7d32!important;fill:none!important}
 .dr-msgs{background:linear-gradient(180deg,#ffffff 0%,#fbfdf9 100%);gap:10px}
 .dr-av{background:#fff;box-shadow:0 0 0 1px rgba(47,125,50,.20),0 4px 10px rgba(47,125,50,.14)}
 .dr-av .dr-mouse path:first-of-type{fill:#2f7d32!important}
@@ -731,11 +732,11 @@ img{max-width:100%}
 .dr-rowcard-bd b{font-size:15px!important}
 .dr-rowcard-bd span{font-size:11.3px!important}
 .dr-grid{gap:10px!important}
-.dr-pcard{height:154px!important;display:flex!important;grid-template-columns:none!important;padding:0!important;border-radius:18px!important;background:#0f172a!important}
+.dr-pcard{height:132px!important;display:flex!important;grid-template-columns:none!important;padding:0!important;border-radius:16px!important;background:#0f172a!important}
 .dr-pcard-img,.dr-pcard-svg{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:100%!important;flex:none!important;border-radius:0!important;background-size:cover!important;background-position:center!important;z-index:0}
 .dr-pcard-svg{background:linear-gradient(135deg,#2f7d32,#4f9a3d)!important}
 .dr-pcard::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(15,23,42,.06) 0%,rgba(15,23,42,.18) 42%,rgba(15,23,42,.82) 100%);pointer-events:none}
-.dr-pcard-bd{position:relative;z-index:2;flex:1;justify-content:flex-end!important;padding:54px 12px 12px!important;color:#fff!important;text-shadow:0 1px 8px rgba(0,0,0,.55)}
+.dr-pcard-bd{position:relative;z-index:2;flex:1;justify-content:flex-end!important;padding:42px 11px 11px!important;color:#fff!important;text-shadow:0 1px 8px rgba(0,0,0,.55)}
 .dr-pcard-bd b{font-size:14px!important;color:#fff!important}
 .dr-pcard-bd span{font-size:10.8px!important;color:rgba(255,255,255,.86)!important}
 .dr-scard{min-height:84px!important;padding:10px 8px!important;border-radius:14px!important}
@@ -749,8 +750,6 @@ img{max-width:100%}
 .dr-body.no-scroll{overflow:hidden!important}
 .dr-body.no-scroll .dr-more{display:none!important}
 .dr-body.can-scroll{overflow:auto!important}
-.dr-body.place-scroll{overflow:auto!important}
-.dr-body.place-scroll .dr-more{display:block!important}
 .dr-body.no-scroll .dr-info-txt p{font-size:10.6px;line-height:1.38}
 .dr-body.no-scroll .dr-info-h{padding:7px 10px}
 .dr-body.no-scroll .dr-info{margin-bottom:8px}
@@ -909,6 +908,7 @@ const IMG={
 /* Maskot – chatová bublina (biela na zelenom) */
 const WELCOME='Dobrý deň 👋 Som <b>DERAT asistent</b>. Pomôžem so škodcami — <b>deratizácia, dezinsekcia a dezinfekcia</b>. Napíšte, čo riešite, alebo si v <b>kalkulačke</b> spočítajte orientačnú cenu.';
 const MOUSE=`<svg class="dr-mouse" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13h40a8 8 0 0 1 8 8v22a8 8 0 0 1-8 8H31l-13 8v-8h-6a8 8 0 0 1-8-8V21a8 8 0 0 1 8-8Z" fill="#2f7d32"/><path d="M20 31.5 28 39l16-18" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 18h28" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".38"/></svg>`;
+const CALC_ICON=`<svg class="dr-mouse dr-calc-logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 8h24a7 7 0 0 1 7 7v34a7 7 0 0 1-7 7H20a7 7 0 0 1-7-7V15a7 7 0 0 1 7-7Z" fill="#2f7d32"/><path d="M22 17h20a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3H22a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3Z" fill="#fff"/><path d="M22 38h4M32 38h4M42 38h4M22 47h4M32 47h4M42 47h4" stroke="#2f7d32" stroke-width="4" stroke-linecap="round"/></svg>`;
 
 /* Ikony škodcov / priestorov (jednotná veľkosť, viewBox 64) */
 const I={
@@ -1055,6 +1055,7 @@ const state={open:false,step:0,photo:null,priceGross:false,priceAnim:0,hist:[],s
 const $=s=>document.getElementById(s);
 const chat=$('derat-chat'),msgs=$('dr-msgs'),calc=$('dr-calc'),inp=$('dr-in');
 $('dr-bub-ic').innerHTML=MOUSE;$('dr-logo').innerHTML=MOUSE;
+function setHeaderLogo(mode){$('dr-logo').innerHTML=mode==='calc'?CALC_ICON:MOUSE;}
 const CONTACT_URL={call:'tel:'+CONFIG.phone,mail:'mailto:'+CONFIG.email,wa:'https://wa.me/'+CONFIG.whatsapp};
 if(CONFIG.emailjs.publicKey&&window.emailjs){try{emailjs.init({publicKey:CONFIG.emailjs.publicKey});}catch(e){}}
 
@@ -1421,7 +1422,7 @@ function render(keep){
   calc.innerHTML=`
   <div class="dr-chead"><b>Cenová kalkulačka</b><button class="dr-x" onclick="DERAT.closeCalc()">×</button></div>
   <div class="dr-prog"><button class="dr-back" onclick="DERAT.prev()" ${first?'disabled':''}>‹</button><div class="dr-step-dots" style="--steps:${n}">${ST.map((_,i)=>`<i class="dr-step-dot${i<state.step?' done':''}${i===state.step?' active':''}" data-step="${i+1}"></i>`).join('')}</div><div class="dr-prog-n">${state.step+1}/${n}</div></div>
-  <div class="dr-body ${last?'can-scroll':k==='place'?'place-scroll':'no-scroll'}">
+  <div class="dr-body ${last?'can-scroll':'no-scroll'}">
     <h3 class="dr-q">${title}</h3><div class="dr-q-sub">${q[1]}</div>
     <div class="dr-stepbox" style="animation:drStepIn .42s cubic-bezier(.2,.85,.3,1)">${stepInner()}</div>
     <div class="dr-more" aria-hidden="true"><span>ďalej nižšie ▾</span></div>
@@ -1451,16 +1452,16 @@ window.DERAT={
   },
   toggle(){state.open?this.close():this.open();},
   hideTeaser(){const t=$('dr-teaser');if(t)t.classList.remove('show');const p=document.querySelector('.dr-point');if(p)p.classList.add('gone');},
-  open(){state.open=true;chat.classList.add('show');chat.setAttribute('aria-hidden','false');$('derat-bubble').classList.add('open');this.hideTeaser();
+  open(){state.open=true;setHeaderLogo(chat.classList.contains('calc')?'calc':'chat');chat.classList.add('show');chat.setAttribute('aria-hidden','false');$('derat-bubble').classList.add('open');this.hideTeaser();
     if(!msgs.dataset.i){msgs.dataset.i='1';botType(WELCOME,()=>{const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('reveal');});}
     else{const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('reveal');}
     postParent('open');},
   reset(){if(chat.classList.contains('calc'))this.closeCalc();msgs.innerHTML='';msgs.dataset.i='1';clearHistory();state.sent=null;
     const ch=document.querySelector('.dr-chips');if(ch)ch.classList.remove('reveal','gone');
     botType(WELCOME,()=>{if(ch)ch.classList.add('reveal');});},
-  close(){state.open=false;chat.classList.remove('show','calc');chat.setAttribute('aria-hidden','true');$('derat-bubble').classList.remove('open');postParent('close');},
-  openCalc(){this.open();chat.classList.add('calc');state.step=0;state.sent=null;state.priceGross=false;state.c.count=1;render();postParent('open-calc');},
-  closeCalc(){chat.classList.remove('calc');postParent('open');},
+  close(){state.open=false;chat.classList.remove('show','calc');setHeaderLogo('chat');chat.setAttribute('aria-hidden','true');$('derat-bubble').classList.remove('open');postParent('close');},
+  openCalc(){this.open();chat.classList.add('calc');setHeaderLogo('calc');state.step=0;state.sent=null;state.priceGross=false;state.c.count=1;render();postParent('open-calc');},
+  closeCalc(){chat.classList.remove('calc');setHeaderLogo('chat');postParent('open');},
   _hideChips(){const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('gone');},
   submit(e){if(e&&e.preventDefault)e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';add(esc(v),'me');this._hideChips();bot(reply(v));},
   quick(t){this.open();add(esc(t),'me');this._hideChips();bot(reply(t));},
