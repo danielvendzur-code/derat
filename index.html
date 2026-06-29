@@ -700,14 +700,14 @@ img{max-width:100%}
 .dr-bd-r.save b,.dr-bd-r.save span{color:var(--g)}
 
 /* Mojplot-inspired visual pass: fotky a výbery nech sú výrazné, nie zmenšené */
-#derat-chat{width:min(468px,calc(100vw - 36px));height:min(760px,calc(100dvh - 104px));max-height:760px;border-radius:20px;border:1px solid rgba(69,169,60,.22);box-shadow:0 20px 58px rgba(31,41,55,.22)}
-#derat-chat.calc{height:min(760px,calc(100dvh - 28px))}
-.dr-head{background:linear-gradient(135deg,#1f2937 0%,#111827 100%)!important}
-.dr-head::before{content:"";position:absolute;right:-42px;top:-48px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(69,169,60,.26),transparent 68%);pointer-events:none}
-.dr-head-logo{background:#fff!important;box-shadow:0 4px 12px rgba(69,169,60,.34),0 0 0 4px rgba(69,169,60,.10)}
-.dr-head-logo .dr-mouse path:first-of-type{fill:#45a93c!important}
-.dr-head-logo .dr-mouse path:nth-of-type(2){fill:#2e7d32!important;opacity:.18}
-.dr-head-logo .dr-mouse path:nth-of-type(3){stroke:#fff!important}
+#derat-chat{width:min(540px,calc(100vw - 28px));height:min(820px,calc(100dvh - 76px));max-height:820px;border-radius:22px;border:1px solid rgba(20,184,166,.24);box-shadow:0 24px 70px rgba(15,23,42,.26)}
+#derat-chat.calc{height:min(820px,calc(100dvh - 24px))}
+.dr-head{background:linear-gradient(135deg,#0f766e 0%,#0d9488 48%,#22c55e 100%)!important}
+.dr-head::before{content:"";position:absolute;right:-42px;top:-48px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.28),transparent 68%);pointer-events:none}
+.dr-head-logo{background:#fff!important;border-radius:16px!important;box-shadow:0 6px 16px rgba(15,118,110,.28),0 0 0 4px rgba(255,255,255,.16)}
+.dr-head-logo .dr-mouse path:first-of-type{fill:#0d9488!important}
+.dr-head-logo .dr-mouse path:nth-of-type(2){fill:#fff!important;opacity:1}
+.dr-head-logo .dr-mouse path:nth-of-type(3){stroke:#0d9488!important}
 .dr-msgs{background:linear-gradient(180deg,#ffffff 0%,#fbfdf9 100%);gap:10px}
 .dr-av{background:#fff;box-shadow:0 0 0 1px rgba(69,169,60,.20),0 4px 10px rgba(69,169,60,.14)}
 .dr-av .dr-mouse path:first-of-type{fill:#45a93c!important}
@@ -718,8 +718,8 @@ img{max-width:100%}
 .dr-b.me{background:#45a93c!important;color:#fff;border-radius:16px 16px 5px 16px;box-shadow:0 4px 14px rgba(69,169,60,.28)}
 .dr-top{background:#fff;border-bottom:1px solid #e2e6ea}
 .dr-cta{border-color:rgba(69,169,60,.30);background:linear-gradient(135deg,#f7faf4,#ffffff);box-shadow:0 8px 22px rgba(69,169,60,.11)}
-.dr-cta-ic,.dr-submit,.dr-next,.dr-first-min span{background:#45a93c!important}
-.dr-cta:hover .dr-cta-ic,.dr-cta:active .dr-cta-ic{background:#2e7d32!important}
+.dr-cta-ic,.dr-submit,.dr-next,.dr-first-min span{background:#0d9488!important}
+.dr-cta:hover .dr-cta-ic,.dr-cta:active .dr-cta-ic{background:#0f766e!important}
 .dr-chip{padding:9px 14px!important;font-size:12px!important;background:linear-gradient(145deg,#fff,#f3f8ec)!important;border-color:#d8e6d2;box-shadow:0 5px 13px rgba(46,74,17,.08)}
 .dr-chip:hover{background:#45a93c!important;color:#fff;border-color:#45a93c}
 .dr-first-min{margin-bottom:9px!important}
@@ -731,19 +731,21 @@ img{max-width:100%}
 .dr-rowcard-bd b{font-size:15px!important}
 .dr-rowcard-bd span{font-size:11.3px!important}
 .dr-grid{gap:10px!important}
-.dr-pcard{height:150px!important;display:flex!important;grid-template-columns:none!important;padding:0!important;border-radius:16px!important}
-.dr-pcard-img,.dr-pcard-svg{width:100%!important;height:98px!important;min-height:98px!important;flex:0 0 98px!important;border-radius:0!important}
-.dr-pcard-bd{padding:9px 11px!important}
-.dr-pcard-bd b{font-size:13px!important}
-.dr-pcard-bd span{font-size:10.5px!important}
+.dr-pcard{height:164px!important;display:flex!important;grid-template-columns:none!important;padding:0!important;border-radius:18px!important;background:#0f172a!important}
+.dr-pcard-img,.dr-pcard-svg{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:100%!important;flex:none!important;border-radius:0!important;background-size:cover!important;background-position:center!important;z-index:0}
+.dr-pcard-svg{background:linear-gradient(135deg,#0d9488,#22c55e)!important}
+.dr-pcard::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(15,23,42,.06) 0%,rgba(15,23,42,.18) 42%,rgba(15,23,42,.82) 100%);pointer-events:none}
+.dr-pcard-bd{position:relative;z-index:2;flex:1;justify-content:flex-end!important;padding:54px 12px 12px!important;color:#fff!important;text-shadow:0 1px 8px rgba(0,0,0,.55)}
+.dr-pcard-bd b{font-size:14px!important;color:#fff!important}
+.dr-pcard-bd span{font-size:10.8px!important;color:rgba(255,255,255,.86)!important}
 .dr-scard{min-height:84px!important;padding:10px 8px!important;border-radius:14px!important}
 .dr-scard-ic{width:44px!important;height:42px!important}
 .dr-scard-ic svg{width:42px!important;height:42px!important}
 .dr-scard b{font-size:12px!important}
-.dr-pcard.sel,.dr-rowcard.sel,.dr-scard.sel{border-color:#45a93c!important;box-shadow:0 0 0 3px rgba(69,169,60,.18),0 10px 24px rgba(31,41,55,.10)!important}
+.dr-pcard.sel,.dr-rowcard.sel,.dr-scard.sel{border-color:#0d9488!important;box-shadow:0 0 0 3px rgba(13,148,136,.22),0 10px 24px rgba(31,41,55,.12)!important}
 .dr-step-dots{gap:7px}
 .dr-step-dot.done{background:#9dd38e}
-.dr-step-dot.active{background:#45a93c;box-shadow:0 4px 10px rgba(69,169,60,.28)}
+.dr-step-dot.active{background:#0d9488;box-shadow:0 4px 10px rgba(13,148,136,.28)}
 .dr-body.no-scroll{overflow:hidden!important}
 .dr-body.no-scroll .dr-more{display:none!important}
 .dr-body.can-scroll{overflow:auto!important}
@@ -904,7 +906,7 @@ const IMG={
 
 /* Maskot – chatová bublina (biela na zelenom) */
 const WELCOME='Dobrý deň 👋 Som <b>DERAT asistent</b>. Pomôžem so škodcami — <b>deratizácia, dezinsekcia a dezinfekcia</b>. Napíšte, čo riešite, alebo si v <b>kalkulačke</b> spočítajte orientačnú cenu.';
-const MOUSE=`<svg class="dr-mouse" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="mGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse"><stop stop-color="#86c23f"/><stop offset="1" stop-color="#2e4a11"/></linearGradient></defs><path d="M32 4C16.5 4 4 15.5 4 29c0 8 4.5 15 11 19.5V58l11-6c2 .5 4 .5 6 .5 15.5 0 28-11 28-25S47.5 4 32 4z" fill="url(#mGrad)"/><path d="M32 15 L20 19 V31 C20 40 25 47 32 51 C39 47 44 40 44 31 V19 Z" fill="#fff" opacity="0.15"/><path d="M25 32 L30 37 L40 24" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const MOUSE=`<svg class="dr-mouse" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 13h40a8 8 0 0 1 8 8v22a8 8 0 0 1-8 8H31l-13 8v-8h-6a8 8 0 0 1-8-8V21a8 8 0 0 1 8-8Z" fill="#0d9488"/><path d="M20 31.5 28 39l16-18" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 18h28" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".38"/></svg>`;
 
 /* Ikony škodcov / priestorov (jednotná veľkosť, viewBox 64) */
 const I={
