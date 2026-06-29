@@ -4,10 +4,10 @@
 //  Volá Anthropic (Claude) API a vracia { "reply": "..." }.
 //
 //  NASTAVENIE:
-//   1) Nahrajte tento súbor na hosting (napr. https://vasadomena.sk/api/chat.php).
+//   1) Nahrajte tento súbor na PHP hosting (napr. https://vasadomena.sk/chat.php).
 //   2) Nastavte API kľúč — buď cez premennú prostredia ANTHROPIC_API_KEY,
 //      alebo doplňte priamo nižšie do $API_KEY (menej bezpečné).
-//   3) Vo widgete (index.html) nastavte:  CONFIG.chatApi = 'https://vasadomena.sk/api/chat.php'
+//   3) Vo widgete (index.html) nastavte:  CONFIG.chatApi = 'https://vasadomena.sk/chat.php'
 // ============================================================================
 
 header('Content-Type: application/json; charset=utf-8');

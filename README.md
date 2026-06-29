@@ -2,7 +2,7 @@
 
 Samostatný widget (chat asistent + cenová kalkulačka) pre web firmy na deratizáciu,
 dezinsekciu a dezinfekciu. Celý frontend je v jednom súbore **`index.html`** (HTML + CSS + JS,
-bez závislostí). AI odpovede chatu zabezpečuje malý backend (`api/chat.js` alebo `api/chat.php`).
+bez závislostí). AI odpovede chatu zabezpečuje malý backend (`api/chat.js` pre Vercel/Node alebo `php/chat.php` pre PHP hosting).
 
 ---
 
@@ -54,9 +54,9 @@ Pre **plnohodnotné AI odpovede** nasaďte jeden z backendov a nastavte `CONFIG.
 3. V `index.html`: `CONFIG.chatApi = '/api/chat'`.
 
 ### Bežný webhosting (PHP)
-1. Nahrajte `api/chat.php` (napr. `https://vasadomena.sk/api/chat.php`).
+1. Nahrajte `php/chat.php` na PHP hosting (napr. `https://vasadomena.sk/chat.php`).
 2. Nastavte `ANTHROPIC_API_KEY` (env premenná hostingu, alebo priamo v súbore).
-3. V `index.html`: `CONFIG.chatApi = 'https://vasadomena.sk/api/chat.php'`.
+3. V `index.html`: `CONFIG.chatApi = 'https://vasadomena.sk/chat.php'`.
 
 > ⚠️ API kľúč **nikdy** nedávajte do frontendu — vždy len na backend.
 > Model je predvolene `claude-haiku-4-5` (rýchly a lacný); pre vyššiu kvalitu prepnite na
