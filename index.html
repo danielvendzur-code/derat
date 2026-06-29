@@ -691,6 +691,63 @@ img{max-width:100%}
 .dr-vat-switch button{border:0;border-radius:9px;padding:8px 6px;background:transparent;color:var(--muted);font:800 10.5px var(--font);cursor:pointer}
 .dr-vat-switch button.on{background:#fff;color:var(--g-dk);box-shadow:0 3px 9px rgba(46,74,17,.13)}
 
+/* Mojplot-inspired visual pass: fotky a výbery nech sú výrazné, nie zmenšené */
+#derat-chat{width:min(468px,calc(100vw - 36px));height:min(760px,calc(100dvh - 104px));max-height:760px;border-radius:20px;border:1px solid rgba(69,169,60,.22);box-shadow:0 20px 58px rgba(31,41,55,.22)}
+#derat-chat.calc{height:min(760px,calc(100dvh - 28px))}
+.dr-head{background:linear-gradient(135deg,#1f2937 0%,#111827 100%)!important}
+.dr-head::before{content:"";position:absolute;right:-42px;top:-48px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(69,169,60,.26),transparent 68%);pointer-events:none}
+.dr-head-logo{background:#fff!important;box-shadow:0 4px 12px rgba(69,169,60,.34),0 0 0 4px rgba(69,169,60,.10)}
+.dr-head-logo .dr-mouse path:first-of-type{fill:#45a93c!important}
+.dr-head-logo .dr-mouse path:nth-of-type(2){fill:#2e7d32!important;opacity:.18}
+.dr-head-logo .dr-mouse path:nth-of-type(3){stroke:#fff!important}
+.dr-msgs{background:linear-gradient(180deg,#ffffff 0%,#fbfdf9 100%);gap:10px}
+.dr-av{background:#fff;box-shadow:0 0 0 1px rgba(69,169,60,.20),0 4px 10px rgba(69,169,60,.14)}
+.dr-av .dr-mouse path:first-of-type{fill:#45a93c!important}
+.dr-av .dr-mouse path:nth-of-type(2){fill:#2e7d32!important;opacity:.18}
+.dr-av .dr-mouse path:nth-of-type(3){stroke:#fff!important}
+.dr-b.bot{background:#f4f8f1!important;border:1px solid #dde7d8!important;border-left:0!important;color:#1f2937;border-radius:16px 16px 16px 5px;box-shadow:0 4px 14px rgba(31,41,55,.07)}
+.dr-b.bot b{color:#2e7d32}
+.dr-b.me{background:#45a93c!important;color:#fff;border-radius:16px 16px 5px 16px;box-shadow:0 4px 14px rgba(69,169,60,.28)}
+.dr-top{background:#fff;border-bottom:1px solid #e2e6ea}
+.dr-cta{border-color:rgba(69,169,60,.30);background:linear-gradient(135deg,#f7faf4,#ffffff);box-shadow:0 8px 22px rgba(69,169,60,.11)}
+.dr-cta-ic,.dr-submit,.dr-next,.dr-first-min span{background:#45a93c!important}
+.dr-cta:hover .dr-cta-ic,.dr-cta:active .dr-cta-ic{background:#2e7d32!important}
+.dr-chip{padding:9px 14px!important;font-size:12px!important;background:linear-gradient(145deg,#fff,#f3f8ec)!important;border-color:#d8e6d2;box-shadow:0 5px 13px rgba(46,74,17,.08)}
+.dr-chip:hover{background:#45a93c!important;color:#fff;border-color:#45a93c}
+.dr-first-min{margin-bottom:9px!important}
+.dr-rows{gap:9px!important}
+.dr-rowcard{min-height:96px!important;border-radius:16px!important}
+.dr-rowcard-img{flex:0 0 120px!important;width:120px!important;align-self:stretch!important;transform:none!important;transition:transform .35s cubic-bezier(.2,1,.2,1)!important}
+.dr-rowcard:hover .dr-rowcard-img{transform:scale(1.06)!important}
+.dr-rowcard-bd{padding:13px 8px 13px 15px!important}
+.dr-rowcard-bd b{font-size:15px!important}
+.dr-rowcard-bd span{font-size:11.3px!important}
+.dr-grid{gap:10px!important}
+.dr-pcard{height:150px!important;display:flex!important;grid-template-columns:none!important;padding:0!important;border-radius:16px!important}
+.dr-pcard-img,.dr-pcard-svg{width:100%!important;height:98px!important;min-height:98px!important;flex:0 0 98px!important;border-radius:0!important}
+.dr-pcard-bd{padding:9px 11px!important}
+.dr-pcard-bd b{font-size:13px!important}
+.dr-pcard-bd span{font-size:10.5px!important}
+.dr-scard{min-height:84px!important;padding:10px 8px!important;border-radius:14px!important}
+.dr-scard-ic{width:44px!important;height:42px!important}
+.dr-scard-ic svg{width:42px!important;height:42px!important}
+.dr-scard b{font-size:12px!important}
+.dr-pcard.sel,.dr-rowcard.sel,.dr-scard.sel{border-color:#45a93c!important;box-shadow:0 0 0 3px rgba(69,169,60,.18),0 10px 24px rgba(31,41,55,.10)!important}
+.dr-step-dots{gap:7px}
+.dr-step-dot.done{background:#9dd38e}
+.dr-step-dot.active{background:#45a93c;box-shadow:0 4px 10px rgba(69,169,60,.28)}
+.dr-body.no-scroll{overflow:hidden!important}
+.dr-body.no-scroll .dr-more{display:none!important}
+.dr-body.can-scroll{overflow:auto!important}
+.dr-body.no-scroll .dr-info-txt p{font-size:10.6px;line-height:1.38}
+.dr-body.no-scroll .dr-info-h{padding:7px 10px}
+.dr-body.no-scroll .dr-info{margin-bottom:8px}
+.dr-body.no-scroll .dr-area{padding:12px}
+.dr-body.no-scroll .dr-area-v{font-size:30px}
+.dr-body.no-scroll .dr-quick{margin-top:8px}
+.dr-body.no-scroll .dr-location{gap:8px}
+.dr-body.no-scroll .dr-method-note{margin-bottom:0;font-size:10px}
+
 @media (prefers-reduced-motion: reduce){
   .dr-head::after,#derat-chat.thinking .dr-beam,.dr-live,.dr-typing span,
   .dr-next::after,.dr-submit::after,.dr-prog-fill::after{animation:none!important}
@@ -968,14 +1025,14 @@ function flow(){const c=state.c;
     return true;
   });}
 const QUESTIONS={
-  service:['Čo potrebujete vyriešiť?','Vyberte jednu z troch služieb.'],
-  sub:['Akého škodcu ste si všimli?','Ak si nie ste istí, zvoľte „Iné / neviem“.'],
-  place:['Kde je problém?','Vyberte priestor, v ktorom má byť zásah.'],
-  area:['Aký veľký je priestor?','Stačí približný odhad rozlohy.'],
-  severity:['Ako často škodcu vidíte?','Vyberte možnosť, ktorá je najbližšie vašej situácii.'],
-  location:['Kde a kedy má byť zásah?','Bratislava je hlavná oblasť. Mimo nej sa pripočíta dojazd.'],
-  addons:['Potrebujete niečo navyše?','Tento krok je nepovinný.'],
-  result:['Vaša orientačná cena','Cenu si môžete prepnúť bez DPH alebo s DPH.']
+  service:['Čo riešite?','Vyberte službu.'],
+  sub:['Aký škodca?','Ak neviete, zvoľte „Iné“.'],
+  place:['Kde je problém?','Vyberte priestor.'],
+  area:['Aká rozloha?','Stačí odhad.'],
+  severity:['Aký výskyt?','Vyberte najbližšiu možnosť.'],
+  location:['Kde a kedy?','BA hlavná oblasť, mimo nej dojazd.'],
+  addons:['Doplnky?','Nepovinné.'],
+  result:['Cena zásahu','Prepínač bez DPH / s DPH.']
 };
 
 const state={open:false,step:0,photo:null,priceGross:false,priceAnim:0,hist:[],sent:null,c:{service:'deratizacia',sub:'potkany',place:'byt',area:70,severity:'stredne',visit:'weekday',loc:'',psc:'',addons:[],addonText:'',ineSize:1,ineText:''}};
@@ -1116,14 +1173,27 @@ function bot(html){const ts=timeStr(),r=document.createElement('div');r.classNam
   const b=r.querySelector('.dr-b'),total=visLen(html);
   setTimeout(()=>{let n=0;(function tick(){n++;b.innerHTML=htmlSlice(html,n)+'<span class="dr-cur"></span>';msgs.scrollTop=msgs.scrollHeight;if(n<total)setTimeout(tick,14);else{b.innerHTML=html;chat.classList.remove('thinking');saveMsg(html,'bot',ts);}})();},760);}
 const BOT_REPLIES=[
+  {rx:/(pracovn|otvoren|hodin|kedy|vikend|víkend|sobot|nedeľ|nedel|dostup)/,text:'Pracujeme <b>Po–Ne od 6:00 do 18:00</b>. Reštaurácie, hotely a prevádzky vieme riešiť aj individuálne po dohode.'},
+  {rx:/(rýchl|rychl|surne|súrne|urgent|ako skoro|prísť|prist|prichod|výjazd|vyjazd)/,text:'Pri bežnom urgentnom zásahu vieme prísť zvyčajne do <b>1–2 hodín</b>, podľa vyťaženia technika a lokality.'},
+  {rx:/(okruh|pôsob|posob|oblast|západ|zapad|slovensko|bratislav|ba\b)/,text:'Pôsobíme hlavne v <b>Bratislave a na západnom Slovensku</b>. Ďalšie lokality riešime po dohode.'},
+  {rx:/(záruk|zaruk|garanc)/,text:'Pri dodržaní podmienok poskytujeme na zásah <b>záruku 3 mesiace</b>. Podmienky vám technik vysvetlí po zásahu.'},
+  {rx:/(koľko zásah|kolko zasah|opakov|ploštic|plostic|šváb|svab|rus|hlodav)/,text:'Orientačne: <b>ploštice 2–3 zásahy</b>, <b>šváby/rusy 2 zásahy</b>. Pri hlodavcoch odporúčame monitoring a zásahy najmä jar/jeseň.'},
+  {rx:/(priprav|pred zásah|pred zasah|potravin|odísť|odist|byt)/,text:'Prípravu vieme zabezpečiť my alebo podľa dohody. Počas samotného zásahu treba z priestoru odísť.'},
+  {rx:/(uprat|umýv|umyv|podlah|koľko dní|kolko dni)/,text:'Po zásahu neumývajte ošetrené okraje približne <b>3–5 dní</b>, najmä pás cca 20 cm pri stenách a sokloch.'},
+  {rx:/(diskr|označen|oznacen|auto|oblečen|oblecen|logo)/,text:'Zásahy robíme diskrétne: vieme prísť <b>bez označeného auta a bez loga na oblečení</b>.'},
+  {rx:/(platb|hotov|kart|fakt[uú]r|prevod)/,text:'Platba je možná hotovosťou, kartou, faktúrou aj prevodom.'},
+  {rx:/(protokol|haccp|gastro|potvrden|papier)/,text:'Áno, na požiadanie vystavíme <b>písomný protokol o zásahu</b>, napríklad pre gastro alebo HACCP.'},
+  {rx:/(obhliad|obhliadka|úvodn|uvodn|zdarma|spoplatnen)/,text:'Úvodná obhliadka je v Bratislave <b>zdarma</b>. Mimo BA ju potvrdíme podľa adresy a dojazdu.'},
+  {rx:/(firm|firma|reštaur|restaur|hotel|bytovk|prevádzk|prevadzk|objekt)/,text:'Áno, robíme byty, domy, firmy, reštaurácie, hotely, bytovky aj ďalšie objekty.'},
+  {rx:/(kun|kuna|lasic|odchyt|osie hniezd|osích hniezd|osich hniezd|likvidáci|likvidaci)/,text:'Áno, riešime aj likvidáciu osích hniezd a odchyt kún alebo lasíc.'},
   {rx:/(cena|stoj|koľko|kolko|cenn|lacn)/,text:'Minimálna cena výjazdu a práce je <b>60 € bez DPH</b>. Bratislava je naša hlavná oblasť; mimo nej sa pripočíta doplatok za dojazd. Presnejší odhad získate v kalkulačke.'},
   {rx:/(my[šs]|potkan|hlodav|hraboš|hrabos|hryz)/,text:'Hlodavce (potkany, myši, hraboše) riešime <b>deratizáciou</b> — chemickými nástrahami alebo odchytovými klietkami a pascami. V kalkulačke vyberte Deratizáciu.'},
   {rx:/(šváb|svab|rus|hmyz|mravc|ploštic|plostic|blch|much)/,text:'Lezúci aj lietajúci hmyz likvidujeme <b>dezinsekciou</b> — postrekom, zadymovaním, plynovaním či nástrahami. Pri plošticiach odporúčame opakovaný zásah.'},
   {rx:/(os[ay]|sršn|srsn|včel|hniezd)/,text:'Hniezda ôs a sršňov odstraňujeme bezpečne. V kalkulačke zvoľte Dezinsekcia → Osy alebo Sršne; orientačná cena podľa cenníka je 120 € pri osách a 130 € pri sršňoch bez DPH.'},
   {rx:/(plesn|baktér|bakter|vírus|virus|dezinf|covid|holub|kanaliz)/,text:'Robíme <b>polymérovú dezinfekciu</b> proti plesniam, vírusom a baktériám — vhodnú aj počas COVID-19, po havárii kanalizácie či pri výskyte holubov.'},
-  {rx:/(postup|prebieha|ako to|obhliad|zásah|zasah|garanc)/,text:PROCESS},
-  {rx:/(bezpeč|bezpec|deti|dieťa|dieta|zviera|domác|pes|mač)/,text:'Používame certifikované prípravky a moderné technológie s ohľadom na účinnosť aj životné prostredie. Po zásahu odovzdáme pokyny ohľadom detí a domácich zvierat.'},
-  {rx:/(kde|región|region|okres|mesto|bratislav|dojazd|cestuj|kilomet)/,text:'Pôsobíme po celom Slovensku. Bratislava je naša hlavná oblasť a mimo nej sa k zásahu pripočíta doplatok za dojazd podľa vzdialenosti.'},
+  {rx:/(postup|prebieha|ako to|zásah|zasah)/,text:PROCESS},
+  {rx:/(bezpeč|bezpec|deti|dieťa|dieta|zviera|domác|pes|mač)/,text:'Počas zásahu nesmú byť v priestore <b>deti ani domáce zvieratá</b>. Technik vám povie, kedy je bezpečné sa vrátiť.'},
+  {rx:/(kde|región|region|okres|mesto|dojazd|cestuj|kilomet)/,text:'Pôsobíme hlavne v Bratislave a na západnom Slovensku. Mimo Bratislavy sa k zásahu pripočíta dojazd podľa vzdialenosti.'},
   {rx:/(ahoj|dobrý|dobry|zdrav|čau|cau)/,text:'Dobrý deň 👋 Akého škodcu riešite — myši, šváby, ploštice, plesne? Alebo otvorte <b>kalkulačku</b> pre orientačnú cenu.'}
 ];
 function reply(t){const x=t.toLowerCase(),m=BOT_REPLIES.find(r=>r.rx.test(x));
@@ -1322,7 +1392,7 @@ function render(keep){
   calc.innerHTML=`
   <div class="dr-chead"><b>Cenová kalkulačka</b><button class="dr-x" onclick="DERAT.closeCalc()">×</button></div>
   <div class="dr-prog"><button class="dr-back" onclick="DERAT.prev()" ${first?'disabled':''}>‹</button><div class="dr-step-dots" style="--steps:${n}">${ST.map((_,i)=>`<i class="dr-step-dot${i<state.step?' done':''}${i===state.step?' active':''}" data-step="${i+1}"></i>`).join('')}</div><div class="dr-prog-n">${state.step+1}/${n}</div></div>
-  <div class="dr-body">
+  <div class="dr-body ${last?'can-scroll':'no-scroll'}">
     <h3 class="dr-q">${title}</h3><div class="dr-q-sub">${q[1]}</div>
     <div class="dr-stepbox" style="animation:drStepIn .42s cubic-bezier(.2,.85,.3,1)">${stepInner()}</div>
     <div class="dr-more" aria-hidden="true"><span>ďalej nižšie ▾</span></div>
