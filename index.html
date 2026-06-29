@@ -732,11 +732,11 @@ img{max-width:100%}
 .dr-rowcard-bd b{font-size:15px!important}
 .dr-rowcard-bd span{font-size:11.3px!important}
 .dr-grid{gap:10px!important}
-.dr-pcard{height:132px!important;display:flex!important;grid-template-columns:none!important;padding:0!important;border-radius:16px!important;background:#0f172a!important}
+.dr-pcard{height:122px!important;display:flex!important;grid-template-columns:none!important;padding:0!important;border-radius:15px!important;background:#0f172a!important}
 .dr-pcard-img,.dr-pcard-svg{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:100%!important;flex:none!important;border-radius:0!important;background-size:cover!important;background-position:center!important;z-index:0}
 .dr-pcard-svg{background:linear-gradient(135deg,#2f7d32,#4f9a3d)!important}
 .dr-pcard::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(15,23,42,.06) 0%,rgba(15,23,42,.18) 42%,rgba(15,23,42,.82) 100%);pointer-events:none}
-.dr-pcard-bd{position:relative;z-index:2;flex:1;justify-content:flex-end!important;padding:42px 11px 11px!important;color:#fff!important;text-shadow:0 1px 8px rgba(0,0,0,.55)}
+.dr-pcard-bd{position:relative;z-index:2;flex:1;justify-content:flex-end!important;padding:38px 10px 10px!important;color:#fff!important;text-shadow:0 1px 8px rgba(0,0,0,.55)}
 .dr-pcard-bd b{font-size:14px!important;color:#fff!important}
 .dr-pcard-bd span{font-size:10.8px!important;color:rgba(255,255,255,.86)!important}
 .dr-scard{min-height:84px!important;padding:10px 8px!important;border-radius:14px!important}
@@ -755,6 +755,9 @@ img{max-width:100%}
 .dr-body.no-scroll .dr-info{margin-bottom:8px}
 .dr-body.no-scroll .dr-area{padding:12px}
 .dr-body.no-scroll .dr-area-v{font-size:30px}
+.dr-volume-calc{display:grid;grid-template-columns:1fr 1fr auto;gap:6px;margin:8px 0 3px;padding:8px;border:1px solid var(--line);border-radius:12px;background:#fbfdf8}
+.dr-volume-calc input{min-width:0;border:1px solid var(--line);border-radius:9px;padding:7px 8px;font:700 11px var(--font);outline:none}
+.dr-volume-calc button{border:0;border-radius:9px;padding:7px 9px;background:#2f7d32;color:#fff;font:800 10.5px var(--font);cursor:pointer}
 .dr-body.no-scroll .dr-quick{margin-top:8px}
 .dr-body.no-scroll .dr-location{gap:8px}
 .dr-body.no-scroll .dr-method-note{margin-bottom:0;font-size:10px}
@@ -961,11 +964,11 @@ const SERVICES={
     }},
   dezinfekcia:{name:'Dezinfekcia',desc:'Polymér, chlór, dezinfekcia po zosnulom',base:MIN,unit:'m³',
     q:'Aký typ dezinfekcie potrebujete?',
-    info:'Polymérová dezinfekcia stojí <b>0,30–0,40 €/m³</b>, chlórová <b>0,20 €/m³</b> a dezinfekcia po zosnulom <b>400 €</b>.',
+    info:'Polymérová dezinfekcia stojí <b>0,30–0,40 €/m³</b>, chlórová <b>0,20 €/m³</b> a dezinfekcia po zosnulom je <b>od 400 €</b> podľa objemu a náročnosti priestoru.',
     subs:{
       polymer:{n:'Polymér',ic:'mold',pricing:'volume',rates:[.30,.35,.40],v:1},
       chlor:{n:'Chlór',ic:'virus',pricing:'volume',rates:[.20,.20,.20],v:1},
-      zosnuly:{n:'Po zosnulom',ic:'spray',pricing:'fixed',fixed:400,low:400,high:400,v:1},
+      zosnuly:{n:'Po zosnulom',ic:'spray',pricing:'postmortem',fixed:400,included:150,extra:.45,lowExtra:.35,highExtra:.65,noDisc:true,v:1},
       ine:{n:'Iné / neviem',ic:'pigeon',pricing:'volume',rates:[.30,.35,.40],ine:true,v:1}
     }}
 };
@@ -1010,6 +1013,11 @@ const ADDONS={
   utesnenie:{n:'Utesnenie vstupov od',p:25},
   odvoz:{n:'Odvoz a likvidácia od',p:30}
 };
+const ADDON_RULES={
+  deratizacia:['protokol','kontrola','expres','monitoring','utesnenie'],
+  dezinsekcia:['protokol','kontrola','expres','monitoring'],
+  dezinfekcia:['protokol','expres','odvoz']
+};
 const POSTAL_KM={
   '811':0,'821':0,'831':0,'841':0,'851':0,
   '900':25,'901':40,'902':22,'903':28,'905':70,'906':85,'908':95,'909':105,
@@ -1033,7 +1041,7 @@ const PROCESS='<b>Ako prebieha zásah:</b> obhliadka a konzultácia → návrh r
 const STEPS=['service','sub','place','area','severity','location','addons','result'];
 function flow(){const c=state.c;
   return STEPS.filter(s=>{
-    if(s==='severity')return SERVICES[c.service].subs[c.sub].pricing!=='fixed';
+    if(s==='severity')return !['fixed','postmortem'].includes(SERVICES[c.service].subs[c.sub].pricing);
     return true;
   });}
 const QUESTIONS={
@@ -1157,6 +1165,15 @@ const priceRange=(low,high,gross)=>(low===high?'Orientačne '+eur(low):'Odhad '+
 const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const attr=s=>esc(s).replace(/`/g,'&#96;');
 const unit=()=>SERVICES[state.c.service].unit;
+function allowedAddons(){
+  const c=state.c;
+  if(c.service==='dezinfekcia'&&c.sub==='zosnuly')return ['protokol','expres','odvoz'];
+  return ADDON_RULES[c.service]||Object.keys(ADDONS);
+}
+function cleanAddons(){
+  const ok=new Set(allowedAddons());
+  state.c.addons=state.c.addons.filter(id=>ok.has(id));
+}
 const defaultQty=(place,service)=>SERVICES[service].unit==='m³'?Math.round(PLACES[place].a*2.6/10)*10:PLACES[place].a;
 function travelForPsc(value){
   const digits=String(value||'').replace(/\D/g,'');
@@ -1265,6 +1282,12 @@ function compute(){
     work=Math.max(MIN,qty*rate);
     workLow=Math.max(MIN,qty*sub.rates[0]);
     workHigh=Math.max(work,qty*sub.rates[2]);
+  }else if(sub.pricing==='postmortem'){
+    const extra=Math.max(0,qty-(sub.included||150));
+    rate=sub.extra||.45;
+    work=Math.max(MIN,(sub.fixed||400)+extra*rate);
+    workLow=Math.max(MIN,(sub.fixed||400)+extra*(sub.lowExtra||rate));
+    workHigh=Math.max(work,(sub.fixed||400)+extra*(sub.highExtra||rate));
   }else if(sub.pricing==='fixed'){
     work=Math.max(MIN,sub.fixed);
     workLow=Math.max(MIN,sub.low==null?sub.fixed:sub.low);
@@ -1272,11 +1295,13 @@ function compute(){
   }
 
   const baseWork=work,baseWorkLow=workLow,baseWorkHigh=workHigh;
-  const disc=discountPct(qty,count,sv.unit),save=Math.round(baseWork*count*disc);
+  const disc=sub.noDisc?0:discountPct(qty,count,sv.unit),save=Math.round(baseWork*count*disc);
   work=Math.max(MIN,baseWork*count*(1-disc));
   workLow=Math.max(MIN,baseWorkLow*count*(1-disc));
   workHigh=Math.max(work,baseWorkHigh*count*(1-disc));
-  const pricedAdds=c.addons.reduce((a,id)=>a+(ADDONS[id]?.p||0),0);
+  const okAdds=new Set(allowedAddons());
+  const activeAdds=c.addons.filter(id=>okAdds.has(id));
+  const pricedAdds=activeAdds.reduce((a,id)=>a+(ADDONS[id]?.p||0),0);
   const customAdds=c.addonText.trim()?[c.addonText.trim()]:[];
   const visit=VISITS[c.visit]||VISITS.weekday;
   const surcharge=Math.round((work+pricedAdds)*visit.pct);
@@ -1317,6 +1342,46 @@ function rArea(){const u=unit(),a=state.c.area,isVolume=u==='m³',min=isVolume?2
       <div class="dr-count-r"><button type="button" onclick="DERAT.count(-1)" aria-label="menej">−</button><b id="dr-cnt">${state.c.count||1}</b><button type="button" onclick="DERAT.count(1)" aria-label="viac">+</button></div>
     </div>
   </div>`;}
+function setAreaValue(v){
+  const vol=state.c.service==='dezinfekcia',min=vol?20:10,max=vol?2500:1000,u=unit();
+  v=Math.max(min,Math.min(max,Math.round(+v||min)));
+  state.c.area=v;
+  const el=$('dr-av');if(el)el.innerHTML=v+' <small>'+u+'</small>';
+  const s=document.querySelector('.dr-slider');if(s){s.style.setProperty('--p',Math.round((v-min)/(max-min)*100)+'%');s.value=v;}
+  document.querySelectorAll('.dr-quick button').forEach(b=>b.classList.toggle('on',+b.dataset.v===v));
+  if(window.DERAT&&DERAT._livePrice)DERAT._livePrice();
+}
+function setVolumeFromInputs(){
+  const m2=parseFloat(($('dr-vm2')||{}).value),h=parseFloat(($('dr-vh')||{}).value)||2.6;
+  if(!m2||m2<1)return;
+  setAreaValue(Math.round(m2*h/10)*10);
+}
+window.setAreaValue=setAreaValue;
+window.setVolumeFromInputs=setVolumeFromInputs;
+function rAreaSmart(){
+  const u=unit(),a=state.c.area,isVolume=state.c.service==='dezinfekcia',isExt=state.c.place==='exterier',min=isVolume?20:10,max=isVolume?2500:1000,step=isVolume?10:5,p=Math.round((a-min)/(max-min)*100);
+  const quick=isVolume?[80,150,300,650,1000]:isExt?[80,150,300,600,1000]:[40,70,100,150,300,600];
+  const labels={80:'malý dvor',150:'okolie domu',300:'pozemok',600:'väčší areál',1000:'veľký areál'};
+  const quickLabel=v=>isExt?(labels[v]||v+' '+u):v+' '+u;
+  const volCalc=isVolume?`<div class="dr-volume-calc"><input id="dr-vm2" type="number" min="1" placeholder="m² podlahy"><input id="dr-vh" type="number" min="1" step=".1" value="2.6" placeholder="výška"><button type="button" onclick="setVolumeFromInputs()">m³</button></div>`:'';
+  return `<div class="dr-area">
+    <div class="dr-area-v" id="dr-av">${a} <small>${u}</small></div>
+    <input class="dr-slider" type="range" min="${min}" max="${max}" step="${step}" value="${a}" style="--p:${p}%" oninput="setAreaValue(+this.value)">
+    <div class="dr-scale"><span>${min} ${u}</span><span>${max}+ ${u}</span></div>
+    ${volCalc}
+    <div class="dr-quick">${quick.map(v=>`<button data-v="${v}" class="${v===a?'on':''}" onclick="setAreaValue(${v})">${quickLabel(v)}</button>`).join('')}</div>
+    <div class="dr-count">
+      <div class="dr-count-l"><b>Počet rovnakých priestorov</b><span>viac bytov/prevádzok od 1 zákazníka = zľava</span></div>
+      <div class="dr-count-r"><button type="button" onclick="DERAT.count(-1)" aria-label="menej">−</button><b id="dr-cnt">${state.c.count||1}</b><button type="button" onclick="DERAT.count(1)" aria-label="viac">+</button></div>
+    </div>
+  </div>`;
+}
+rArea=rAreaSmart;
+function areaInfoText(){
+  if(state.c.service==='dezinfekcia')return '<b>Objem v m³</b> je hlavný údaj. Ak poznáte iba podlahovú plochu, použite rýchly výpočet m² × výška miestnosti.';
+  if(state.c.place==='exterier')return '<b>Exteriér rátame podľa veľkosti zasiahnutej časti</b> — malý dvor, okolie domu, pozemok alebo areál. Technik to potom spresní podľa prístupu a rozsahu.';
+  return '<b>Rozloha v m²</b> je hlavný údaj výpočtu. Nemusí byť presná na meter — stačí rozumný odhad.';
+}
 function rSeverity(){
   return `<div class="dr-choice-grid">`+Object.keys(SEVERITY).map((id,i)=>{const s=SEVERITY[id],sel=state.c.severity===id;
   const meter=[1,2,3].map(k=>`<i class="${k<=s.lvl?'on':''}"></i>`).join('');
@@ -1340,8 +1405,8 @@ function rLocation(){const c=state.c,t=travelForPsc(c.psc);return `<div class="d
   <div class="dr-visit-grid">${Object.keys(VISITS).map(id=>{const v=VISITS[id],sel=c.visit===id;return `<button class="dr-visit${sel?' sel':''}" data-grp="visit" data-id="${id}" onclick="DERAT.pickVisit('${id}',this)"><b>${v.n}</b><span>${v.d}</span></button>`;}).join('')}</div>
   <div class="dr-method-note">PSČ používame iba na orientačný výpočet dojazdu. Konečný doplatok potvrdíme podľa presnej adresy.</div>
 </div>`;}
-function rAddons(){const set=new Set(state.c.addons);return `<div class="dr-addon-grid">`+Object.keys(ADDONS).map(id=>{const a=ADDONS[id],sel=set.has(id);
-  return `<button class="dr-addon${sel?' sel':''}" data-grp="addon" data-id="${id}" onclick="DERAT.addon('${id}',this)"><b>${a.n}</b><span>+${eur(a.p)} bez DPH</span></button>`;}).join('')+`</div><textarea class="dr-addon-custom" placeholder="Iná požiadavka alebo služba..." oninput="DERAT.addonText(this.value)">${esc(state.c.addonText)}</textarea>`;}
+function rAddons(){cleanAddons();const set=new Set(state.c.addons),ids=allowedAddons();return `<div class="dr-addon-grid">`+ids.map(id=>{const a=ADDONS[id],sel=set.has(id);
+  return `<button class="dr-addon${sel?' sel':''}" data-grp="addon" data-id="${id}" onclick="DERAT.addon('${id}',this)"><b>${a.n}</b><span>+${eur(a.p)} bez DPH</span></button>`;}).join('')+`</div><textarea class="dr-addon-custom" placeholder="Doplňujúca požiadavka..." oninput="DERAT.addonText(this.value)">${esc(state.c.addonText)}</textarea>`;}
 function rResult(){const r=compute(),c=state.c,gross=state.priceGross;
   const shown=gross?r.vat:r.total,shownLow=gross?Math.round(r.low*(1+VAT)):r.low,shownHigh=gross?Math.round(r.high*(1+VAT)):r.high;
   return `<div class="dr-result">
@@ -1362,7 +1427,7 @@ function rResult(){const r=compute(),c=state.c,gross=state.priceGross;
       <div class="dr-bd-r"><span>${r.unit==='m³'?'Objem':'Rozloha'} – hlavný údaj</span><b>${r.qty} ${r.unit}</b></div>
       ${r.rate!=null?`<div class="dr-bd-r subtle"><span>Použitá sadzba</span><b>${eur2(r.rate)}/${r.unit}</b></div>`:''}
       ${r.material?`<div class="dr-bd-r"><span>${r.material.n} · odhad ${r.materialQty} ks</span><b>${eur(r.materialTotal)}</b></div>`:''}
-      ${r.sub.pricing!=='fixed'?`<div class="dr-bd-r"><span>Miera zamorenia</span><b>${r.sev.n}</b></div>`:''}
+      ${!['fixed','postmortem'].includes(r.sub.pricing)?`<div class="dr-bd-r"><span>Miera zamorenia</span><b>${r.sev.n}</b></div>`:''}
       <div class="dr-bd-r"><span>Trvanie zásahu na mieste</span><b>~ ${r.dur}</b></div>
       ${r.count>1?`<div class="dr-bd-r"><span>Počet priestorov · cena za 1</span><b>${r.count}× ${eur(r.perObj)}</b></div>`:''}
       ${r.disc>0?`<div class="dr-bd-r save"><span>Zľava ${r.count>1?'(viac priestorov':'(množstevná'}${r.qty>=(r.unit==='m³'?650:250)&&r.count>1?' + množstvo':''}) −${r.discPct}%</span><b>−${eur(r.save)}</b></div>`:''}
@@ -1413,6 +1478,17 @@ function stepInner(){const k=flow()[state.step];
   if(k==='addons')return rAddons();
   return rResult();}
 
+function stepInnerSmart(){const k=flow()[state.step];
+  if(k==='service')return '<div class="dr-rows">'+rService()+'</div>';
+  if(k==='sub')return info(SERVICES[state.c.service].info)+'<div class="dr-grid tri">'+rSub()+'</div><div id="dr-ine-wrap">'+(state.c.sub==='ine'?rIne():'')+'</div>';
+  if(k==='place')return '<div class="dr-grid">'+rPlace()+'</div>';
+  if(k==='area')return info(areaInfoText())+rArea();
+  if(k==='severity')return info('Stačí odhad miery zamorenia — pomôže určiť náročnosť a cenu zásahu. Pri silnejšom zamorení je často potrebné opakovanie.')+rSeverity();
+  if(k==='location')return rLocation();
+  if(k==='addons')return rAddons();
+  return rResult();}
+stepInner=stepInnerSmart;
+
 function render(keep){
   TIPS=[];const _tb=document.getElementById('dr-tipbox');if(_tb)_tb.classList.remove('show');
   const ob=calc.querySelector('.dr-body'),sc=keep&&ob?ob.scrollTop:0;
@@ -1428,7 +1504,7 @@ function render(keep){
     <div class="dr-more" aria-hidden="true"><span>ďalej nižšie ▾</span></div>
   </div>
   <div class="dr-actions">
-    ${state.step>=1&&!last?`<div class="dr-live-price"><small>bez DPH od</small><b>${eur(r.total)}</b></div>`:''}
+    ${state.step>=1&&!last?`<div class="dr-live-price"><small>bez DPH od</small><b>${eur(k==='place'?MIN:r.total)}</b></div>`:''}
     <button class="dr-next" onclick="DERAT.next()">${last?'↺ Začať odznova':'Pokračovať ›'}</button>
   </div>`;
   const nb=calc.querySelector('.dr-body');if(nb){nb.scrollTop=sc;nb.onscroll=()=>scrollHint(nb);requestAnimationFrame(()=>scrollHint(nb));}
@@ -1476,9 +1552,9 @@ window.DERAT={
     let y=r.bottom+8;if(y+h>window.innerHeight-8)y=Math.max(8,r.top-h-8);
     tb.style.left=x+'px';tb.style.top=y+'px';},
   _markOne(grp,el){document.querySelectorAll('.dr-body [data-grp="'+grp+'"]').forEach(b=>b.classList.toggle('sel',b===el));},
-  _livePrice(){const lp=document.querySelector('.dr-live-price b');if(lp){lp.textContent=eur(compute().total);lp.classList.remove('bump');void lp.offsetWidth;lp.classList.add('bump');}},
-  pickService(id,el){state.c.service=id;state.c.sub=Object.keys(SERVICES[id].subs)[0];state.c.area=defaultQty(state.c.place,id);this._markOne('service',el);this._livePrice();},
-  pickSub(id,el){state.c.sub=id;this._markOne('sub',el);const wrap=$('dr-ine-wrap');if(wrap)wrap.innerHTML=id==='ine'?rIne():'';this._livePrice();},
+  _livePrice(){const lp=document.querySelector('.dr-live-price b');if(lp){const k=flow()[state.step];lp.textContent=eur(k==='place'?MIN:compute().total);lp.classList.remove('bump');void lp.offsetWidth;lp.classList.add('bump');}},
+  pickService(id,el){state.c.service=id;state.c.sub=Object.keys(SERVICES[id].subs)[0];state.c.area=defaultQty(state.c.place,id);cleanAddons();this._markOne('service',el);this._livePrice();},
+  pickSub(id,el){state.c.sub=id;cleanAddons();this._markOne('sub',el);const wrap=$('dr-ine-wrap');if(wrap)wrap.innerHTML=id==='ine'?rIne():'';this._livePrice();},
   pickPlace(id,el){state.c.place=id;state.c.area=defaultQty(id,state.c.service);this._markOne('place',el);this._livePrice();},
   pickSeverity(id,el){state.c.severity=id;this._markOne('severity',el);this._livePrice();},
   pickVisit(id,el){state.c.visit=id;this._markOne('visit',el);this._livePrice();},
@@ -1499,12 +1575,13 @@ window.DERAT={
   photoClear(){state.photo=null;const i=$('dr-photo');if(i)i.value='';const box=$('dr-photo-prev');if(box)box.innerHTML='';},
   area(v){state.c.area=v;const u=unit(),el=$('dr-av');if(el){el.innerHTML=v+' <small>'+u+'</small>';const s=document.querySelector('.dr-slider');if(s){const vol=u==='m³',min=vol?20:10,max=vol?2000:1000;s.style.setProperty('--p',Math.round((v-min)/(max-min)*100)+'%');s.value=v;}document.querySelectorAll('.dr-quick button').forEach(b=>b.classList.toggle('on',b.textContent.trim()===v+' '+u));this._livePrice();}},
   count(d){state.c.count=Math.max(1,Math.min(99,(state.c.count||1)+d));const el=$('dr-cnt');if(el)el.textContent=state.c.count;this._livePrice();},
-  addon(id,el){const a=state.c.addons,i=a.indexOf(id);i>=0?a.splice(i,1):a.push(id);if(el)el.classList.toggle('sel',i<0);this._livePrice();},
+  addon(id,el){if(!allowedAddons().includes(id))return;const a=state.c.addons,i=a.indexOf(id);i>=0?a.splice(i,1):a.push(id);if(el)el.classList.toggle('sel',i<0);this._livePrice();},
   addonText(v){state.c.addonText=v;},
   next(){state.step<flow().length-1?state.step++:(state.step=0);state.sent=null;render(false);},
   prev(){if(state.step>0)state.step--;render(false);},
   _payload(){const r=compute(),c=state.c,val=id=>{const el=$(id);return el?el.value.trim():'';},raw=id=>{const el=$(id);return el?el.value:'';};
-    const addonNames=[...c.addons.map(id=>ADDONS[id].n),c.addonText.trim()].filter(Boolean);
+    const okAdds=new Set(allowedAddons());
+    const addonNames=[...c.addons.filter(id=>okAdds.has(id)).map(id=>ADDONS[id].n),c.addonText.trim()].filter(Boolean);
     const p={
     sessionId:getSessionId(),source:'derat.sk - kalkulacka',page:document.referrer||location.href,createdAt:new Date().toISOString(),
     name:val('dr-name'),phone:val('dr-phone'),email:val('dr-email'),
