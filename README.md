@@ -46,12 +46,13 @@ const CONFIG = {
 ## 3) AI odpovede chatu (backend)
 
 Bez backendu chat funguje na jednoduchých kľúčových slovách (`reply()`).
-Pre **plnohodnotné AI odpovede** nasaďte jeden z backendov a nastavte `CONFIG.chatApi`.
+Pre **plnohodnotné AI odpovede** nasaďte `api/chat.js` a nastavte `CONFIG.apiBase`
+(chat volá `apiBase + '/chat'`). Pri chybe/timeoute sa automaticky použije lokálna odpoveď.
 
 ### Vercel / Netlify / Node hosting
 1. Nasaďte `api/chat.js` ako serverless funkciu (na Verceli automaticky `/api/chat`).
 2. V projekte pridajte premennú prostredia `ANTHROPIC_API_KEY = sk-ant-…`.
-3. V `index.html`: `CONFIG.chatApi = '/api/chat'`.
+3. V `index.html`: `CONFIG.apiBase = '/api'` (predvolené).
 
 ### Bežný webhosting (PHP)
 1. Nahrajte `php/chat.php` na PHP hosting (napr. `https://vasadomena.sk/chat.php`).
