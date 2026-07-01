@@ -101,6 +101,9 @@ apiBase:'https://derat-widget.vercel.app/api'
 Keď je prázdne, widget funguje bez týchto funkcií (logovanie a odosielanie sa preskočia,
 UI to nikdy nezhodí — fire-and-forget). Sú to tri serverless funkcie v priečinku `api/`:
 
+> 📋 **Presný postup spustenia krok za krokom** (Vercel + Upstash + Gmail + environment variables)
+> nájdete v **[`NASADENIE.md`](NASADENIE.md)**. Widget sa na web vkladá cez **[`embed.html`](embed.html)**.
+
 ### `api/log-convo.js` — logovanie histórie chatu do Upstash Redis
 Widget po každej správe zákazníka odošle celú viditeľnú konverzáciu (`role: user/assistant`)
 na `POST /api/log-convo`. Jeden záznam na `sessionId` (upsert, zachováva čas vzniku).
