@@ -1,0 +1,9 @@
+{
+  "name": "derat-widget",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DERAT chat asistent + cenová kalkulačka (widget + serverless API)",
+  "dependencies": {
+    "nodemailer": "^6.9.14"
+  }
+}

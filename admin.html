@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>DERAT — história konverzácií (admin)</title>
+<style>
+  :root{--g:#0b6e49;--g-dk:#08442c;--line:#e3e8db;--muted:#6b7363}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f5fcf9;color:#1e231d}
+  header{background:linear-gradient(120deg,#08442c,#117254);color:#fff;padding:16px 20px}
+  header h1{margin:0;font-size:18px}
+  .wrap{max-width:900px;margin:0 auto;padding:18px}
+  .bar{display:flex;flex-wrap:wrap;gap:8px;align-items:end;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:14px}
+  .bar label{display:flex;flex-direction:column;font-size:11px;font-weight:700;color:var(--muted);gap:3px}
+  .bar input{border:1.4px solid var(--line);border-radius:9px;padding:8px 10px;font:600 13px system-ui}
+  .bar input:focus{outline:none;border-color:var(--g)}
+  .bar button{border:0;border-radius:9px;background:var(--g);color:#fff;font:800 13px system-ui;padding:9px 16px;cursor:pointer}
+  .bar button:hover{filter:brightness(1.06)}
+  .msg{font-size:12.5px;color:var(--muted);margin:6px 2px}
+  .conv{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+  .conv-h{display:flex;justify-content:space-between;align-items:center;gap:10px;cursor:pointer}
+  .conv-h b{font-size:13px}
+  .conv-h .meta{font-size:11px;color:var(--muted)}
+  .conv-b{margin-top:10px;display:none;border-top:1px dashed var(--line);padding-top:10px}
+  .conv.open .conv-b{display:block}
+  .row{display:flex;gap:8px;margin-bottom:7px}
+  .row .who{flex:0 0 74px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;padding-top:3px}
+  .row.user .who{color:#0b6e49}.row.assistant .who{color:#8a6d1f}
+  .row .txt{background:#f3f6ee;border-radius:10px;padding:8px 11px;font-size:12.5px;line-height:1.5;flex:1}
+  .row.user .txt{background:#e7f7f0}
+  .del{border:1px solid #f0c9c0;background:#fdeeeb;color:#9e2a1a;border-radius:8px;font:700 11px system-ui;padding:5px 10px;cursor:pointer}
+  .pg{display:flex;gap:8px;justify-content:center;margin-top:12px}
+  .pg button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 14px;cursor:pointer;font:700 12px system-ui}
+  .pg button:disabled{opacity:.4;cursor:default}
+</style>
+</head>
+<body>
+<header><h1>DERAT — história konverzácií</h1></header>
+<div class="wrap">
+  <div class="bar">
+    <label>API URL (…/api)<input id="api" placeholder="https://projekt.vercel.app/api" size="30"></label>
+    <label>Admin kľúč<input id="key" type="password" placeholder="ADMIN_KEY" size="18"></label>
+    <label>Od<input id="from" type="date"></label>
+    <label>Do<input id="to" type="date"></label>
+    <button onclick="App.load(0)">Načítať</button>
+  </div>
+  <div id="msg" class="msg"></div>
+  <div id="list"></div>
+  <div class="pg"><button id="prev" onclick="App.page(-1)">‹ Novšie</button><button id="next" onclick="App.page(1)">Staršie ›</button></div>
+</div>
+<script>
+const App = (()=>{
+  const $=id=>document.getElementById(id);
+  const LIMIT=25; let offset=0, total=0;
+  // predvyplň z localStorage
+  ['api','key'].forEach(k=>{const v=localStorage.getItem('dr_admin_'+k);if(v)$(k).value=v;});
+  const esc=s=>String(s==null?'':s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+  const fmt=t=>{try{return new Date(t).toLocaleString('sk-SK');}catch(e){return t;}};
+  function base(){return $('api').value.trim().replace(/\/+$/,'');}
+  function headers(){return {'Authorization':'Bearer '+$('key').value.trim(),'Content-Type':'application/json'};}
+  async function load(off){
+    offset=Math.max(0,off||0);
+    localStorage.setItem('dr_admin_api',$('api').value.trim());
+    localStorage.setItem('dr_admin_key',$('key').value.trim());
+    $('msg').textContent='Načítavam…';
+    const p=new URLSearchParams({limit:LIMIT,offset:offset});
+    if($('from').value)p.set('from',$('from').value);
+    if($('to').value)p.set('to',$('to').value);
+    try{
+      const r=await fetch(base()+'/history?'+p.toString(),{headers:headers()});
+      if(r.status===401){$('msg').textContent='Neplatný admin kľúč (401).';return;}
+      if(!r.ok){$('msg').textContent='Chyba '+r.status;return;}
+      const d=await r.json(); total=d.total||0;
+      $('msg').textContent='Spolu '+total+' konverzácií'+(total?' · zobrazené '+(offset+1)+'–'+(offset+(d.items||[]).length):'');
+      render(d.items||[]);
+      $('prev').disabled=offset<=0; $('next').disabled=offset+LIMIT>=total;
+    }catch(e){$('msg').textContent='Chyba pripojenia. Skontrolujte API URL.';}
+  }
+  function render(items){
+    $('list').innerHTML=items.map(c=>{
+      const cnt=(c.messages||[]).length;
+      const rows=(c.messages||[]).map(m=>`<div class="row ${m.role}"><div class="who">${m.role==='user'?'Zákazník':'Bot'}</div><div class="txt">${esc(m.content)}</div></div>`).join('');
+      return `<div class="conv" data-id="${esc(c.id)}">
+        <div class="conv-h" onclick="this.parentNode.classList.toggle('open')">
+          <b>${fmt(c.createdAt)}</b>
+          <span class="meta">${cnt} správ · ${esc(c.page||'')} <button class="del" onclick="event.stopPropagation();App.del('${esc(c.id)}')">Zmazať</button></span>
+        </div>
+        <div class="conv-b">${rows}</div>
+      </div>`;}).join('')||'<div class="msg">Žiadne konverzácie v danom rozsahu.</div>';
+  }
+  async function del(id){
+    if(!confirm('Zmazať túto konverzáciu? (GDPR)'))return;
+    try{const r=await fetch(base()+'/history?id='+encodeURIComponent(id),{method:'DELETE',headers:headers()});
+      if(r.ok)load(offset);else alert('Mazanie zlyhalo ('+r.status+')');}catch(e){alert('Chyba pripojenia');}
+  }
+  function page(d){load(offset+d*LIMIT);}
+  return {load,del,page};
+})();
+</script>
+</body>
+</html>

@@ -81,8 +81,48 @@ Reálne ceny, oblasti pôsobenia, otváracie hodiny a ďalšie údaje — pozri
 > Ceny v kalkulačke sú **orientačné**; konečná suma sa potvrdzuje po obhliadke.
 
 
-## 4) História konverzácie
+## 4) História konverzácie (v prehliadači)
 
 Chat si **pamätá konverzáciu** aj po obnovení stránky — ukladá sa do prehliadača
 návštevníka (`localStorage`, drží sa 7 dní). Pri opätovnom otvorení sa správy obnovia.
 Tlačidlo **↻ (reset)** v hlavičke históriu vymaže a začne odznova.
+
+---
+
+## 6) Serverové logovanie histórie + odosielanie dopytov e-mailom
+
+Voliteľné rozšírenie (podľa vzoru „Môj plot"). Zapne sa nastavením **`CONFIG.apiBase`**
+v `index.html` na URL nasadeného backendu, napr.:
+
+```js
+apiBase:'https://derat-widget.vercel.app/api'
+```
+
+Keď je prázdne, widget funguje bez týchto funkcií (logovanie a odosielanie sa preskočia,
+UI to nikdy nezhodí — fire-and-forget). Sú to tri serverless funkcie v priečinku `api/`:
+
+### `api/log-convo.js` — logovanie histórie chatu do Upstash Redis
+Widget po každej správe zákazníka odošle celú viditeľnú konverzáciu (`role: user/assistant`)
+na `POST /api/log-convo`. Jeden záznam na `sessionId` (upsert, zachováva čas vzniku).
+**Históriu nikdy neposiela e-mailom** — slúži len pre admin dashboard.
+
+- ENV: `KV_REST_API_URL` + `KV_REST_API_TOKEN` (alebo `UPSTASH_REDIS_REST_URL` / `_TOKEN`).
+
+### `api/history.js` — čítanie histórie pre admina (chránené)
+`GET /api/history?from=&to=&limit=&offset=` vráti zoznam konverzácií, `DELETE /api/history?id=`
+zmaže konverzáciu (GDPR). Chránené hlavičkou `Authorization: Bearer <ADMIN_KEY>`.
+
+- ENV: rovnaké Redis premenné + `ADMIN_KEY` (ľubovoľné tajné heslo).
+- Dashboard: otvorte **`admin.html`**, zadajte API URL (`…/api`) a admin kľúč.
+
+### `api/send-email.js` — odoslanie dopytu z kalkulačky na firemný e-mail
+Po vyplnení kontaktu widget odošle `POST /api/send-email` s `quote_data` (číslo dopytu
+`DER-XXXXXX`, položky, rekapitulácia a parametre — **ceny s DPH**). Backend pošle
+profesionálny HTML e-mail cez Gmail SMTP. História sa **neposiela**.
+
+- ENV: `GMAIL_USER`, `GMAIL_APP_PASSWORD` ([App Password](https://myaccount.google.com/apppasswords)),
+  `MAIL_TO` (predvolene `dopyt.chatbot@gmail.com`).
+- Závislosť `nodemailer` je v `package.json` (Vercel ju nainštaluje automaticky).
+
+> Zhrnutie ENV premenných na backende: `ANTHROPIC_API_KEY`, `KV_REST_API_URL`,
+> `KV_REST_API_TOKEN`, `ADMIN_KEY`, `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `MAIL_TO`.

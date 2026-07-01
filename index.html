@@ -886,6 +886,7 @@ const CONFIG={
   phone:'+421905648129', phoneText:'+421 905 648 129',
   email:'info@derat.sk', whatsapp:'421905648129',
   leadEndpoint:'',
+  apiBase:'', // napr. 'https://derat-widget.vercel.app/api' — zapne logovanie histórie + odosielanie dopytov e-mailom
   travelRate:.40,
   requestTimeoutMs:6000,
   storageKey:'derat_chat_history_v1',
@@ -1078,6 +1079,26 @@ function timeStr(ts){
   const d=ts?new Date(ts):new Date();
   return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
 }
+function apiUrl(path){const b=(CONFIG.apiBase||'').replace(/\/+$/,'');return b?b+path:'';}
+/* HTML → čistý text (pre logovanie histórie do Redis cez /api/log-convo) */
+function htmlToText(html){try{const d=document.createElement('div');d.innerHTML=String(html);return (d.textContent||d.innerText||'').replace(/\s+/g,' ').trim();}catch(e){return String(html).replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();}}
+/* Logovanie histórie chatu (fire-and-forget, nikdy nezhodí UI). Loguje až keď zákazník niečo napísal. */
+let _logTimer=null;
+function logConvo(){
+  const url=apiUrl('/log-convo');if(!url)return;
+  const messages=(state.hist||[])
+    .filter(m=>m&&m.html&&(m.who==='me'||m.who==='bot'))
+    .map(m=>({role:m.who==='me'?'user':'assistant',content:htmlToText(m.html)}))
+    .filter(m=>m.content);
+  if(!messages.some(m=>m.role==='user'))return;
+  try{
+    fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},keepalive:true,
+      body:JSON.stringify({sessionId:getSessionId(),lang:'sk',page:location.href,messages})}).catch(()=>{});
+  }catch(e){}
+}
+function scheduleLog(){clearTimeout(_logTimer);_logTimer=setTimeout(logConvo,1400);}
+/* Unikátne číslo dopytu DER-XXXXXX */
+function derQuoteNum(){return 'DER-'+(Date.now().toString(36)+Math.random().toString(36).slice(2,6)).toUpperCase().slice(-6);}
 function persistHistory(){
   try{localStorage.setItem(CONFIG.storageKey,JSON.stringify(state.hist.slice(-30)));}catch(e){}
 }
@@ -1143,6 +1164,13 @@ function sendLead(p,onSuccess,onError){
   const fail=err=>{if(done)return;done=true;clearTimeout(timer);try{leadMailto(p);}catch(e){}onSuccess&&onSuccess('fallback');};
   const timer=setTimeout(()=>fail('timeout'),CONFIG.requestTimeoutMs||6000);
   try{
+    const emailUrl=apiUrl('/send-email');
+    if(emailUrl&&p.emailBody){
+      fetch(emailUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p.emailBody)})
+        .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);finish('backend');})
+        .catch(fail);
+      return;
+    }
     const ej=CONFIG.emailjs;
     if(ej.publicKey&&ej.serviceId&&ej.templateId&&window.emailjs){
       emailjs.send(ej.serviceId,ej.templateId,p).then(()=>finish('emailjs')).catch(fail);return;
@@ -1539,8 +1567,8 @@ window.DERAT={
   openCalc(){this.open();chat.classList.add('calc');setHeaderLogo('calc');state.step=0;state.sent=null;state.priceGross=false;state.c.count=1;render();postParent('open-calc');},
   closeCalc(){chat.classList.remove('calc');setHeaderLogo('chat');postParent('open');},
   _hideChips(){const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('gone');},
-  submit(e){if(e&&e.preventDefault)e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';add(esc(v),'me');this._hideChips();bot(reply(v));},
-  quick(t){this.open();add(esc(t),'me');this._hideChips();bot(reply(t));},
+  submit(e){if(e&&e.preventDefault)e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';add(esc(v),'me');this._hideChips();bot(reply(v));scheduleLog();},
+  quick(t){this.open();add(esc(t),'me');this._hideChips();bot(reply(t));scheduleLog();},
   tip(e,i){e.stopPropagation();const b=e.currentTarget,tb=$('dr-tipbox');if(!tb)return;
     const wasOn=b.classList.contains('on');
     document.querySelectorAll('.dr-ih.on').forEach(x=>x.classList.remove('on'));
@@ -1603,6 +1631,36 @@ window.DERAT={
       'Cena: '+p.priceEstimate
     ].join('\n');
     p.quoteData={sessionId:p.sessionId,service:p.service,pest:p.pest,place:p.place,size:p.size,count:p.count,discountPct:p.discountPct,severity:p.severity,material:p.method,materialQty:p.materialQty,addons:addonNames,visit:p.visit,travelKm:p.travelKm,travelPrice:p.travelPrice,priceNet:p.priceNet,priceVat:p.priceVat,priceRangeNet:p.priceRange,priceRangeGross:p.priceRangeGross,source:p.source,page:p.page,createdAt:p.createdAt};
+    /* Číslo dopytu + telo pre /api/send-email (ceny s DPH, históriu NEposiela) */
+    p.quoteNum=derQuoteNum();
+    const G=v=>Math.round(v*(1+VAT)*100)/100; // netto → brutto (s DPH)
+    const items=[{n:r.sv.name+' – '+r.sub.n,q:r.count,u:r.count>1?'priestory':'priestor',up:G(r.perObj),sub:G(r.perObj*r.count)}];
+    if(r.materialQty&&r.material)items.push({n:'Materiál: '+r.material.n,q:r.materialQty,u:'ks',up:G(r.material.price),sub:G(r.materialTotal)});
+    const addonsList=c.addons.filter(id=>okAdds.has(id)).map(id=>({n:ADDONS[id].n,p:G(ADDONS[id].p||0)}));
+    if(r.surcharge)addonsList.push({n:r.visit.n+' (príplatok)',p:G(r.surcharge)});
+    p.emailBody={
+      from_name:p.name,from_email:p.email,phone:p.phone,message:p.note||'',
+      quote_data:{
+        num:p.quoteNum,productName:r.sv.name+' – '+r.sub.n,items,
+        matTotal:G(r.perObj*r.count),
+        discPct:r.discPct||0,discAmount:r.save?G(r.save):0,
+        addonsList,
+        travel:{km:r.travel.km||0,fee:r.travel.price?G(r.travel.price):0},
+        total:r.vat,
+        lokacia:(p.loc+(p.psc?' '+p.psc:'')).trim(),
+        lang:'sk',
+        params:{
+          sluzba:r.sv.name,skodca:r.sub.n,priestor:r.pl.n,
+          [r.unit==='m³'?'objem':'rozloha']:r.qty+' '+r.unit,
+          zamorenie:r.sub.pricing==='fixed'?null:r.sev.n,
+          pocet:r.count>1?String(r.count):null,
+          doplnky:addonNames.join(', ')||null,
+          zlava:r.discPct?('−'+r.discPct+' %'):null,
+          cestovne:r.travel.price?(eur2(G(r.travel.price))+(r.travel.km?' (≈'+r.travel.km+' km)':'')):null,
+          termin:p.term||null,kontakt:p.pref||null
+        }
+      }
+    };
     p.summary=this._summary(p);p.message=p.summary;return p;},
   _summary(p){return `DOPYT z kalkulačky DERAT.sk
 ID dopytu: ${p.sessionId}
@@ -1641,7 +1699,7 @@ Stránka: ${p.page}
       <h4>${direct?'Dopyt bol odoslaný':'Dopyt je pripravený'}</h4>
       <p>${direct?'Ozveme sa vám zvyčajne do pár hodín.':'Otvorili sme predvyplnený e-mail s kompletným dopytom. Skontrolujte ho a odošlite.'}</p>
       <div class="dr-thanks-price"><span>Orientačná cena zásahu</span><b>${eur(p.priceNet)} bez DPH</b><small>${eur(p.priceVat)} s DPH · rozsah ${p.priceRange}</small></div>
-      <div class="dr-thanks-grid"><div><span>Služba</span>${esc(p.service)} – ${esc(p.pest)}</div><div><span>Priestor</span>${esc(p.place)}, ${esc(p.size)}${p.count>1?' · '+p.count+'×':''}</div><div><span>Lokalita</span>${esc(p.loc||'-')}${p.psc?' '+esc(p.psc):''}</div><div><span>Dopyt ID</span>${esc(p.sessionId)}</div></div>
+      <div class="dr-thanks-grid"><div><span>Služba</span>${esc(p.service)} – ${esc(p.pest)}</div><div><span>Priestor</span>${esc(p.place)}, ${esc(p.size)}${p.count>1?' · '+p.count+'×':''}</div><div><span>Lokalita</span>${esc(p.loc||'-')}${p.psc?' '+esc(p.psc):''}</div><div><span>Číslo dopytu</span>${esc(p.quoteNum||p.sessionId)}</div></div>
       <div class="dr-thanks-actions"><button onclick="DERAT.newCalc()">Nový výpočet</button><a href="tel:${CONFIG.phone}">Zavolať</a></div>
     </div>`;
     add('Dopyt je pripravený. Orientačná cena zásahu: <b>'+eur(p.priceNet)+' bez DPH</b> ('+eur(p.priceVat)+' s DPH).','bot');
