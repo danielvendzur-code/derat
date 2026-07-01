@@ -40,11 +40,10 @@
 <header><h1>DERAT — história konverzácií</h1></header>
 <div class="wrap">
   <div class="bar">
-    <label>API URL (…/api)<input id="api" placeholder="https://projekt.vercel.app/api" size="30"></label>
-    <label>Admin kľúč<input id="key" type="password" placeholder="ADMIN_KEY" size="18"></label>
+    <label>Heslo (admin)<input id="key" type="password" placeholder="Zadajte heslo" size="22" onkeydown="if(event.key==='Enter')App.load(0)" autofocus></label>
     <label>Od<input id="from" type="date"></label>
     <label>Do<input id="to" type="date"></label>
-    <button onclick="App.load(0)">Načítať</button>
+    <button onclick="App.load(0)">Prihlásiť / Načítať</button>
   </div>
   <div id="msg" class="msg"></div>
   <div id="list"></div>
@@ -54,15 +53,14 @@
 const App = (()=>{
   const $=id=>document.getElementById(id);
   const LIMIT=25; let offset=0, total=0;
-  // predvyplň z localStorage
-  ['api','key'].forEach(k=>{const v=localStorage.getItem('dr_admin_'+k);if(v)$(k).value=v;});
+  // API beží na tej istej doméne ako tento admin (…/api)
+  const v=localStorage.getItem('dr_admin_key');if(v)$('key').value=v;
   const esc=s=>String(s==null?'':s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
   const fmt=t=>{try{return new Date(t).toLocaleString('sk-SK');}catch(e){return t;}};
-  function base(){return $('api').value.trim().replace(/\/+$/,'');}
+  function base(){return location.origin+'/api';}
   function headers(){return {'Authorization':'Bearer '+$('key').value.trim(),'Content-Type':'application/json'};}
   async function load(off){
     offset=Math.max(0,off||0);
-    localStorage.setItem('dr_admin_api',$('api').value.trim());
     localStorage.setItem('dr_admin_key',$('key').value.trim());
     $('msg').textContent='Načítavam…';
     const p=new URLSearchParams({limit:LIMIT,offset:offset});
@@ -70,13 +68,13 @@ const App = (()=>{
     if($('to').value)p.set('to',$('to').value);
     try{
       const r=await fetch(base()+'/history?'+p.toString(),{headers:headers()});
-      if(r.status===401){$('msg').textContent='Neplatný admin kľúč (401).';return;}
+      if(r.status===401){$('msg').textContent='Nesprávne heslo.';return;}
       if(!r.ok){$('msg').textContent='Chyba '+r.status;return;}
       const d=await r.json(); total=d.total||0;
       $('msg').textContent='Spolu '+total+' konverzácií'+(total?' · zobrazené '+(offset+1)+'–'+(offset+(d.items||[]).length):'');
       render(d.items||[]);
       $('prev').disabled=offset<=0; $('next').disabled=offset+LIMIT>=total;
-    }catch(e){$('msg').textContent='Chyba pripojenia. Skontrolujte API URL.';}
+    }catch(e){$('msg').textContent='Chyba pripojenia k serveru.';}
   }
   function render(items){
     $('list').innerHTML=items.map(c=>{
