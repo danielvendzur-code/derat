@@ -886,7 +886,7 @@ const CONFIG={
   phone:'+421905648129', phoneText:'+421 905 648 129',
   email:'info@derat.sk', whatsapp:'421905648129',
   leadEndpoint:'',
-  apiBase:'', // '/api' ak beží na Verceli (widget+API rovnaká doména), inak plná URL. Prázdne = vypnuté. Postup: NASADENIE.md
+  apiBase:'/api', // '/api' ak beží na Verceli (widget+API rovnaká doména), inak plná URL. Prázdne = vypnuté. Postup: NASADENIE.md
   travelRate:.40,
   requestTimeoutMs:6000,
   storageKey:'derat_chat_history_v1',
@@ -1257,6 +1257,30 @@ const BOT_REPLIES=[
 function reply(t){const x=t.toLowerCase(),m=BOT_REPLIES.find(r=>r.rx.test(x));
   return m?m.text:'Pomôžem so škodcami — deratizácia, dezinsekcia a dezinfekcia. Napíšte konkrétneho škodcu, otvorte <b>kalkulačku</b>, alebo zavolajte na '+CONFIG.phoneText+'.';
 }
+/* AI text → bezpečné HTML (zamedzí vloženiu cudzieho HTML z odpovede) */
+function aiHtml(t){return esc(String(t).trim()).replace(/\n{2,}/g,'<br><br>').replace(/\n/g,'<br>');}
+/* Bublina s „píše…" indikátorom, ktorá sa naplní až po dobehnutí promisy (AI odpoveď) */
+function botAwait(promise,fallbackHtml){
+  const ts=timeStr(),r=document.createElement('div');r.className='dr-row bot';
+  r.innerHTML='<span class="dr-av">'+MOUSE+'</span><div class="dr-mc"><div class="dr-b bot"><div class="dr-typing"><span></span><span></span><span></span></div></div><div class="dr-ts">'+ts+'</div></div>';
+  msgs.appendChild(r);msgs.scrollTop=msgs.scrollHeight;chat.classList.add('thinking');
+  const b=r.querySelector('.dr-b');
+  const finish=html=>{const total=visLen(html);let n=0;(function tick(){n++;b.innerHTML=htmlSlice(html,n)+'<span class="dr-cur"></span>';msgs.scrollTop=msgs.scrollHeight;if(n<total)setTimeout(tick,12);else{b.innerHTML=html;chat.classList.remove('thinking');saveMsg(html,'bot',ts);scheduleLog();}})();};
+  Promise.resolve(promise).then(html=>finish(html||fallbackHtml)).catch(()=>finish(fallbackHtml));
+}
+/* Odošle správu AI backendu (/api/chat); pri chybe/timeoute lokálna odpoveď reply() */
+function askBot(text){
+  const local=reply(text),url=apiUrl('/chat');
+  if(!url){bot(local);scheduleLog();return;}
+  const history=(state.hist||[]).filter(m=>m&&m.html&&(m.who==='me'||m.who==='bot')).map(m=>({role:m.who==='me'?'user':'assistant',content:htmlToText(m.html)})).slice(-12);
+  const ctrl=('AbortController'in window)?new AbortController():null;
+  const to=setTimeout(()=>{try{ctrl&&ctrl.abort();}catch(e){}},(CONFIG.requestTimeoutMs||6000)+3000);
+  const p=fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,history}),signal:ctrl?ctrl.signal:undefined})
+    .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+    .then(d=>{clearTimeout(to);const t=(d&&d.reply||'').trim();return t?aiHtml(t):local;})
+    .catch(()=>{clearTimeout(to);return local;});
+  botAwait(p,local);
+}
 
 /* =========================================================
    4) VÝPOČET – cena za 1 zásah × počet zásahov (rozsah)
@@ -1532,7 +1556,7 @@ function render(keep){
     <div class="dr-more" aria-hidden="true"><span>ďalej nižšie ▾</span></div>
   </div>
   <div class="dr-actions">
-    ${state.step>=1&&!last?`<div class="dr-live-price"><small>bez DPH od</small><b>${eur(k==='place'?MIN:r.total)}</b></div>`:''}
+    ${state.step>=1&&!last?`<div class="dr-live-price"><small>bez DPH od</small><b>${eur(k==='place'||k==='sub'?MIN:r.total)}</b></div>`:''}
     <button class="dr-next" onclick="DERAT.next()">${last?'↺ Začať odznova':'Pokračovať ›'}</button>
   </div>`;
   const nb=calc.querySelector('.dr-body');if(nb){nb.scrollTop=sc;nb.onscroll=()=>scrollHint(nb);requestAnimationFrame(()=>scrollHint(nb));}
@@ -1567,8 +1591,8 @@ window.DERAT={
   openCalc(){this.open();chat.classList.add('calc');setHeaderLogo('calc');state.step=0;state.sent=null;state.priceGross=false;state.c.count=1;render();postParent('open-calc');},
   closeCalc(){chat.classList.remove('calc');setHeaderLogo('chat');postParent('open');},
   _hideChips(){const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('gone');},
-  submit(e){if(e&&e.preventDefault)e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';add(esc(v),'me');this._hideChips();bot(reply(v));scheduleLog();},
-  quick(t){this.open();add(esc(t),'me');this._hideChips();bot(reply(t));scheduleLog();},
+  submit(e){if(e&&e.preventDefault)e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';add(esc(v),'me');this._hideChips();scheduleLog();askBot(v);},
+  quick(t){this.open();add(esc(t),'me');this._hideChips();scheduleLog();askBot(t);},
   tip(e,i){e.stopPropagation();const b=e.currentTarget,tb=$('dr-tipbox');if(!tb)return;
     const wasOn=b.classList.contains('on');
     document.querySelectorAll('.dr-ih.on').forEach(x=>x.classList.remove('on'));
@@ -1580,7 +1604,7 @@ window.DERAT={
     let y=r.bottom+8;if(y+h>window.innerHeight-8)y=Math.max(8,r.top-h-8);
     tb.style.left=x+'px';tb.style.top=y+'px';},
   _markOne(grp,el){document.querySelectorAll('.dr-body [data-grp="'+grp+'"]').forEach(b=>b.classList.toggle('sel',b===el));},
-  _livePrice(){const lp=document.querySelector('.dr-live-price b');if(lp){const k=flow()[state.step];lp.textContent=eur(k==='place'?MIN:compute().total);lp.classList.remove('bump');void lp.offsetWidth;lp.classList.add('bump');}},
+  _livePrice(){const lp=document.querySelector('.dr-live-price b');if(lp){const k=flow()[state.step];lp.textContent=eur(k==='place'||k==='sub'?MIN:compute().total);lp.classList.remove('bump');void lp.offsetWidth;lp.classList.add('bump');}},
   pickService(id,el){state.c.service=id;state.c.sub=Object.keys(SERVICES[id].subs)[0];state.c.area=defaultQty(state.c.place,id);cleanAddons();this._markOne('service',el);this._livePrice();},
   pickSub(id,el){state.c.sub=id;cleanAddons();this._markOne('sub',el);const wrap=$('dr-ine-wrap');if(wrap)wrap.innerHTML=id==='ine'?rIne():'';this._livePrice();},
   pickPlace(id,el){state.c.place=id;state.c.area=defaultQty(id,state.c.service);this._markOne('place',el);this._livePrice();},
