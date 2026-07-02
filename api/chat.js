@@ -34,7 +34,7 @@ DÔLEŽITÉ FAKTY O FIRME:
 - Platba: hotovosť, karta, faktúra aj prevod. Úvodná obhliadka v Bratislave zdarma.
 
 KONTAKT (uveď IBA ak sa zákazník výslovne pýta na kontakt, telefón, e-mail, majiteľa alebo chce hovoriť s človekom — inak kontakt nespomínaj):
-- Daniel Vendzur, telefón +421 905 648 129 (aj WhatsApp), e-mail daniel.vendzur@gmail.com.
+- Daniel Vendzur, telefón +421 948 699 433 (aj WhatsApp), e-mail daniel.vendzur@gmail.com.
 
 ŠTÝL ODPOVEDÍ:
 - Odpovedaj po slovensky, zdvorilo, vecne a sebavedomo — ako odborník, ktorý radí zákazníkovi osobne. Max 2–4 vety, plynulá spisovná slovenčina. Bez markdownu. NIKDY nepoužívaj emoji ani emotikony.
@@ -81,7 +81,7 @@ module.exports = async (req, res) => {
     }
     const data = await r.json();
     const reply = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n').trim();
-    return res.status(200).json({ reply: reply || 'Prepáčte, skúste to prosím ešte raz alebo nás kontaktujte na +421 905 648 129.' });
+    return res.status(200).json({ reply: reply || 'Prepáčte, skúste to prosím ešte raz alebo nás kontaktujte na +421 948 699 433.' });
   } catch (e) {
     console.error(e);
     return res.status(500).json({ error: 'Server error' });
