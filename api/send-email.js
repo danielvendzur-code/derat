@@ -18,8 +18,8 @@ const LABELS = {
 
 function paramsRows(params) {
   return Object.keys(params || {}).filter(k => params[k] != null && params[k] !== '').map(k =>
-    `<tr><td style="padding:5px 10px;color:#6b7363;border-bottom:1px solid #eef1ea;">${esc(LABELS[k] || k)}</td>
-     <td style="padding:5px 10px;font-weight:600;color:#1e231d;border-bottom:1px solid #eef1ea;">${esc(params[k])}</td></tr>`
+    `<tr><td style="padding:5px 10px;color:#6b6b6c;border-bottom:1px solid #eef1ef;">${esc(LABELS[k] || k)}</td>
+     <td style="padding:5px 10px;font-weight:600;color:#39393a;border-bottom:1px solid #eef1ef;">${esc(params[k])}</td></tr>`
   ).join('');
 }
 
@@ -27,63 +27,63 @@ function buildHtml(q, c) {
   const items = Array.isArray(q.items) ? q.items : [];
   const itemRows = items.map(it =>
     `<tr>
-      <td style="padding:8px 10px;border-bottom:1px solid #eef1ea;">${esc(it.n)}</td>
-      <td style="padding:8px 10px;text-align:center;border-bottom:1px solid #eef1ea;">${esc(it.q)} ${esc(it.u || '')}</td>
-      <td style="padding:8px 10px;text-align:right;border-bottom:1px solid #eef1ea;">${eur(it.up)}</td>
-      <td style="padding:8px 10px;text-align:right;font-weight:700;border-bottom:1px solid #eef1ea;">${eur(it.sub)}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #eef1ef;">${esc(it.n)}</td>
+      <td style="padding:8px 10px;text-align:center;border-bottom:1px solid #eef1ef;">${esc(it.q)} ${esc(it.u || '')}</td>
+      <td style="padding:8px 10px;text-align:right;border-bottom:1px solid #eef1ef;">${eur(it.up)}</td>
+      <td style="padding:8px 10px;text-align:right;font-weight:700;border-bottom:1px solid #eef1ef;">${eur(it.sub)}</td>
     </tr>`).join('');
 
   const recap = [];
   if (q.matTotal != null) recap.push(['Medzisúčet', eur(q.matTotal)]);
-  if (q.discAmount) recap.push([`Zľava${q.discPct ? ' (−' + q.discPct + ' %)' : ''}`, '−' + eur(q.discAmount), '#2e7d32']);
+  if (q.discAmount) recap.push([`Zľava${q.discPct ? ' (−' + q.discPct + ' %)' : ''}`, '−' + eur(q.discAmount), '#1c8a66']);
   if (Array.isArray(q.addonsList)) q.addonsList.forEach(a => recap.push(['Doplnok: ' + a.n, '+' + eur(a.p)]));
   if (q.travel && q.travel.fee) recap.push([`Cestovné (≈${q.travel.km} km)`, '+' + eur(q.travel.fee)]);
   const recapRows = recap.map(r =>
-    `<tr><td style="padding:5px 10px;color:#5a6353;">${esc(r[0])}</td>
-     <td style="padding:5px 10px;text-align:right;font-weight:600;color:${r[2] || '#1e231d'};">${esc(r[1])}</td></tr>`).join('');
+    `<tr><td style="padding:5px 10px;color:#6b6b6c;">${esc(r[0])}</td>
+     <td style="padding:5px 10px;text-align:right;font-weight:600;color:${r[2] || '#39393a'};">${esc(r[1])}</td></tr>`).join('');
 
-  return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;background:#f5fcf9;padding:20px;">
-    <div style="background:linear-gradient(120deg,#0b6e49,#117254);color:#fff;padding:18px 22px;border-radius:14px 14px 0 0;">
+  return `<div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;background:#f4faf8;padding:20px;">
+    <div style="background:linear-gradient(120deg,#297373,#1e5a5a);color:#fff;padding:18px 22px;border-radius:14px 14px 0 0;">
       <div style="font-size:12px;letter-spacing:1px;opacity:.85;">DOPYT #${esc(q.num || '')}</div>
       <div style="font-size:20px;font-weight:800;margin-top:2px;">${esc(q.productName || 'Dopyt na zásah')}</div>
     </div>
-    <div style="background:#fff;padding:20px 22px;border:1px solid #e3e8db;border-top:0;border-radius:0 0 14px 14px;">
-      <h3 style="margin:0 0 8px;color:#0b6e49;font-size:14px;">Zákazník</h3>
+    <div style="background:#fff;padding:20px 22px;border:1px solid #e6e6e6;border-top:0;border-radius:0 0 14px 14px;">
+      <h3 style="margin:0 0 8px;color:#297373;font-size:14px;">Zákazník</h3>
       <table style="width:100%;border-collapse:collapse;font-size:13px;">
-        <tr><td style="padding:4px 0;width:120px;color:#6b7363;">Meno</td><td style="font-weight:700;">${esc(c.name)}</td></tr>
-        <tr><td style="padding:4px 0;color:#6b7363;">Telefón</td><td><a href="tel:${esc(c.phone)}" style="color:#0b6e49;font-weight:700;text-decoration:none;">${esc(c.phone)}</a></td></tr>
-        ${c.email ? `<tr><td style="padding:4px 0;color:#6b7363;">E-mail</td><td><a href="mailto:${esc(c.email)}" style="color:#0b6e49;">${esc(c.email)}</a></td></tr>` : ''}
-        ${q.lokacia ? `<tr><td style="padding:4px 0;color:#6b7363;">Lokalita</td><td>${esc(q.lokacia)}</td></tr>` : ''}
-        ${c.message ? `<tr><td style="padding:4px 0;color:#6b7363;vertical-align:top;">Poznámka</td><td>${esc(c.message)}</td></tr>` : ''}
+        <tr><td style="padding:4px 0;width:120px;color:#6b6b6c;">Meno</td><td style="font-weight:700;">${esc(c.name)}</td></tr>
+        <tr><td style="padding:4px 0;color:#6b6b6c;">Telefón</td><td><a href="tel:${esc(c.phone)}" style="color:#297373;font-weight:700;text-decoration:none;">${esc(c.phone)}</a></td></tr>
+        ${c.email ? `<tr><td style="padding:4px 0;color:#6b6b6c;">E-mail</td><td><a href="mailto:${esc(c.email)}" style="color:#297373;">${esc(c.email)}</a></td></tr>` : ''}
+        ${q.lokacia ? `<tr><td style="padding:4px 0;color:#6b6b6c;">Lokalita</td><td>${esc(q.lokacia)}</td></tr>` : ''}
+        ${c.message ? `<tr><td style="padding:4px 0;color:#6b6b6c;vertical-align:top;">Poznámka</td><td>${esc(c.message)}</td></tr>` : ''}
       </table>
 
-      ${items.length ? `<h3 style="margin:18px 0 6px;color:#0b6e49;font-size:14px;">Rozsah zásahu</h3>
+      ${items.length ? `<h3 style="margin:18px 0 6px;color:#297373;font-size:14px;">Rozsah zásahu</h3>
       <table style="width:100%;border-collapse:collapse;font-size:12.5px;">
-        <thead><tr style="background:#e7f7f0;color:#0b6e49;">
+        <thead><tr style="background:#e9fbf2;color:#297373;">
           <th style="padding:8px 10px;text-align:left;">Položka</th><th style="padding:8px 10px;">Množstvo</th>
           <th style="padding:8px 10px;text-align:right;">Jedn. cena</th><th style="padding:8px 10px;text-align:right;">Spolu</th>
         </tr></thead><tbody>${itemRows}</tbody>
       </table>
-      <div style="font-size:10px;color:#9aa291;margin:4px 2px 0;">Ceny sú s DPH.</div>` : ''}
+      <div style="font-size:10px;color:#9a9a9b;margin:4px 2px 0;">Ceny sú s DPH.</div>` : ''}
 
       ${recapRows ? `<table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:12px;">${recapRows}</table>` : ''}
 
       <table style="width:100%;border-collapse:collapse;margin-top:8px;">
-        <tr><td style="padding:12px 10px;background:#0b6e49;color:#fff;font-weight:800;font-size:15px;border-radius:10px 0 0 10px;">Celkom (s DPH)</td>
-        <td style="padding:12px 10px;background:#0b6e49;color:#fff;font-weight:900;font-size:18px;text-align:right;border-radius:0 10px 10px 0;">${eur(q.total)}</td></tr>
+        <tr><td style="padding:12px 10px;background:#ff7e47;color:#fff;font-weight:800;font-size:15px;border-radius:10px 0 0 10px;">Celkom (s DPH)</td>
+        <td style="padding:12px 10px;background:#ff7e47;color:#fff;font-weight:900;font-size:18px;text-align:right;border-radius:0 10px 10px 0;">${eur(q.total)}</td></tr>
       </table>
 
-      ${paramsRows(q.params) ? `<h3 style="margin:18px 0 6px;color:#0b6e49;font-size:14px;">Parametre</h3>
+      ${paramsRows(q.params) ? `<h3 style="margin:18px 0 6px;color:#297373;font-size:14px;">Parametre</h3>
       <table style="width:100%;border-collapse:collapse;font-size:12.5px;">${paramsRows(q.params)}</table>` : ''}
 
-      <div style="margin-top:16px;font-size:11px;color:#9aa291;">Orientačný odhad z kalkulačky DERAT — presnú cenu potvrďte po obhliadke / telefonicky.</div>
+      <div style="margin-top:16px;font-size:11px;color:#9a9a9b;">Orientačný odhad z kalkulačky DERAT — presnú cenu potvrďte po obhliadke / telefonicky.</div>
     </div>
   </div>`;
 }
 
 function plainHtml(c) {
   return `<div style="font-family:Arial,sans-serif;font-size:14px;">
-    <h2 style="color:#0b6e49;">Nový dopyt z webu DERAT</h2>
+    <h2 style="color:#297373;">Nový dopyt z webu DERAT</h2>
     <p><b>Meno:</b> ${esc(c.name)}<br><b>Telefón:</b> ${esc(c.phone)}<br><b>E-mail:</b> ${esc(c.email || '-')}</p>
     <p><b>Správa:</b><br>${esc(c.message || '-').replace(/\n/g, '<br>')}</p>
   </div>`;

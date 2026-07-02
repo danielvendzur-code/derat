@@ -768,6 +768,44 @@ img{max-width:100%}
 .dr-slider{accent-color:var(--teal)}
 input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 
+/* ============================================================
+   VYPLNENIE OKNA — kroky kalkulačky sa prirodzene roztiahnu
+   na celú výšku (obsah sa rozloží, nič nie je gigantické)
+   ============================================================ */
+.dr-body.no-scroll{display:flex;flex-direction:column}
+.dr-body.no-scroll .dr-q,.dr-body.no-scroll .dr-q-sub{flex:0 0 auto}
+.dr-body.no-scroll .dr-stepbox{flex:1;display:flex;flex-direction:column;justify-content:space-evenly;min-height:0;gap:8px}
+.dr-body.no-scroll .dr-stepbox>.dr-rows{flex:1;justify-content:space-evenly;gap:10px}
+.dr-body.no-scroll .dr-stepbox>.dr-grid{flex:1;align-content:space-evenly}
+.dr-body.no-scroll .dr-stepbox>.dr-grid.tri{flex:0 1 auto;align-content:start;gap:14px!important}
+.dr-body.no-scroll .dr-stepbox>.dr-choice-grid{flex:0 1 auto;gap:10px!important}
+.dr-body.no-scroll .dr-stepbox>.dr-area,
+.dr-body.no-scroll .dr-stepbox>.dr-location{flex:1;display:flex;flex-direction:column;justify-content:space-evenly}
+.dr-body.no-scroll .dr-stepbox>.dr-addon-grid{flex:0 1 auto;align-content:start;gap:12px!important}
+/* o kúsok väčšie prvky, aby pôsobili plnohodnotne */
+.dr-q{font-size:16px!important}
+.dr-q-sub{font-size:11.5px!important}
+.dr-rowcard{min-height:110px!important}
+.dr-rowcard-img{flex:0 0 124px!important;width:124px!important}
+.dr-rowcard-bd b{font-size:16px!important}
+.dr-rowcard-bd span{font-size:12px!important}
+.dr-pcard{height:132px!important}
+.dr-scard{min-height:114px!important;border-radius:20px!important}
+.dr-scard-ic{width:58px!important;height:54px!important}
+.dr-scard-ic svg{width:54px!important;height:54px!important}
+.dr-scard b{font-size:13.5px!important}
+.dr-choice-grid .dr-opt{min-height:124px!important;padding:12px!important}
+.dr-addon{min-height:94px!important;padding:13px!important}
+.dr-addon b{font-size:12.5px!important}
+.dr-addon span{font-size:13px!important}
+.dr-body.no-scroll .dr-area{padding:16px!important}
+.dr-body.no-scroll .dr-area-v{font-size:34px!important}
+.dr-location .dr-ine-txt{padding:13px 12px!important}
+.dr-visit-grid .dr-visit{padding:13px 11px!important}
+/* — chipy v chate: väčšie, výraznejšie — */
+.dr-chips{gap:8px;padding:0 13px 12px}
+.dr-chip{padding:11px 17px!important;font-size:12.8px!important}
+
 @media (prefers-reduced-motion: reduce){
   .dr-head::after,#derat-chat.thinking .dr-beam,.dr-live,.dr-typing span,
   .dr-next::after,.dr-submit::after,.dr-prog-fill::after{animation:none!important}
@@ -844,7 +882,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
    ========================================================= */
 const CONFIG={
   phone:'+421905648129', phoneText:'+421 905 648 129',
-  email:'info@derat.sk', whatsapp:'421905648129',
+  email:'daniel.vendzur@gmail.com', whatsapp:'421905648129',
   leadEndpoint:'',
   apiBase:'/api', // '/api' ak beží na Verceli (widget+API rovnaká doména), inak plná URL. Prázdne = vypnuté. Postup: NASADENIE.md
   travelRate:.40,
@@ -1192,6 +1230,7 @@ function bot(html){const ts=timeStr(),r=document.createElement('div');r.classNam
   const b=r.querySelector('.dr-b'),total=visLen(html);
   setTimeout(()=>{let n=0;(function tick(){n++;b.innerHTML=htmlSlice(html,n)+'<span class="dr-cur"></span>';msgs.scrollTop=msgs.scrollHeight;if(n<total)setTimeout(tick,14);else{b.innerHTML=html;chat.classList.remove('thinking');saveMsg(html,'bot',ts);}})();},760);}
 const BOT_REPLIES=[
+  {rx:/(kontakt|zavolaj|zavolat|zavolať|telefón|telefon|číslo|cislo|mail|majite|konate|s človekom|s clovekom|osobne)/,text:'Radi sa vám budeme venovať osobne — <b>Daniel Vendzur</b>, tel. <b>+421 905 648 129</b> (aj WhatsApp), e-mail <b>daniel.vendzur@gmail.com</b>. Cez pracovné dni aj víkend od 6:00 do 18:00.'},
   {rx:/(pracovn|otvoren|hodin|kedy|vikend|víkend|sobot|nedeľ|nedel|dostup)/,text:'Pracujeme <b>Po–Ne od 6:00 do 18:00</b>. Reštaurácie, hotely a prevádzky vieme riešiť aj individuálne po dohode.'},
   {rx:/(rýchl|rychl|surne|súrne|urgent|ako skoro|prísť|prist|prichod|výjazd|vyjazd)/,text:'Pri bežnom urgentnom zásahu vieme prísť zvyčajne do <b>1–2 hodín</b>, podľa vyťaženia technika a lokality.'},
   {rx:/(okruh|pôsob|posob|oblast|západ|zapad|slovensko|bratislav|ba\b)/,text:'Pôsobíme hlavne v <b>Bratislave a na západnom Slovensku</b>. Ďalšie lokality riešime po dohode.'},
