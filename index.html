@@ -577,8 +577,8 @@ img{max-width:100%}
 .dr-inbar button:active{transform:scale(.88)}
 
 /* ---- rýchle chipy: jemný spring + „blur-in" reveal po jednom ---- */
-.dr-chip{transition:background-size .6s cubic-bezier(.22,1,.36,1),color .35s ease,border-color .3s,transform .7s cubic-bezier(.34,1.26,.5,1),opacity .6s ease,box-shadow .25s,filter .6s}
-.dr-chips .dr-chip{filter:blur(3px)}
+.dr-chip{transition:background-size 1.05s cubic-bezier(.16,1,.3,1),color .34s ease,border-color .34s ease,transform .48s cubic-bezier(.2,.85,.25,1),opacity .48s ease,box-shadow .34s ease,filter .48s ease}
+.dr-chips .dr-chip{filter:blur(4px)}
 .dr-chips.reveal .dr-chip{filter:blur(0)}
 
 /* ---- KALKULAČKA: krajšie „chipy"/karty + prechody ---- */
@@ -602,7 +602,7 @@ img{max-width:100%}
 /* živá cena cvakne pri zmene */
 .dr-live-price b{transition:color .2s}
 .dr-live-price b.bump{animation:drBump .28s cubic-bezier(.2,.85,.25,1)}
-@keyframes drBump{0%{transform:scale(1)}40%{transform:scale(1.18);color:var(--g)}100%{transform:scale(1)}}
+@keyframes drBump{0%{transform:scale(1)}50%{transform:translateY(-1px) scale(1.035);color:var(--orange)}100%{transform:scale(1)}}
 
 /* progres prúžok – svietiaci bežec na čele */
 .dr-prog-fill{position:relative}
@@ -700,9 +700,9 @@ img{max-width:100%}
 .dr-cta-ic{background:var(--teal)!important;border-radius:14px;box-shadow:0 6px 14px rgba(41,115,115,.30);transition:.25s}
 .dr-cta:hover .dr-cta-ic,.dr-cta:active .dr-cta-ic{background:var(--orange)!important;box-shadow:0 8px 18px rgba(255,126,71,.4)}
 .dr-cta b{color:var(--ink)}
-/* — chipy: biele piluly, hover mätová výplň zo stredu + teal text (vzor hover menu) — */
-.dr-chip{padding:9px 15px!important;font-size:12px!important;color:var(--ink);background-color:#fff!important;background-image:radial-gradient(circle at center,var(--mint) 0 70%,transparent 72%)!important;background-repeat:no-repeat!important;background-position:center!important;background-size:0% 0%!important;border:1.4px solid var(--line)!important;border-radius:999px;box-shadow:0 5px 13px rgba(57,57,58,.07)}
-.dr-chip:hover{background-size:265% 265%!important;color:var(--teal)!important;border-color:var(--mint)!important;box-shadow:0 8px 18px rgba(133,255,199,.45)}
+/* — chipy: biele piluly, pomalý oranžový fill podľa farby widgetu — */
+.dr-chip{padding:9px 15px!important;font-size:12px!important;color:var(--ink);background-color:#fff!important;background-image:radial-gradient(circle at center,var(--orange) 0 68%,transparent 70%)!important;background-repeat:no-repeat!important;background-position:center!important;background-size:0% 0%!important;border:1.4px solid var(--line)!important;border-radius:999px;box-shadow:0 5px 13px rgba(57,57,58,.07)}
+.dr-chip:hover{background-size:265% 265%!important;color:#fff!important;border-color:var(--orange)!important;box-shadow:0 10px 22px rgba(255,126,71,.34)}
 /* — input & kontakty — */
 .dr-inbar input:focus{border-color:var(--teal)}
 .dr-inbar button{background:var(--orange);border-radius:999px}
@@ -743,7 +743,7 @@ img{max-width:100%}
 .dr-live-price{background:var(--mint);border-radius:999px;padding:7px 14px;box-shadow:0 12px 28px -10px rgba(41,115,115,.35);transition:transform .24s cubic-bezier(.2,.85,.25,1),box-shadow .24s ease,background-color .24s ease}
 .dr-live-price small{color:rgba(41,115,115,.7);font-weight:800;text-transform:uppercase;letter-spacing:.14em;font-size:8.5px}
 .dr-live-price b{color:var(--teal);font-weight:900;display:inline-block;transition:color .22s ease,transform .22s cubic-bezier(.2,.85,.25,1)}
-@keyframes drBump{0%{transform:scale(1)}45%{transform:scale(1.055);color:var(--teal-dk)}100%{transform:scale(1)}}
+@keyframes drBump{0%{transform:scale(1)}50%{transform:translateY(-1px) scale(1.035);color:var(--orange)}100%{transform:scale(1)}}
 .dr-body.no-scroll{overflow:hidden!important}
 .dr-body.no-scroll .dr-more{display:none!important}
 .dr-body.can-scroll{overflow:auto!important}
@@ -769,9 +769,9 @@ img{max-width:100%}
 input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 
 /* — animácia označenia karty: jemný spring + pop fajky — */
-@keyframes drSelPop{0%{transform:scale(.985);opacity:.96}100%{transform:scale(1);opacity:1}}
-.dr-rowcard.sel,.dr-scard.sel,.dr-pcard.sel,.dr-addon.sel,.dr-opt.sel,.dr-visit.sel{animation:drSelPop .24s cubic-bezier(.2,.85,.25,1)!important}
-.dr-rowcard.sel:after,.dr-scard.sel:after,.dr-pcard.sel:after,.dr-addon.sel:after{animation:drPop .28s cubic-bezier(.2,.85,.25,1)}
+@keyframes drSelPop{0%{transform:translateY(1px) scale(.992);filter:saturate(.96)}60%{transform:translateY(-1px) scale(1.006);filter:saturate(1.05)}100%{transform:translateY(0) scale(1);filter:none}}
+.dr-rowcard.sel,.dr-scard.sel,.dr-pcard.sel,.dr-addon.sel,.dr-opt.sel,.dr-visit.sel{animation:drSelPop .32s cubic-bezier(.2,.85,.25,1)!important}
+.dr-rowcard.sel:after,.dr-scard.sel:after,.dr-pcard.sel:after,.dr-addon.sel:after{animation:drPop .32s cubic-bezier(.2,.85,.25,1)}
 
 /* ============================================================
    VYPLNENIE OKNA — kroky kalkulačky sa prirodzene roztiahnu
@@ -831,8 +831,9 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 #dr-teaser .dr-price-highlight{display:inline-flex!important;align-items:center;margin:0!important;padding:5px 10px!important;border-radius:999px;background:#ff7e47;color:#fff!important;font-size:15.3px!important;line-height:1.05!important;box-shadow:0 5px 12px rgba(255,126,71,.28);white-space:nowrap;transition:transform .24s cubic-bezier(.2,.85,.25,1),box-shadow .24s ease}
 #dr-teaser span b{display:inline!important;margin:0!important;padding:0!important;background:transparent!important;color:var(--teal)!important;font-size:inherit!important;line-height:inherit!important;box-shadow:none!important;white-space:normal!important}
 .dr-chips{gap:8px;padding:0 13px 11px}
-.dr-chip{padding:10px 16px!important;font-size:12.4px!important;line-height:1.12!important;box-shadow:0 6px 14px rgba(57,57,58,.08)!important}
-#derat-chat:not(.calc):not(.dr-has-user) .dr-msgs::after{content:"Vyberte rýchlu voľbu nižšie alebo napíšte problém vlastnými slovami.";margin-top:auto;align-self:center;max-width:340px;padding:10px 13px;border:1px dashed rgba(41,115,115,.22);border-radius:14px;background:rgba(255,255,255,.74);color:#55605c;text-align:center;font:800 11.6px/1.35 var(--font);box-shadow:0 8px 20px rgba(57,57,58,.05)}
+.dr-chip{padding:10px 16px!important;font-size:12.4px!important;line-height:1.12!important;box-shadow:0 6px 14px rgba(57,57,58,.08)!important;transition:background-size 1.15s cubic-bezier(.16,1,.3,1),color .34s ease,border-color .34s ease,transform .48s cubic-bezier(.2,.85,.25,1),opacity .48s ease,box-shadow .34s ease,filter .48s ease!important}
+.dr-chips .dr-chip{opacity:0;transform:translateY(6px) scale(.94);filter:blur(4px);transform-origin:center;pointer-events:none}
+.dr-chips.reveal .dr-chip{opacity:1;transform:translateY(0) scale(1);filter:blur(0);pointer-events:auto}
 .dr-body.no-scroll .dr-stepbox>.dr-grid:not(.tri){grid-auto-rows:minmax(86px,98px)!important;gap:8px!important;align-content:start!important}
 .dr-body.no-scroll .dr-stepbox>.dr-grid:not(.tri) .dr-pcard{min-height:88px!important;border-radius:16px!important}
 .dr-body.no-scroll .dr-stepbox>.dr-grid:not(.tri) .dr-pcard-bd{padding:30px 8px 8px!important}
@@ -1605,7 +1606,7 @@ function scrollHint(b){const rest=b.scrollHeight-b.clientHeight-b.scrollTop;
   b.classList.toggle('scrollable',b.scrollHeight>b.clientHeight+8);
   b.classList.toggle('atbottom',rest<26);}
 function softPulse(el,cls){if(!el)return;
-  if(el.animate){el.animate([{transform:'scale(1)',opacity:.88},{transform:'scale(1.045)',opacity:1},{transform:'scale(1)',opacity:1}],{duration:260,easing:'cubic-bezier(.2,.85,.25,1)'});return;}
+  if(el.animate){el.animate([{transform:'translateY(0) scale(1)'},{transform:'translateY(-1px) scale(1.035)'},{transform:'translateY(0) scale(1)'}],{duration:320,easing:'cubic-bezier(.2,.85,.25,1)'});return;}
   if(cls){el.classList.remove(cls);requestAnimationFrame(()=>el.classList.add(cls));}
 }
 function countUp(){const el=$('dr-price');if(!el)return;const token=++state.priceAnim,t=+el.dataset.t,t0=performance.now(),dur=900;
