@@ -601,7 +601,7 @@ img{max-width:100%}
 
 /* živá cena cvakne pri zmene */
 .dr-live-price b{transition:color .2s}
-.dr-live-price b.bump{animation:drBump .42s cubic-bezier(.2,1.5,.4,1)}
+.dr-live-price b.bump{animation:drBump .28s cubic-bezier(.2,.85,.25,1)}
 @keyframes drBump{0%{transform:scale(1)}40%{transform:scale(1.18);color:var(--g)}100%{transform:scale(1)}}
 
 /* progres prúžok – svietiaci bežec na čele */
@@ -676,8 +676,8 @@ img{max-width:100%}
 /* — header: oranžový pás ako navbar webu — */
 .dr-head{background:var(--orange)!important;padding:14px 14px!important}
 .dr-head::before{content:"";position:absolute;right:-42px;top:-52px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.22),transparent 66%);pointer-events:none}
-.dr-head-logo{width:auto!important;height:44px!important;background:transparent!important;border-radius:0!important;box-shadow:none!important;padding:0!important}
-.dr-logo-full{display:block;height:44px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,.18))}
+.dr-head-logo{width:auto!important;height:40px!important;background:transparent!important;border-radius:0!important;box-shadow:none!important;padding:0!important}
+.dr-logo-full{display:block;height:40px;width:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,.18))}
 .dr-head-t b{font-weight:900;letter-spacing:-.01em}
 .dr-hbtn{background:rgba(255,255,255,.94);color:var(--teal);border-radius:999px}
 .dr-hbtn.ghost{background:rgba(255,255,255,.18);color:#fff}
@@ -685,7 +685,7 @@ img{max-width:100%}
 /* — bublina (zatvorený stav): oranžová ako CTA webu — */
 #derat-bubble{background:var(--orange)!important;box-shadow:0 18px 44px -10px rgba(255,126,71,.6),0 0 0 5px rgba(255,255,255,.85)!important;transition:transform .3s cubic-bezier(.2,.8,.2,1),background .3s!important}
 #derat-bubble:hover{background:var(--teal)!important}
-#derat-bubble .dr-mouse{width:52px}
+#derat-bubble .dr-mouse{width:48px}
 /* — správy — */
 .dr-msgs{background:linear-gradient(180deg,#fff 0%,#fafaf9 100%);gap:10px}
 .dr-av{background:var(--teal);box-shadow:0 4px 12px rgba(41,115,115,.30)}
@@ -714,9 +714,9 @@ img{max-width:100%}
 .dr-first-min span{background:var(--teal)!important;border-radius:999px}
 /* — karty služieb: „zákazové kruhy" na svetlom gradiente ako na webe — */
 .dr-rows{gap:9px!important}
-.dr-rowcard{min-height:96px!important;border-radius:20px!important}
-.dr-rowcard-img{flex:0 0 112px!important;width:112px!important;align-self:stretch!important;transform:none!important;transition:transform .5s cubic-bezier(.2,1,.2,1)!important;background-color:#f2faf6!important;background-size:80%!important;background-position:center!important;background-repeat:no-repeat!important}
-.dr-rowcard:hover .dr-rowcard-img{transform:scale(1.07)!important}
+.dr-rowcard{min-height:92px!important;border-radius:20px!important}
+.dr-rowcard-img{flex:0 0 104px!important;width:104px!important;align-self:stretch!important;transform:none!important;transition:transform .38s cubic-bezier(.2,.85,.25,1),filter .38s ease!important;background-color:#f2faf6!important;background-size:76%!important;background-position:center!important;background-repeat:no-repeat!important;will-change:transform}
+.dr-rowcard:hover .dr-rowcard-img{transform:scale(1.04)!important}
 .dr-rowcard-bd{padding:13px 8px 13px 15px!important}
 .dr-rowcard-bd b{font-size:15px!important;font-weight:800}
 .dr-rowcard-bd span{font-size:11.3px!important}
@@ -740,10 +740,10 @@ img{max-width:100%}
 .dr-step-dot.done{background:var(--mint)}
 .dr-step-dot.active{background:var(--teal);box-shadow:0 4px 10px rgba(41,115,115,.3)}
 /* — živá cena: mätová pilulka s teal textom (plávajúci badge z webu) — */
-.dr-live-price{background:var(--mint);border-radius:999px;padding:7px 14px;box-shadow:0 12px 28px -10px rgba(41,115,115,.35)}
+.dr-live-price{background:var(--mint);border-radius:999px;padding:7px 14px;box-shadow:0 12px 28px -10px rgba(41,115,115,.35);transition:transform .24s cubic-bezier(.2,.85,.25,1),box-shadow .24s ease,background-color .24s ease}
 .dr-live-price small{color:rgba(41,115,115,.7);font-weight:800;text-transform:uppercase;letter-spacing:.14em;font-size:8.5px}
-.dr-live-price b{color:var(--teal);font-weight:900}
-@keyframes drBump{0%{transform:scale(1)}40%{transform:scale(1.18);color:var(--teal-dk)}100%{transform:scale(1)}}
+.dr-live-price b{color:var(--teal);font-weight:900;display:inline-block;transition:color .22s ease,transform .22s cubic-bezier(.2,.85,.25,1)}
+@keyframes drBump{0%{transform:scale(1)}45%{transform:scale(1.055);color:var(--teal-dk)}100%{transform:scale(1)}}
 .dr-body.no-scroll{overflow:hidden!important}
 .dr-body.no-scroll .dr-more{display:none!important}
 .dr-body.can-scroll{overflow:auto!important}
@@ -769,9 +769,9 @@ img{max-width:100%}
 input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 
 /* — animácia označenia karty: jemný spring + pop fajky — */
-@keyframes drSelPop{0%{transform:scale(1)}35%{transform:scale(.955)}70%{transform:scale(1.028)}100%{transform:scale(1)}}
-.dr-rowcard.sel,.dr-scard.sel,.dr-pcard.sel,.dr-addon.sel,.dr-opt.sel,.dr-visit.sel{animation:drSelPop .45s cubic-bezier(.34,1.56,.64,1)!important}
-.dr-rowcard.sel:after,.dr-scard.sel:after,.dr-pcard.sel:after,.dr-addon.sel:after{animation:drPop .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes drSelPop{0%{transform:scale(.985);opacity:.96}100%{transform:scale(1);opacity:1}}
+.dr-rowcard.sel,.dr-scard.sel,.dr-pcard.sel,.dr-addon.sel,.dr-opt.sel,.dr-visit.sel{animation:drSelPop .24s cubic-bezier(.2,.85,.25,1)!important}
+.dr-rowcard.sel:after,.dr-scard.sel:after,.dr-pcard.sel:after,.dr-addon.sel:after{animation:drPop .28s cubic-bezier(.2,.85,.25,1)}
 
 /* ============================================================
    VYPLNENIE OKNA — kroky kalkulačky sa prirodzene roztiahnu
@@ -799,8 +799,8 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 /* o kúsok väčšie prvky, aby pôsobili plnohodnotne */
 .dr-q{font-size:16px!important}
 .dr-q-sub{font-size:11.5px!important}
-.dr-rowcard{min-height:100px!important}
-.dr-rowcard-img{flex:0 0 116px!important;width:116px!important}
+.dr-rowcard{min-height:92px!important}
+.dr-rowcard-img{flex:0 0 104px!important;width:104px!important}
 .dr-rowcard-bd b{font-size:16px!important}
 .dr-rowcard-bd span{font-size:12px!important}
 .dr-pcard{height:auto!important;min-height:116px!important}
@@ -828,7 +828,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 #dr-teaser b{display:block;margin-bottom:6px;font-size:15.8px;line-height:1.22;color:var(--teal)!important}
 #dr-teaser span{display:block;font-size:13.4px;line-height:1.42;color:#46524e}
 #dr-teaser span strong{font-weight:800;color:#2f3432}
-#dr-teaser .dr-price-highlight{display:inline-flex!important;align-items:center;margin:0!important;padding:5px 10px!important;border-radius:999px;background:#ff7e47;color:#fff!important;font-size:15.3px!important;line-height:1.05!important;box-shadow:0 5px 12px rgba(255,126,71,.28);white-space:nowrap}
+#dr-teaser .dr-price-highlight{display:inline-flex!important;align-items:center;margin:0!important;padding:5px 10px!important;border-radius:999px;background:#ff7e47;color:#fff!important;font-size:15.3px!important;line-height:1.05!important;box-shadow:0 5px 12px rgba(255,126,71,.28);white-space:nowrap;transition:transform .24s cubic-bezier(.2,.85,.25,1),box-shadow .24s ease}
 #dr-teaser span b{display:inline!important;margin:0!important;padding:0!important;background:transparent!important;color:var(--teal)!important;font-size:inherit!important;line-height:inherit!important;box-shadow:none!important;white-space:normal!important}
 .dr-chips{gap:8px;padding:0 13px 11px}
 .dr-chip{padding:10px 16px!important;font-size:12.4px!important;line-height:1.12!important;box-shadow:0 6px 14px rgba(57,57,58,.08)!important}
@@ -1604,9 +1604,13 @@ function render(keep){
 function scrollHint(b){const rest=b.scrollHeight-b.clientHeight-b.scrollTop;
   b.classList.toggle('scrollable',b.scrollHeight>b.clientHeight+8);
   b.classList.toggle('atbottom',rest<26);}
-function countUp(){const el=$('dr-price');if(!el)return;const token=++state.priceAnim,t=+el.dataset.t,t0=performance.now(),dur=1100;
+function softPulse(el,cls){if(!el)return;
+  if(el.animate){el.animate([{transform:'scale(1)',opacity:.88},{transform:'scale(1.045)',opacity:1},{transform:'scale(1)',opacity:1}],{duration:260,easing:'cubic-bezier(.2,.85,.25,1)'});return;}
+  if(cls){el.classList.remove(cls);requestAnimationFrame(()=>el.classList.add(cls));}
+}
+function countUp(){const el=$('dr-price');if(!el)return;const token=++state.priceAnim,t=+el.dataset.t,t0=performance.now(),dur=900;
   (function tick(now){if(token!==state.priceAnim)return;const p=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-p,4),v=Math.round(t*e);el.textContent=v.toLocaleString('sk-SK')+' €';
-    if(p<1)requestAnimationFrame(tick);else{el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');}})(t0);}
+    if(p<1)requestAnimationFrame(tick);else softPulse(el,'pop');})(t0);}
 
 /* =========================================================
    6) API
@@ -1645,7 +1649,7 @@ window.DERAT={
     let y=r.bottom+8;if(y+h>window.innerHeight-8)y=Math.max(8,r.top-h-8);
     tb.style.left=x+'px';tb.style.top=y+'px';},
   _markOne(grp,el){document.querySelectorAll('.dr-body [data-grp="'+grp+'"]').forEach(b=>b.classList.toggle('sel',b===el));},
-  _livePrice(){const lp=document.querySelector('.dr-live-price b');if(lp){const k=flow()[state.step];lp.textContent=eur(k==='place'||k==='sub'?MIN:compute().total);lp.classList.remove('bump');void lp.offsetWidth;lp.classList.add('bump');}},
+  _livePrice(){const lp=document.querySelector('.dr-live-price b');if(lp){const k=flow()[state.step];lp.textContent=eur(k==='place'||k==='sub'?MIN:compute().total);softPulse(lp,'bump');}},
   pickService(id,el){state.c.service=id;state.c.sub=Object.keys(SERVICES[id].subs)[0];state.c.area=defaultQty(state.c.place,id);cleanAddons();this._markOne('service',el);this._livePrice();},
   pickSub(id,el){state.c.sub=id;cleanAddons();this._markOne('sub',el);const wrap=$('dr-ine-wrap');if(wrap)wrap.innerHTML=id==='ine'?rIne():'';
     const body=calc.querySelector('.dr-body');if(body){body.classList.toggle('can-scroll',id==='ine');body.classList.toggle('no-scroll',id!=='ine');requestAnimationFrame(()=>scrollHint(body));}
@@ -1662,7 +1666,7 @@ window.DERAT={
     document.querySelectorAll('.dr-vat-switch button').forEach((b,i)=>b.classList.toggle('on',i===(gross?1:0)));
     const label=$('dr-price-label'),el=$('dr-price'),range=$('dr-price-range');
     if(label)label.textContent='Orientačná cena '+(gross?'s DPH':'bez DPH');
-    if(el){el.dataset.t=price;el.textContent=eur(price);el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');}
+    if(el){el.dataset.t=price;el.textContent=eur(price);softPulse(el,'pop');}
     if(range)range.textContent=priceRange(low,high,gross);},
   checkArea(){this.locationField('psc',state.c.psc);},
   photoPick(e){const f=e.target.files&&e.target.files[0];const box=$('dr-photo-prev');if(!f){state.photo=null;if(box)box.innerHTML='';return;}

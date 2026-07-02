@@ -7,6 +7,7 @@
     width:138px; height:148px;
     border:0; z-index:2147483000; background:transparent;
     transition:width .4s cubic-bezier(.33,1,.68,1), height .4s cubic-bezier(.33,1,.68,1);
+    will-change:width,height;
   }
   #derat-frame.derat-open{ width:470px; height:100vh; height:100dvh; }
   @media (max-width:768px){
@@ -36,7 +37,7 @@
     transform:rotate(45deg); border-radius:0 0 3px 0;
   }
   #derat-teaser .dt-tt{ font-size:15.5px; font-weight:800; color:#39393A; margin:0 22px 7px 0; line-height:1.28; }
-  #derat-teaser .dt-price-highlight{ display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px; background:#ff7e47; color:#fff; font-size:15.3px; line-height:1.05; box-shadow:0 5px 12px rgba(255,126,71,.28); white-space:nowrap; }
+  #derat-teaser .dt-price-highlight{ display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px; background:#ff7e47; color:#fff; font-size:15.3px; line-height:1.05; box-shadow:0 5px 12px rgba(255,126,71,.28); white-space:nowrap; transition:transform .24s cubic-bezier(.2,.85,.25,1), box-shadow .24s ease; }
   #derat-teaser .dt-tx{ font-size:13.6px; font-weight:500; color:#56615d; line-height:1.44; }
   #derat-teaser .dt-tx strong{ color:#2f3432; font-weight:800; }
   #derat-teaser .dt-tx b{ color:#297373; font-weight:800; }
