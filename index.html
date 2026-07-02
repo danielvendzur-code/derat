@@ -825,9 +825,10 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 .dr-chead{padding:10px 12px!important}
 /* — finálny kompaktný pass: bot čipy, preview a kroky bez zbytočného scrollu — */
 #dr-teaser{max-width:270px;padding:15px 17px 16px!important;background:linear-gradient(135deg,#ffffff 0%,#ecfff7 58%,#fff1ea 100%)!important}
-#dr-teaser b{display:block;margin-bottom:5px;font-size:15.8px;line-height:1.12;color:var(--teal)!important}
+#dr-teaser b{display:block;margin-bottom:6px;font-size:15.8px;line-height:1.22;color:var(--teal)!important}
 #dr-teaser span{display:block;font-size:12.2px;line-height:1.34;color:#46524e}
-#dr-teaser span b{display:inline!important;margin:0!important;font-size:inherit!important;color:var(--teal)!important}
+#dr-teaser .dr-price-highlight{display:inline-flex!important;align-items:center;margin:0 4px 0 0!important;padding:3px 7px!important;border-radius:999px;background:linear-gradient(135deg,#ff8a2a,#ffb05b);color:#fff!important;font-size:11.8px!important;line-height:1!important;box-shadow:0 5px 12px rgba(255,138,42,.28);white-space:nowrap}
+#dr-teaser span b{display:inline-flex!important;align-items:center;margin:0 2px!important;padding:3px 7px!important;border-radius:999px;background:linear-gradient(135deg,var(--teal),#3b8f8f);color:#fff!important;font-size:11.6px!important;line-height:1!important;box-shadow:0 4px 10px rgba(41,115,115,.24);white-space:nowrap}
 .dr-chips{gap:8px;padding:0 13px 11px}
 .dr-chip{padding:10px 16px!important;font-size:12.4px!important;line-height:1.12!important;box-shadow:0 6px 14px rgba(57,57,58,.08)!important}
 .dr-welcome-points{display:grid;gap:6px;margin-top:10px}
@@ -872,8 +873,8 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 
 <div id="dr-teaser" onclick="DERAT.openCalc()">
   <button class="dr-teaser-x" onclick="event.stopPropagation();DERAT.hideTeaser()" aria-label="Zavrieť">×</button>
-  <b>Cena zásahu za pár klikov</b>
-  <span>Vyberte škodcu a priestor. <b>AI bot poradí hneď.</b></span>
+  <b><span class="dr-price-highlight">Cena zásahu</span> za pár klikov</b>
+  <span>Začnite kalkulačkou. <b>AI bot</b> poradí, čo pripraviť.</span>
 </div>
 
 <button id="derat-bubble" type="button" aria-label="Otvoriť asistenta DERAT" onclick="DERAT.toggle()">
