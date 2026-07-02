@@ -824,16 +824,14 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 .dr-tab:not(.on):hover{color:var(--teal)}
 .dr-chead{padding:10px 12px!important}
 /* — finálny kompaktný pass: bot čipy, preview a kroky bez zbytočného scrollu — */
-#dr-teaser{max-width:270px;padding:15px 17px 16px!important;background:linear-gradient(135deg,#ffffff 0%,#ecfff7 58%,#fff1ea 100%)!important}
+#dr-teaser{max-width:300px;padding:16px 18px 17px!important;background:linear-gradient(135deg,#ffffff 0%,#ecfff7 100%)!important}
 #dr-teaser b{display:block;margin-bottom:6px;font-size:15.8px;line-height:1.22;color:var(--teal)!important}
-#dr-teaser span{display:block;font-size:12.2px;line-height:1.34;color:#46524e}
-#dr-teaser .dr-price-highlight{display:inline-flex!important;align-items:center;margin:0!important;padding:4px 9px!important;border-radius:999px;background:linear-gradient(135deg,#ff8a2a,#ffb05b);color:#fff!important;font-size:14.8px!important;line-height:1!important;box-shadow:0 5px 12px rgba(255,138,42,.28);white-space:nowrap}
+#dr-teaser span{display:block;font-size:13.4px;line-height:1.42;color:#46524e}
+#dr-teaser span strong{font-weight:800;color:#2f3432}
+#dr-teaser .dr-price-highlight{display:inline-flex!important;align-items:center;margin:0!important;padding:5px 10px!important;border-radius:999px;background:#ff7e47;color:#fff!important;font-size:15.3px!important;line-height:1.05!important;box-shadow:0 5px 12px rgba(255,126,71,.28);white-space:nowrap}
 #dr-teaser span b{display:inline!important;margin:0!important;padding:0!important;background:transparent!important;color:var(--teal)!important;font-size:inherit!important;line-height:inherit!important;box-shadow:none!important;white-space:normal!important}
 .dr-chips{gap:8px;padding:0 13px 11px}
 .dr-chip{padding:10px 16px!important;font-size:12.4px!important;line-height:1.12!important;box-shadow:0 6px 14px rgba(57,57,58,.08)!important}
-.dr-welcome-points{display:grid;gap:6px;margin-top:10px}
-.dr-welcome-points span{display:flex;align-items:center;gap:7px;padding:7px 9px;border:1px solid rgba(41,115,115,.14);border-radius:11px;background:rgba(133,255,199,.14);font:800 11.2px/1.2 var(--font);color:var(--ink)}
-.dr-welcome-points i{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:var(--teal);color:#fff;font-style:normal;font-size:11px;flex:0 0 18px}
 #derat-chat:not(.calc):not(.dr-has-user) .dr-msgs::after{content:"Vyberte rýchlu voľbu nižšie alebo napíšte problém vlastnými slovami.";margin-top:auto;align-self:center;max-width:340px;padding:10px 13px;border:1px dashed rgba(41,115,115,.22);border-radius:14px;background:rgba(255,255,255,.74);color:#55605c;text-align:center;font:800 11.6px/1.35 var(--font);box-shadow:0 8px 20px rgba(57,57,58,.05)}
 .dr-body.no-scroll .dr-stepbox>.dr-grid:not(.tri){grid-auto-rows:minmax(86px,98px)!important;gap:8px!important;align-content:start!important}
 .dr-body.no-scroll .dr-stepbox>.dr-grid:not(.tri) .dr-pcard{min-height:88px!important;border-radius:16px!important}
@@ -873,8 +871,8 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 
 <div id="dr-teaser" onclick="DERAT.openCalc()">
   <button class="dr-teaser-x" onclick="event.stopPropagation();DERAT.hideTeaser()" aria-label="Zavrieť">×</button>
-  <b><span class="dr-price-highlight">Cena zásahu za pár klikov</span></b>
-  <span>Rýchlo si vypočítajte orientačnú cenu. <b>AI chatbot</b> vám poradí ďalší postup.</span>
+  <b><span class="dr-price-highlight">Zistite cenu zásahu na počkanie</span></b>
+  <span>Otvorte <strong>kalkulačku</strong> — orientačnú cenu máte do minúty. <b>AI chatbot</b> poradí ďalší postup.</span>
 </div>
 
 <button id="derat-bubble" type="button" aria-label="Otvoriť asistenta DERAT" onclick="DERAT.toggle()">
@@ -960,7 +958,7 @@ const IMG={
 };
 
 /* Logo bota – reálne logo DERAT (biela myš s mätovým chvostom) */
-const WELCOME='Dobrý deň, som <b>DERAT AI</b>. Rýchlo vás navedem k riešeniu a orientačnej cene zásahu. Najlepšie začať <b>kalkulačkou</b>, alebo mi napíšte problém vlastnými slovami.<div class="dr-welcome-points"><span><i>1</i>orientačná cena zásahu</span><span><i>2</i>čo pripraviť pred príchodom</span><span><i>3</i>postup a bezpečnosť zásahu</span></div>';
+const WELCOME='Dobrý deň, som <b>DERAT AI</b>. Najrýchlejší odhad ceny získate v <b>kalkulačke</b>. Ak si nie ste istí škodcom alebo postupom, napíšte mi problém vlastnými slovami.';
 const MOUSE=`<img class="dr-mouse" src="img/derat-logo-mouse.png" alt="DERAT">`;
 const LOGO_FULL=`<img class="dr-logo-full" src="img/derat-logo-white.png" alt="DERAT">`;
 

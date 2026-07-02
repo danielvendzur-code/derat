@@ -16,11 +16,11 @@
   #derat-teaser{
     position:fixed; right:22px; bottom:134px;
     z-index:2147483001;
-    width:280px; max-width:74vw;
+    width:300px; max-width:76vw;
     background:linear-gradient(180deg,#FFFFFF 0%,#F2FEF8 100%);
     border:1px solid rgba(41,115,115,.16);
     border-radius:18px 18px 6px 18px;
-    padding:11px 13px 12px;
+    padding:13px 15px 14px;
     box-shadow:0 18px 44px rgba(57,57,58,.16), 0 2px 8px rgba(57,57,58,.06);
     font-family:system-ui,-apple-system,'Segoe UI',sans-serif;
     opacity:0; transform:translateY(8px) scale(.96); transform-origin:bottom right;
@@ -35,8 +35,10 @@
     border-bottom:1px solid rgba(41,115,115,.16);
     transform:rotate(45deg); border-radius:0 0 3px 0;
   }
-  #derat-teaser .dt-tt{ font-size:15.5px; font-weight:800; color:#39393A; margin:0 20px 5px 0; line-height:1.28; }
-  #derat-teaser .dt-tx{ font-size:13px; font-weight:500; color:#6B6B6C; line-height:1.5; }
+  #derat-teaser .dt-tt{ font-size:15.5px; font-weight:800; color:#39393A; margin:0 22px 7px 0; line-height:1.28; }
+  #derat-teaser .dt-price-highlight{ display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px; background:#ff7e47; color:#fff; font-size:15.3px; line-height:1.05; box-shadow:0 5px 12px rgba(255,126,71,.28); white-space:nowrap; }
+  #derat-teaser .dt-tx{ font-size:13.6px; font-weight:500; color:#56615d; line-height:1.44; }
+  #derat-teaser .dt-tx strong{ color:#2f3432; font-weight:800; }
   #derat-teaser .dt-tx b{ color:#297373; font-weight:800; }
   #derat-teaser .dt-x{
     position:absolute; top:7px; right:8px; width:20px; height:20px;
@@ -53,8 +55,8 @@
 
 <div id="derat-teaser" aria-hidden="true">
   <button class="dt-x" aria-label="Zavrieť">&times;</button>
-  <div class="dt-tt">Zistite cenu zásahu na počkanie</div>
-  <div class="dt-tx">Otvorte <b>kalkulačku</b> — orientačnú cenu deratizácie či dezinsekcie máte do minúty. Poradí aj náš <b>AI asistent</b>.</div>
+  <div class="dt-tt"><span class="dt-price-highlight">Zistite cenu zásahu na počkanie</span></div>
+  <div class="dt-tx">Otvorte <strong>kalkulačku</strong> — orientačnú cenu máte do minúty. <b>AI chatbot</b> poradí ďalší postup.</div>
 </div>
 
 <iframe id="derat-frame" src="https://derat-chatbot-backend.vercel.app/"
