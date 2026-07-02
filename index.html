@@ -841,6 +841,18 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 .dr-body.no-scroll .dr-choice-grid .dr-opt-m b{font-size:11.7px!important;line-height:1.1!important}
 .dr-body.no-scroll .dr-choice-grid .dr-opt-m span{font-size:9.4px!important;line-height:1.25!important}
 .dr-body.no-scroll .dr-choice-grid .dr-sev-meter{margin:2px 0 0!important}
+.dr-body.no-scroll .dr-stepbox>.dr-grid.tri{grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-auto-rows:auto!important;gap:7px!important;align-content:start!important}
+.dr-body.no-scroll .dr-grid.tri>*:last-child:nth-child(odd){grid-column:auto!important}
+.dr-body.no-scroll .dr-grid.tri .dr-scard{min-height:74px!important;padding:7px 5px!important;gap:5px!important;border-radius:14px!important}
+.dr-body.no-scroll .dr-grid.tri .dr-scard-ic{width:34px!important;height:32px!important}
+.dr-body.no-scroll .dr-grid.tri .dr-scard-ic svg{width:32px!important;height:32px!important}
+.dr-body.no-scroll .dr-grid.tri .dr-scard b{font-size:10.8px!important;line-height:1.1!important}
+.dr-body.no-scroll .dr-stepbox>.dr-addon-grid{grid-auto-rows:auto!important;gap:7px!important}
+.dr-addon{min-height:66px!important;padding:8px!important;border-radius:12px!important}
+.dr-addon b{font-size:10.5px!important;line-height:1.15!important}
+.dr-addon span{font-size:11px!important;margin-top:3px!important}
+.dr-quick{gap:5px!important;margin-top:8px!important}
+.dr-quick button{padding:7px 5px!important;font-size:10.4px!important;min-width:50px!important}
 
 @media (prefers-reduced-motion: reduce){
   .dr-head::after,#derat-chat.thinking .dr-beam,.dr-live,.dr-typing span,
@@ -975,7 +987,7 @@ const I={
 const MIN=60, VAT=.23;
 const SERVICES={
   deratizacia:{name:'Deratizácia',desc:'Hlodavce, kuna a lasica',base:MIN,unit:'m²',
-    q:'Ktorého škodcu potrebujete vyriešiť?',
+    q:'Ktorého škodcu chcete vyriešiť?',
     info:'Pri hlodavcoch automaticky zvolíme vhodný materiál a počet kusov podľa rozlohy, druhu škodcu a miery zamorenia.',
     subs:{
       potkany:{n:'Potkany',ic:'rat',pricing:'material',coverage:35,v:2},
@@ -1599,7 +1611,7 @@ window.DERAT={
     const url=CONTACT_URL[k];
     setTimeout(()=>{k==='wa'?window.open(url,'_blank','noopener'):window.location.href=url;},180);
   },
-  toggle(){state.open?this.close():this.open();},
+  toggle(){state.open?this.close():this.openCalc();},
   hideTeaser(){const t=$('dr-teaser');if(t)t.classList.remove('show');const p=document.querySelector('.dr-point');if(p)p.classList.add('gone');},
   open(){state.open=true;setHeaderLogo(chat.classList.contains('calc')?'calc':'chat');chat.classList.add('show');chat.setAttribute('aria-hidden','false');$('derat-bubble').classList.add('open');this.hideTeaser();
     const ch=document.querySelector('.dr-chips');if(ch){ch.classList.remove('gone');ch.classList.add('reveal');}
