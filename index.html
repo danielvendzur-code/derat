@@ -827,8 +827,12 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 #dr-teaser{max-width:270px;padding:16px 17px 17px!important}
 #dr-teaser b{display:block;margin-bottom:6px;font-size:15px;line-height:1.18}
 #dr-teaser span{display:block;font-size:12.5px;line-height:1.45;color:#55605c}
-.dr-chips{gap:6px;padding:0 12px 9px}
-.dr-chip{padding:8px 13px!important;font-size:11.6px!important;line-height:1.12!important;box-shadow:0 5px 12px rgba(57,57,58,.07)!important}
+.dr-chips{gap:8px;padding:0 13px 11px}
+.dr-chip{padding:10px 16px!important;font-size:12.4px!important;line-height:1.12!important;box-shadow:0 6px 14px rgba(57,57,58,.08)!important}
+.dr-welcome-points{display:grid;gap:6px;margin-top:10px}
+.dr-welcome-points span{display:flex;align-items:center;gap:7px;padding:7px 9px;border:1px solid rgba(41,115,115,.14);border-radius:11px;background:rgba(133,255,199,.14);font:800 11.2px/1.2 var(--font);color:var(--ink)}
+.dr-welcome-points i{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:var(--teal);color:#fff;font-style:normal;font-size:11px;flex:0 0 18px}
+#derat-chat:not(.calc):not(.dr-has-user) .dr-msgs::after{content:"Vyberte rýchlu voľbu nižšie alebo napíšte problém vlastnými slovami.";margin-top:auto;align-self:center;max-width:340px;padding:10px 13px;border:1px dashed rgba(41,115,115,.22);border-radius:14px;background:rgba(255,255,255,.74);color:#55605c;text-align:center;font:800 11.6px/1.35 var(--font);box-shadow:0 8px 20px rgba(57,57,58,.05)}
 .dr-body.no-scroll .dr-stepbox>.dr-grid:not(.tri){grid-auto-rows:minmax(86px,98px)!important;gap:8px!important;align-content:start!important}
 .dr-body.no-scroll .dr-stepbox>.dr-grid:not(.tri) .dr-pcard{min-height:88px!important;border-radius:16px!important}
 .dr-body.no-scroll .dr-stepbox>.dr-grid:not(.tri) .dr-pcard-bd{padding:30px 8px 8px!important}
@@ -867,8 +871,8 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 
 <div id="dr-teaser" onclick="DERAT.openCalc()">
   <button class="dr-teaser-x" onclick="event.stopPropagation();DERAT.hideTeaser()" aria-label="Zavrieť">×</button>
-  <b>Rýchly odhad ceny zásahu</b>
-  <span>Vyberte škodcu, priestor a rozlohu. Kalkulačka ukáže orientačnú cenu, asistent poradí s postupom.</span>
+  <b>Zistite cenu zásahu do minúty</b>
+  <span>Vyberte škodcu a priestor. Hneď uvidíte orientačný odhad a môžete poslať dopyt technikovi.</span>
 </div>
 
 <button id="derat-bubble" type="button" aria-label="Otvoriť asistenta DERAT" onclick="DERAT.toggle()">
@@ -954,7 +958,7 @@ const IMG={
 };
 
 /* Logo bota – reálne logo DERAT (biela myš s mätovým chvostom) */
-const WELCOME='Dobrý deň, som <b>DERAT AI</b>. Pomôžem vám rýchlo vyriešiť škodcu a zistiť cenu zásahu. V <b>kalkulačke</b> máte odhad za pár klikov, alebo mi napíšte problém — poradím postup aj prípravu priestoru.';
+const WELCOME='Dobrý deň, som <b>DERAT AI</b>. Pomôžem vám rýchlo zistiť, čo treba urobiť a koľko môže stáť zásah. Najrýchlejšie je použiť <b>kalkulačku</b>, alebo mi napíšte problém a poradím ďalší postup.<div class="dr-welcome-points"><span><i>1</i>orientačná cena zásahu</span><span><i>2</i>čo pripraviť pred príchodom</span><span><i>3</i>postup a bezpečnosť zásahu</span></div>';
 const MOUSE=`<img class="dr-mouse" src="img/derat-logo-mouse.png" alt="DERAT">`;
 const LOGO_FULL=`<img class="dr-logo-full" src="img/derat-logo-white.png" alt="DERAT">`;
 
@@ -1156,6 +1160,7 @@ function saveMsg(html,who,ts){
 }
 function clearHistory(){
   state.hist=[];
+  const c=document.getElementById('derat-chat');if(c)c.classList.remove('dr-has-user');
   try{localStorage.removeItem(CONFIG.storageKey);}catch(e){}
 }
 function restoreHistory(){
@@ -1168,6 +1173,7 @@ function restoreHistory(){
     msgs.innerHTML='';state.hist=[];
     items.forEach(m=>add(m.html,m.who,{save:false,ts:m.ts}));
     state.hist=items;
+    chat.classList.toggle('dr-has-user',items.some(m=>m.who==='me'));
     msgs.dataset.i='1';
     const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('gone');
     return true;
@@ -1619,14 +1625,15 @@ window.DERAT={
     else{const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('reveal');}
     postParent('open');},
   reset(){if(chat.classList.contains('calc'))this.closeCalc();msgs.innerHTML='';msgs.dataset.i='1';clearHistory();state.sent=null;
+    chat.classList.remove('dr-has-user');
     const ch=document.querySelector('.dr-chips');if(ch)ch.classList.remove('reveal','gone');
     botType(WELCOME,()=>{if(ch)ch.classList.add('reveal');});},
   close(){state.open=false;chat.classList.remove('show','calc');setHeaderLogo('chat');chat.setAttribute('aria-hidden','true');$('derat-bubble').classList.remove('open');postParent('close');},
   openCalc(){this.open();chat.classList.add('calc');setHeaderLogo('calc');state.step=0;state.sent=null;state.priceGross=false;state.c.count=1;render();postParent('open-calc');},
   closeCalc(){chat.classList.remove('calc');setHeaderLogo('chat');postParent('open');},
   _hideChips(){const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('gone');},
-  submit(e){if(e&&e.preventDefault)e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';add(esc(v),'me');this._hideChips();scheduleLog();askBot(v);},
-  quick(t){this.open();add(esc(t),'me');this._hideChips();scheduleLog();askBot(t);},
+  submit(e){if(e&&e.preventDefault)e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';chat.classList.add('dr-has-user');add(esc(v),'me');this._hideChips();scheduleLog();askBot(v);},
+  quick(t){this.open();chat.classList.add('dr-has-user');add(esc(t),'me');this._hideChips();scheduleLog();askBot(t);},
   tip(e,i){e.stopPropagation();const b=e.currentTarget,tb=$('dr-tipbox');if(!tb)return;
     const wasOn=b.classList.contains('on');
     document.querySelectorAll('.dr-ih.on').forEach(x=>x.classList.remove('on'));
