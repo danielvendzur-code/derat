@@ -1,0 +1,53 @@
+name: Patch compact pest cards
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply patch
+        run: python scripts/patch_compact_pest_cards.py
+      - name: Validate
+        shell: bash
+        run: |
+          git diff --check
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path('index.html').read_text(encoding='utf-8')
+          assert "repeat(3,minmax(0,1fr))" in html
+          assert "min-height:74px" in html
+          assert "last||(k==='sub'&&state.c.sub==='ine')" in html
+          assert "const shouldScroll=id==='ine'" in html
+          assert 'class="dr-teaser-ic"' not in html
+          embed = Path('embed.html').read_text(encoding='utf-8')
+          assert 'scrolling="no"' not in embed
+          assert "e.source!==f.contentWindow||e.origin!==widgetOrigin" in embed
+          scripts = re.findall(r'<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>', html, flags=re.I | re.S)
+          if not scripts:
+              raise SystemExit('Inline JavaScript nebol najdeny.')
+          for i, script in enumerate(scripts):
+              Path(f'/tmp/derat-compact-{i}.js').write_text(script, encoding='utf-8')
+          PY
+          for file in /tmp/derat-compact-*.js; do node --check "$file"; done
+      - name: Commit changes
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "No changes needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Restore compact pest cards and keep Iné scrolling"
+          git push origin HEAD:main
