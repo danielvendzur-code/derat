@@ -48,8 +48,12 @@ img{max-width:100%}
 /* teaser pred otvorením */
 #dr-teaser{position:fixed;right:22px;bottom:114px;z-index:99998;max-width:280px;background:#fff;border:1px solid var(--line);border-radius:20px;border-bottom-right-radius:6px;padding:15px 17px 16px;box-shadow:0 18px 46px rgba(57,57,58,.22);cursor:pointer;opacity:0;transform:translateY(12px) scale(.95);transform-origin:bottom right;pointer-events:none;transition:.4s cubic-bezier(.2,.85,.25,1)}
 #dr-teaser.show{opacity:1;transform:none;pointer-events:auto}
-#dr-teaser b{display:block;font:800 15px var(--font);color:var(--g-dk);margin-bottom:4px;padding-right:24px}
-#dr-teaser span{display:block;font:500 13px/1.5 var(--font);color:#5a6353}
+.dr-teaser-row{display:flex;gap:12px;align-items:flex-start;padding-right:16px}
+.dr-teaser-ic{flex:0 0 auto;width:38px;height:38px;border-radius:12px;background:var(--teal);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(41,115,115,.28)}
+.dr-teaser-ic svg{width:20px;height:20px;fill:#fff}
+.dr-teaser-t{display:block;font:800 14.5px var(--font);color:var(--ink);margin-bottom:3px}
+#dr-teaser .dr-teaser-tx>span{display:block;font:500 12.5px/1.5 var(--font);color:var(--muted)}
+#dr-teaser .dr-teaser-tx>span b{color:var(--teal);font-weight:800}
 #dr-teaser:after{content:"";position:absolute;right:28px;bottom:-8px;width:16px;height:16px;background:#fff;border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
 .dr-teaser-x{position:absolute;top:7px;right:8px;width:20px;height:20px;border:0;border-radius:50%;background:#eef1ef;color:#7c857a;font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .dr-teaser-x:hover{background:#dfe6e2}
@@ -779,23 +783,27 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
    ============================================================ */
 .dr-body.no-scroll{display:flex;flex-direction:column}
 .dr-body.no-scroll .dr-q,.dr-body.no-scroll .dr-q-sub{flex:0 0 auto}
-/* obsah začína HNEĎ pod textom a roztiahne sa na celú výšku (max ~20 % voľného) */
+/* obsah začína HNEĎ pod textom a vyplní zvyšnú výšku (bez pretečenia, bez scrollu) */
 .dr-body.no-scroll .dr-stepbox{flex:1;display:flex;flex-direction:column;justify-content:flex-start;min-height:0;gap:10px}
+/* služby: riadky vyplnia výšku */
 .dr-body.no-scroll .dr-stepbox>.dr-rows{flex:1;gap:10px}
-.dr-body.no-scroll .dr-rows .dr-rowcard{flex:1;max-height:158px}
-.dr-body.no-scroll .dr-stepbox>.dr-grid{flex:1;grid-auto-rows:minmax(112px,150px);align-content:space-evenly}
-.dr-body.no-scroll .dr-stepbox>.dr-grid.tri{grid-template-columns:1fr 1fr!important;gap:12px!important;flex:0 1 auto;grid-auto-rows:132px;align-content:start}
-.dr-body.no-scroll .dr-grid.tri>*:last-child:nth-child(odd){grid-column:1/-1}
-.dr-body.no-scroll .dr-grid.tri .dr-scard{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
-.dr-body.no-scroll .dr-grid.tri .dr-scard-ic{width:58px!important;height:54px!important}
-.dr-body.no-scroll .dr-grid.tri .dr-scard-ic svg{width:54px!important;height:54px!important}
-.dr-body.no-scroll .dr-grid.tri .dr-scard b{font-size:13.5px!important}
-.dr-body.no-scroll .dr-stepbox>.dr-choice-grid{flex:0 1 auto;grid-template-columns:1fr!important;grid-auto-rows:126px;gap:10px!important;align-content:start}
-.dr-body.no-scroll .dr-choice-grid .dr-opt{flex-direction:row!important;align-items:center!important;gap:13px!important;justify-content:flex-start!important;text-align:left}
-.dr-body.no-scroll .dr-choice-grid .dr-sev-meter{margin-left:auto!important}
+.dr-body.no-scroll .dr-rows .dr-rowcard{flex:1;max-height:150px}
+/* priestory (6 kariet) + doplnky: presne vyplnia, nikdy nepretečú/nerežú sa */
+.dr-body.no-scroll .dr-stepbox>.dr-grid,
+.dr-body.no-scroll .dr-stepbox>.dr-addon-grid{flex:1;grid-auto-rows:1fr;gap:10px!important}
+/* výskyt: menšie karty, vycentrované na výšku */
+.dr-body.no-scroll .dr-stepbox>.dr-choice-grid{flex:1;grid-template-columns:1fr!important;grid-auto-rows:86px;gap:9px!important;align-content:center}
+.dr-choice-grid .dr-opt{flex-direction:row!important;align-items:center!important;gap:13px!important;justify-content:flex-start!important;text-align:left;min-height:0!important;padding:11px 14px!important}
+.dr-choice-grid .dr-sev-meter{margin-left:auto!important;margin-top:0!important}
 .dr-body.no-scroll .dr-stepbox>.dr-area,
 .dr-body.no-scroll .dr-stepbox>.dr-location{flex:1;display:flex;flex-direction:column;justify-content:space-between}
-.dr-body.no-scroll .dr-stepbox>.dr-addon-grid{flex:0 1 auto;grid-auto-rows:106px;gap:11px!important;align-content:start}
+/* ŠKODCA — 2 stĺpce s ROVNAKOU veľkosťou vždy (aj po výbere „Iné"); krok sa scrolluje */
+.dr-grid.tri{grid-template-columns:1fr 1fr!important;gap:12px!important}
+.dr-grid.tri>*:last-child:nth-child(odd){grid-column:1/-1}
+.dr-grid.tri .dr-scard{min-height:116px!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px}
+.dr-grid.tri .dr-scard-ic{width:54px!important;height:50px!important}
+.dr-grid.tri .dr-scard-ic svg{width:50px!important;height:50px!important}
+.dr-grid.tri .dr-scard b{font-size:13px!important}
 /* o kúsok väčšie prvky, aby pôsobili plnohodnotne */
 .dr-q{font-size:16px!important}
 .dr-q-sub{font-size:11.5px!important}
@@ -803,12 +811,11 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 .dr-rowcard-img{flex:0 0 104px!important;width:104px!important}
 .dr-rowcard-bd b{font-size:16px!important}
 .dr-rowcard-bd span{font-size:12px!important}
-.dr-pcard{height:auto!important;min-height:116px!important}
+.dr-pcard{height:auto!important;min-height:100px!important}
 .dr-scard{min-height:94px!important;border-radius:18px!important}
 .dr-scard-ic{width:46px!important;height:44px!important}
 .dr-scard-ic svg{width:44px!important;height:44px!important}
 .dr-scard b{font-size:12.5px!important}
-.dr-choice-grid .dr-opt{min-height:104px!important;padding:10px!important}
 .dr-addon{min-height:80px!important;padding:11px!important}
 .dr-addon b{font-size:11.5px!important}
 .dr-addon span{font-size:12px!important}
@@ -872,8 +879,13 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 
 <div id="dr-teaser" onclick="DERAT.openCalc()">
   <button class="dr-teaser-x" onclick="event.stopPropagation();DERAT.hideTeaser()" aria-label="Zavrieť">×</button>
-  <b><span class="dr-price-highlight">Zistite cenu zásahu na počkanie</span></b>
-  <span>Otvorte <strong>kalkulačku</strong> — orientačnú cenu máte do minúty. <b>AI chatbot</b> poradí ďalší postup.</span>
+  <div class="dr-teaser-row">
+    <span class="dr-teaser-ic"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg></span>
+    <div class="dr-teaser-tx">
+      <b class="dr-teaser-t">Zistite cenu zásahu na počkanie</b>
+      <span>Otvorte <b>kalkulačku</b> — orientačnú cenu máte do minúty. <b>AI chatbot</b> poradí ďalší postup.</span>
+    </div>
+  </div>
 </div>
 
 <button id="derat-bubble" type="button" aria-label="Otvoriť asistenta DERAT" onclick="DERAT.toggle()">
@@ -1590,7 +1602,7 @@ function render(keep){
   calc.innerHTML=`
   <div class="dr-chead"><div class="dr-tabs"><button class="dr-tab on" type="button"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg>Kalkulačka</button><button class="dr-tab" type="button" onclick="DERAT.closeCalc()"><svg viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/></svg>AI asistent</button></div></div>
   <div class="dr-prog"><button class="dr-back" onclick="DERAT.prev()" ${first?'disabled':''}>‹</button><div class="dr-step-dots" style="--steps:${n}">${ST.map((_,i)=>`<i class="dr-step-dot${i<state.step?' done':''}${i===state.step?' active':''}" data-step="${i+1}"></i>`).join('')}</div><div class="dr-prog-n">${state.step+1}/${n}</div></div>
-  <div class="dr-body ${last||(k==='sub'&&state.c.sub==='ine')?'can-scroll':'no-scroll'}">
+  <div class="dr-body ${last||k==='sub'?'can-scroll':'no-scroll'}">
     <h3 class="dr-q">${title}</h3><div class="dr-q-sub">${q[1]}</div>
     <div class="dr-stepbox" style="animation:drStepIn .42s cubic-bezier(.2,.85,.3,1)">${stepInner()}</div>
     <div class="dr-more" aria-hidden="true"><span>ďalej nižšie ▾</span></div>
@@ -1624,10 +1636,10 @@ window.DERAT={
   },
   toggle(){state.open?this.close():this.openCalc();},
   hideTeaser(){const t=$('dr-teaser');if(t)t.classList.remove('show');const p=document.querySelector('.dr-point');if(p)p.classList.add('gone');},
+  _showChips(){const ch=document.querySelector('.dr-chips');if(ch){ch.classList.remove('gone');ch.classList.add('reveal');}},
   open(){state.open=true;setHeaderLogo(chat.classList.contains('calc')?'calc':'chat');chat.classList.add('show');chat.setAttribute('aria-hidden','false');$('derat-bubble').classList.add('open');this.hideTeaser();
-    const ch=document.querySelector('.dr-chips');if(ch){ch.classList.remove('gone');ch.classList.add('reveal');}
-    if(!msgs.dataset.i){msgs.dataset.i='1';botType(WELCOME,()=>{if(ch)ch.classList.add('reveal');});}
-    else{const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('reveal');}
+    if(!msgs.dataset.i){msgs.dataset.i='1';botType(WELCOME,()=>this._showChips());}
+    else this._showChips();
     postParent('open');},
   reset(){if(chat.classList.contains('calc'))this.closeCalc();msgs.innerHTML='';msgs.dataset.i='1';clearHistory();state.sent=null;
     chat.classList.remove('dr-has-user');
@@ -1635,7 +1647,7 @@ window.DERAT={
     botType(WELCOME,()=>{if(ch)ch.classList.add('reveal');});},
   close(){state.open=false;chat.classList.remove('show','calc');setHeaderLogo('chat');chat.setAttribute('aria-hidden','true');$('derat-bubble').classList.remove('open');postParent('close');},
   openCalc(){this.open();chat.classList.add('calc');setHeaderLogo('calc');state.step=0;state.sent=null;state.priceGross=false;state.c.count=1;render();postParent('open-calc');},
-  closeCalc(){chat.classList.remove('calc');setHeaderLogo('chat');postParent('open');},
+  closeCalc(){chat.classList.remove('calc');setHeaderLogo('chat');this._showChips();postParent('open');},
   _hideChips(){const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('gone');},
   submit(e){if(e&&e.preventDefault)e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';chat.classList.add('dr-has-user');add(esc(v),'me');this._hideChips();scheduleLog();askBot(v);},
   quick(t){this.open();chat.classList.add('dr-has-user');add(esc(t),'me');this._hideChips();scheduleLog();askBot(t);},
@@ -1653,7 +1665,7 @@ window.DERAT={
   _livePrice(){const lp=document.querySelector('.dr-live-price b');if(lp){const k=flow()[state.step];lp.textContent=eur(k==='place'||k==='sub'?MIN:compute().total);softPulse(lp,'bump');}},
   pickService(id,el){state.c.service=id;state.c.sub=Object.keys(SERVICES[id].subs)[0];state.c.area=defaultQty(state.c.place,id);cleanAddons();this._markOne('service',el);this._livePrice();},
   pickSub(id,el){state.c.sub=id;cleanAddons();this._markOne('sub',el);const wrap=$('dr-ine-wrap');if(wrap)wrap.innerHTML=id==='ine'?rIne():'';
-    const body=calc.querySelector('.dr-body');if(body){body.classList.toggle('can-scroll',id==='ine');body.classList.toggle('no-scroll',id!=='ine');requestAnimationFrame(()=>scrollHint(body));}
+    const body=calc.querySelector('.dr-body');if(body)requestAnimationFrame(()=>scrollHint(body));
     this._livePrice();},
   pickPlace(id,el){state.c.place=id;state.c.area=defaultQty(id,state.c.service);this._markOne('place',el);this._livePrice();},
   pickSeverity(id,el){state.c.severity=id;this._markOne('severity',el);this._livePrice();},
