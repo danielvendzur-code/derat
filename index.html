@@ -797,7 +797,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 .dr-choice-grid .dr-sev-meter{margin-left:auto!important;margin-top:0!important}
 .dr-body.no-scroll .dr-stepbox>.dr-area,
 .dr-body.no-scroll .dr-stepbox>.dr-location{flex:1;display:flex;flex-direction:column;justify-content:space-between}
-/* ŠKODCA — 2 stĺpce s ROVNAKOU veľkosťou vždy (aj po výbere „Iné"); krok sa scrolluje */
+/* ŠKODCA — bez výberu „Iné“ sa použijú kompaktné 3 stĺpce bez scrollu; „Iné“ môže scrollovať */
 .dr-grid.tri{grid-template-columns:1fr 1fr!important;gap:12px!important}
 .dr-grid.tri>*:last-child:nth-child(odd){grid-column:1/-1}
 .dr-grid.tri .dr-scard{min-height:116px!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px}
@@ -877,8 +877,16 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 
 <!-- ====================== WIDGET ====================== -->
 
-<!-- Interný teaser odstránený — teaser bublinu zobrazuje embed kód na stránke (embed.html),
-     takže sa nikdy nemôžu zobraziť dva teasery naraz. -->
+<div id="dr-teaser" onclick="DERAT.openCalc()">
+  <button class="dr-teaser-x" onclick="event.stopPropagation();DERAT.hideTeaser()" aria-label="Zavrieť">×</button>
+  <div class="dr-teaser-row">
+    <span class="dr-teaser-ic"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg></span>
+    <div class="dr-teaser-tx">
+      <b class="dr-teaser-t">Zistite cenu zásahu na počkanie</b>
+      <span>Otvorte <b>kalkulačku</b> — orientačnú cenu máte do minúty. <b>AI chatbot</b> poradí ďalší postup.</span>
+    </div>
+  </div>
+</div>
 
 <button id="derat-bubble" type="button" aria-label="Otvoriť asistenta DERAT" onclick="DERAT.toggle()">
   <span id="dr-bub-ic"></span>
@@ -1594,7 +1602,7 @@ function render(keep){
   calc.innerHTML=`
   <div class="dr-chead"><div class="dr-tabs"><button class="dr-tab on" type="button"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg>Kalkulačka</button><button class="dr-tab" type="button" onclick="DERAT.closeCalc()"><svg viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/></svg>AI asistent</button></div></div>
   <div class="dr-prog"><button class="dr-back" onclick="DERAT.prev()" ${first?'disabled':''}>‹</button><div class="dr-step-dots" style="--steps:${n}">${ST.map((_,i)=>`<i class="dr-step-dot${i<state.step?' done':''}${i===state.step?' active':''}" data-step="${i+1}"></i>`).join('')}</div><div class="dr-prog-n">${state.step+1}/${n}</div></div>
-  <div class="dr-body ${last||k==='sub'?'can-scroll':'no-scroll'}">
+  <div class="dr-body ${last||(k==='sub'&&state.c.sub==='ine')?'can-scroll':'no-scroll'}">
     <h3 class="dr-q">${title}</h3><div class="dr-q-sub">${q[1]}</div>
     <div class="dr-stepbox" style="animation:drStepIn .42s cubic-bezier(.2,.85,.3,1)">${stepInner()}</div>
     <div class="dr-more" aria-hidden="true"><span>ďalej nižšie ▾</span></div>
@@ -1794,6 +1802,8 @@ Stránka: ${p.page}
 };
 restoreHistory();
 initEmbedBridge();
+/* zobraz teaser po načítaní v samostatnom preview; v iframe ho initEmbedBridge skryje */
+setTimeout(()=>{if(!state.open){const t=$('dr-teaser');if(t)t.classList.add('show');}},1400);
 /* info-tooltip ako „portal" priamo v body — nikdy nie je orezaný a pozicuje sa voči viewportu */
 const _tipbox=document.createElement('div');_tipbox.id='dr-tipbox';_tipbox.className='dr-tipbox';document.body.appendChild(_tipbox);
 /* zatvor info-bublinu pri kliknutí inam alebo pri scrolle */
