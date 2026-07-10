@@ -7,6 +7,10 @@
   @media (max-width:768px){#derat-frame{width:122px;height:130px}#derat-frame.derat-open{width:100%;height:100vh;height:100dvh}}
   #derat-teaser{position:fixed;right:22px;bottom:134px;z-index:2147483001;width:280px;max-width:74vw;background:linear-gradient(180deg,#FFFFFF 0%,#F2FEF8 100%);border:1px solid rgba(41,115,115,.16);border-radius:18px 18px 6px 18px;padding:11px 13px 12px;box-shadow:0 18px 44px rgba(57,57,58,.16),0 2px 8px rgba(57,57,58,.06);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;opacity:0;transform:translateY(8px) scale(.96);transform-origin:bottom right;transition:opacity .45s ease,transform .45s cubic-bezier(.34,1.4,.64,1);pointer-events:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
   #derat-teaser.derat-show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+  #derat-teaser .dt-row{display:flex;align-items:center;gap:12px}
+  #derat-teaser .dt-ic{flex:0 0 48px;width:48px;height:48px;border-radius:14px;background:#297373;display:flex;align-items:center;justify-content:center;box-shadow:0 7px 16px rgba(41,115,115,.24)}
+  #derat-teaser .dt-ic svg{width:23px;height:23px;fill:#fff;display:block}
+  #derat-teaser .dt-copy{flex:1;min-width:0}
   #derat-teaser::after{content:"";position:absolute;right:56px;bottom:-7px;width:15px;height:15px;background:#F2FEF8;border-right:1px solid rgba(41,115,115,.16);border-bottom:1px solid rgba(41,115,115,.16);transform:rotate(45deg);border-radius:0 0 3px 0}
   #derat-teaser .dt-tt{font-size:15.5px;font-weight:800;color:#39393A;margin:0 20px 5px 0;line-height:1.28}
   #derat-teaser .dt-tx{font-size:13px;font-weight:500;color:#6B6B6C;line-height:1.5}
@@ -20,8 +24,13 @@
 </style>
 <div id="derat-teaser" role="button" tabindex="0" aria-hidden="true" aria-label="Otvoriť kalkulačku DERAT">
   <button class="dt-x" type="button" aria-label="Zavrieť">&times;</button>
-  <div class="dt-tt">Zistite cenu zásahu na počkanie</div>
-  <div class="dt-tx">Otvorte <b>kalkulačku</b> — orientačnú cenu deratizácie či dezinsekcie máte do minúty. Poradí aj náš <b>AI asistent</b>.</div>
+  <div class="dt-row">
+    <span class="dt-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg></span>
+    <div class="dt-copy">
+      <div class="dt-tt">Zistite cenu zásahu na počkanie</div>
+      <div class="dt-tx">Otvorte <b>kalkulačku</b> — orientačnú cenu deratizácie či dezinsekcie máte do minúty. Poradí aj náš <b>AI asistent</b>.</div>
+    </div>
+  </div>
 </div>
 <iframe id="derat-frame" src="https://derat-chatbot-backend.vercel.app/" title="DERAT — AI asistent a kalkulačka" allow="clipboard-write" scrolling="no" loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 <script>
