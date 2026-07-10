@@ -877,16 +877,8 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 
 <!-- ====================== WIDGET ====================== -->
 
-<div id="dr-teaser" onclick="DERAT.openCalc()">
-  <button class="dr-teaser-x" onclick="event.stopPropagation();DERAT.hideTeaser()" aria-label="Zavrieť">×</button>
-  <div class="dr-teaser-row">
-    <span class="dr-teaser-ic"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg></span>
-    <div class="dr-teaser-tx">
-      <b class="dr-teaser-t">Zistite cenu zásahu na počkanie</b>
-      <span>Otvorte <b>kalkulačku</b> — orientačnú cenu máte do minúty. <b>AI chatbot</b> poradí ďalší postup.</span>
-    </div>
-  </div>
-</div>
+<!-- Interný teaser odstránený — teaser bublinu zobrazuje embed kód na stránke (embed.html),
+     takže sa nikdy nemôžu zobraziť dva teasery naraz. -->
 
 <button id="derat-bubble" type="button" aria-label="Otvoriť asistenta DERAT" onclick="DERAT.toggle()">
   <span id="dr-bub-ic"></span>
@@ -1802,8 +1794,6 @@ Stránka: ${p.page}
 };
 restoreHistory();
 initEmbedBridge();
-/* zobraz teaser po načítaní (ak ešte nebol otvorený) */
-setTimeout(()=>{if(!state.open){const t=$('dr-teaser');if(t)t.classList.add('show');}},1400);
 /* info-tooltip ako „portal" priamo v body — nikdy nie je orezaný a pozicuje sa voči viewportu */
 const _tipbox=document.createElement('div');_tipbox.id='dr-tipbox';_tipbox.className='dr-tipbox';document.body.appendChild(_tipbox);
 /* zatvor info-bublinu pri kliknutí inam alebo pri scrolle */
