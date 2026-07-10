@@ -12,11 +12,22 @@ def replace_once(text: str, old: str, new: str, label: str) -> str:
 index_path = Path('index.html')
 text = index_path.read_text(encoding='utf-8')
 
-old_pick = """  pickSub(id,el){state.c.sub=id;cleanAddons();this._markOne('sub',el);const wrap=$('dr-ine-wrap');if(wrap)wrap.innerHTML=id==='ine'?rIne():'';this._livePrice();},"""
 new_pick = """  pickSub(id,el){state.c.sub=id;cleanAddons();this._markOne('sub',el);const wrap=$('dr-ine-wrap');if(wrap)wrap.innerHTML=id==='ine'?rIne():'';
     const body=calc.querySelector('.dr-body');if(body){const shouldScroll=id==='ine';body.classList.toggle('can-scroll',shouldScroll);body.classList.toggle('no-scroll',!shouldScroll);body.scrollTop=0;requestAnimationFrame(()=>scrollHint(body));}
     this._livePrice();},"""
-text = replace_once(text, old_pick, new_pick, 'pickSub scroll toggle')
+old_variants = [
+    """  pickSub(id,el){state.c.sub=id;cleanAddons();this._markOne('sub',el);const wrap=$('dr-ine-wrap');if(wrap)wrap.innerHTML=id==='ine'?rIne():'';this._livePrice();},""",
+    """  pickSub(id,el){state.c.sub=id;cleanAddons();this._markOne('sub',el);const wrap=$('dr-ine-wrap');if(wrap)wrap.innerHTML=id==='ine'?rIne():'';
+    const body=calc.querySelector('.dr-body');if(body)requestAnimationFrame(()=>scrollHint(body));
+    this._livePrice();},""",
+]
+if new_pick not in text:
+    for old_pick in old_variants:
+        if old_pick in text:
+            text = text.replace(old_pick, new_pick, 1)
+            break
+    else:
+        raise SystemExit('Nenajdeny blok: pickSub scroll toggle')
 
 # Remove the calculator icon from the standalone teaser markup.
 text, count = re.subn(
