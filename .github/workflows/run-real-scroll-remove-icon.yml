@@ -1,0 +1,50 @@
+name: Run DERAT real scroll and teaser cleanup
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply patch
+        run: python scripts/patch_real_scroll_remove_icon.py
+      - name: Validate
+        shell: bash
+        run: |
+          git diff --check
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          html = Path('index.html').read_text(encoding='utf-8')
+          scripts = re.findall(r'<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>', html, flags=re.I | re.S)
+          if not scripts:
+              raise SystemExit('Inline JavaScript nebol najdeny.')
+          for i, script in enumerate(scripts):
+              Path(f'/tmp/derat-inline-{i}.js').write_text(script, encoding='utf-8')
+          assert "body.classList.toggle('can-scroll',shouldScroll)" in html
+          assert "body.classList.toggle('no-scroll',!shouldScroll)" in html
+          assert 'class="dr-teaser-ic"' not in html
+          embed = Path('embed.html').read_text(encoding='utf-8')
+          assert 'class="dt-ic"' not in embed
+          PY
+          for file in /tmp/derat-inline-*.js; do node --check "$file"; done
+      - name: Commit patch
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "No changes needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html embed.html
+          git commit -m "Fix live Iné scrolling and remove teaser calculator icon"
+          git push origin HEAD:main
