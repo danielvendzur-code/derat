@@ -48,12 +48,9 @@ img{max-width:100%}
 /* teaser pred otvorením */
 #dr-teaser{position:fixed;right:22px;bottom:114px;z-index:99998;max-width:280px;background:#fff;border:1px solid var(--line);border-radius:20px;border-bottom-right-radius:6px;padding:15px 17px 16px;box-shadow:0 18px 46px rgba(57,57,58,.22);cursor:pointer;opacity:0;transform:translateY(12px) scale(.95);transform-origin:bottom right;pointer-events:none;transition:.4s cubic-bezier(.2,.85,.25,1)}
 #dr-teaser.show{opacity:1;transform:none;pointer-events:auto}
-.dr-teaser-row{display:flex;gap:12px;align-items:flex-start;padding-right:16px}
-.dr-teaser-ic{flex:0 0 auto;width:38px;height:38px;border-radius:12px;background:var(--teal);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(41,115,115,.28)}
-.dr-teaser-ic svg{width:20px;height:20px;fill:#fff}
-.dr-teaser-t{display:block;font:800 14.5px var(--font);color:var(--ink);margin-bottom:3px}
-#dr-teaser .dr-teaser-tx>span{display:block;font:500 12.5px/1.5 var(--font);color:var(--muted)}
-#dr-teaser .dr-teaser-tx>span b{color:var(--teal);font-weight:800}
+.dr-teaser-t{display:block;font:800 15px var(--font);margin:0 22px 7px 0;line-height:1.28}
+.dr-teaser-s{display:block;font:500 13px/1.5 var(--font);color:var(--muted)}
+.dr-teaser-s b{display:inline;color:var(--teal);font-weight:800}
 #dr-teaser:after{content:"";position:absolute;right:28px;bottom:-8px;width:16px;height:16px;background:#fff;border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:rotate(45deg)}
 .dr-teaser-x{position:absolute;top:7px;right:8px;width:20px;height:20px;border:0;border-radius:50%;background:#eef1ef;color:#7c857a;font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .dr-teaser-x:hover{background:#dfe6e2}
@@ -798,12 +795,12 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 .dr-body.no-scroll .dr-stepbox>.dr-area,
 .dr-body.no-scroll .dr-stepbox>.dr-location{flex:1;display:flex;flex-direction:column;justify-content:space-between}
 /* ŠKODCA — 2 stĺpce s ROVNAKOU veľkosťou vždy (aj po výbere „Iné"); krok sa scrolluje */
-.dr-grid.tri{grid-template-columns:1fr 1fr!important;gap:12px!important}
+.dr-grid.tri{grid-template-columns:1fr 1fr!important;gap:10px!important}
 .dr-grid.tri>*:last-child:nth-child(odd){grid-column:1/-1}
-.dr-grid.tri .dr-scard{min-height:116px!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px}
-.dr-grid.tri .dr-scard-ic{width:54px!important;height:50px!important}
-.dr-grid.tri .dr-scard-ic svg{width:50px!important;height:50px!important}
-.dr-grid.tri .dr-scard b{font-size:13px!important}
+.dr-grid.tri .dr-scard{min-height:96px!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.dr-grid.tri .dr-scard-ic{width:44px!important;height:40px!important}
+.dr-grid.tri .dr-scard-ic svg{width:40px!important;height:40px!important}
+.dr-grid.tri .dr-scard b{font-size:12.3px!important}
 /* o kúsok väčšie prvky, aby pôsobili plnohodnotne */
 .dr-q{font-size:16px!important}
 .dr-q-sub{font-size:11.5px!important}
@@ -835,7 +832,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 #dr-teaser b{display:block;margin-bottom:6px;font-size:15.8px;line-height:1.22;color:var(--teal)!important}
 #dr-teaser span{display:block;font-size:13.4px;line-height:1.42;color:#46524e}
 #dr-teaser span strong{font-weight:800;color:#2f3432}
-#dr-teaser .dr-price-highlight{display:inline-flex!important;align-items:center;margin:0!important;padding:5px 10px!important;border-radius:999px;background:#ff7e47;color:#fff!important;font-size:15.3px!important;line-height:1.05!important;box-shadow:0 5px 12px rgba(255,126,71,.28);white-space:nowrap;transition:transform .24s cubic-bezier(.2,.85,.25,1),box-shadow .24s ease}
+#dr-teaser .dr-price-highlight{display:inline-flex!important;align-items:center;max-width:100%;margin:0!important;padding:4px 10px!important;border-radius:999px;background:#ff7e47;color:#fff!important;font-size:12.8px!important;line-height:1.1!important;box-shadow:0 5px 12px rgba(255,126,71,.28);white-space:nowrap;transition:transform .24s cubic-bezier(.2,.85,.25,1),box-shadow .24s ease}
 #dr-teaser span b{display:inline!important;margin:0!important;padding:0!important;background:transparent!important;color:var(--teal)!important;font-size:inherit!important;line-height:inherit!important;box-shadow:none!important;white-space:normal!important}
 .dr-chips{gap:8px;padding:0 13px 11px}
 .dr-chip{padding:10px 16px!important;font-size:12.4px!important;line-height:1.12!important;box-shadow:0 6px 14px rgba(57,57,58,.08)!important;transition:background-size 1.15s cubic-bezier(.16,1,.3,1),color .34s ease,border-color .34s ease,transform .48s cubic-bezier(.2,.85,.25,1),opacity .48s ease,box-shadow .34s ease,filter .48s ease!important}
@@ -877,8 +874,12 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 
 <!-- ====================== WIDGET ====================== -->
 
-<!-- Interný teaser odstránený — teaser bublinu zobrazuje embed kód na stránke (embed.html),
-     takže sa nikdy nemôžu zobraziť dva teasery naraz. -->
+<!-- Preview text pred otvorením (v iframe na webe ho skryje initEmbedBridge — tam ho zobrazuje embed kód) -->
+<div id="dr-teaser" onclick="DERAT.openCalc()">
+  <button class="dr-teaser-x" onclick="event.stopPropagation();DERAT.hideTeaser()" aria-label="Zavrieť">×</button>
+  <b class="dr-teaser-t"><span class="dr-price-highlight">Zistite cenu zásahu na počkanie</span></b>
+  <span class="dr-teaser-s">Otvorte <b>kalkulačku</b> — orientačnú cenu máte do minúty. <b>AI chatbot</b> poradí ďalší postup.</span>
+</div>
 
 <button id="derat-bubble" type="button" aria-label="Otvoriť asistenta DERAT" onclick="DERAT.toggle()">
   <span id="dr-bub-ic"></span>
@@ -1794,6 +1795,8 @@ Stránka: ${p.page}
 };
 restoreHistory();
 initEmbedBridge();
+/* zobraz preview text po načítaní (v iframe je skrytý cez initEmbedBridge) */
+setTimeout(()=>{if(!state.open){const t=$('dr-teaser');if(t)t.classList.add('show');}},1400);
 /* info-tooltip ako „portal" priamo v body — nikdy nie je orezaný a pozicuje sa voči viewportu */
 const _tipbox=document.createElement('div');_tipbox.id='dr-tipbox';_tipbox.className='dr-tipbox';document.body.appendChild(_tipbox);
 /* zatvor info-bublinu pri kliknutí inam alebo pri scrolle */
