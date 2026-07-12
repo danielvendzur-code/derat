@@ -2,49 +2,313 @@
 <!--  DERAT — vloženie widgetu na web (skopírujte celé pred </body>) -->
 <!-- ============================================================= -->
 <style>
-  #derat-frame{position:fixed;bottom:0;right:0;width:138px;height:148px;border:0;z-index:2147483000;background:transparent;display:block;transition:width .4s cubic-bezier(.33,1,.68,1),height .4s cubic-bezier(.33,1,.68,1);will-change:width,height}
-  #derat-frame.derat-open{width:470px;height:100vh;height:100dvh}
-  @media (max-width:768px){#derat-frame{width:122px;height:130px}#derat-frame.derat-open{width:100%;height:100vh;height:100dvh}}
-  #derat-teaser{position:fixed;right:22px;bottom:134px;z-index:2147483001;width:280px;max-width:74vw;background:linear-gradient(180deg,#FFFFFF 0%,#F2FEF8 100%);border:1px solid rgba(41,115,115,.16);border-radius:18px 18px 6px 18px;padding:11px 13px 12px;box-shadow:0 18px 44px rgba(57,57,58,.16),0 2px 8px rgba(57,57,58,.06);font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;opacity:0;transform:translateY(8px) scale(.96);transform-origin:bottom right;transition:opacity .45s ease,transform .45s cubic-bezier(.34,1.4,.64,1);pointer-events:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
-  #derat-teaser.derat-show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
-  #derat-teaser::after{content:"";position:absolute;right:56px;bottom:-7px;width:15px;height:15px;background:#F2FEF8;border-right:1px solid rgba(41,115,115,.16);border-bottom:1px solid rgba(41,115,115,.16);transform:rotate(45deg);border-radius:0 0 3px 0}
-  #derat-teaser .dt-tt{font-size:15.5px;font-weight:800;color:#39393A;margin:0 20px 5px 0;line-height:1.28}
-  #derat-teaser .dt-tx{font-size:13px;font-weight:500;color:#6B6B6C;line-height:1.5}
-  #derat-teaser .dt-tx b{color:#297373;font-weight:800}
-  #derat-teaser .dt-x{position:absolute;top:7px;right:8px;width:20px;height:20px;border:none;background:rgba(57,57,58,.05);color:#6B6B6C;border-radius:50%;cursor:pointer;font-size:15px;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;padding:0;pointer-events:none;transition:background .2s,color .2s}
-  #derat-teaser.derat-show .dt-x{pointer-events:auto}
-  #derat-teaser .dt-x:hover{background:rgba(57,57,58,.13);color:#23272A}
-  #derat-teaser:focus-visible{outline:3px solid rgba(41,115,115,.28);outline-offset:3px}
-  @media (max-width:768px){#derat-teaser{display:none!important}}
-  @media (hover:none),(pointer:coarse){#derat-teaser{display:none!important}}
+  #derat-frame{
+    position:fixed;
+    right:0;
+    bottom:0;
+    width:138px;
+    height:148px;
+    border:0;
+    z-index:2147483000;
+    background:transparent;
+    display:block;
+    opacity:0;
+    pointer-events:none;
+    transition:
+      opacity .18s ease,
+      width .28s cubic-bezier(.33,1,.68,1),
+      height .28s cubic-bezier(.33,1,.68,1);
+  }
+
+  #derat-frame.derat-ready{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  #derat-frame.derat-open{
+    width:470px;
+    height:100vh;
+    height:100dvh;
+  }
+
+  #derat-teaser{
+    position:fixed;
+    right:22px;
+    bottom:114px;
+    z-index:2147483001;
+    width:280px;
+    max-width:74vw;
+    padding:15px 17px 16px;
+    background:#fff;
+    border:1px solid #e6e6e6;
+    border-radius:20px 20px 6px 20px;
+    box-shadow:0 18px 46px rgba(57,57,58,.22);
+    font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+    opacity:0;
+    transform:translateY(12px) scale(.95);
+    transform-origin:bottom right;
+    transition:
+      opacity .4s ease,
+      transform .4s cubic-bezier(.2,.85,.25,1);
+    pointer-events:none;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  #derat-teaser.derat-show{
+    opacity:1;
+    transform:translateY(0) scale(1);
+    pointer-events:auto;
+  }
+
+  #derat-teaser::after{
+    content:"";
+    position:absolute;
+    right:28px;
+    bottom:-8px;
+    width:16px;
+    height:16px;
+    background:#fff;
+    border-right:1px solid #e6e6e6;
+    border-bottom:1px solid #e6e6e6;
+    transform:rotate(45deg);
+  }
+
+  #derat-teaser .dt-tt{
+    display:block;
+    margin:0 16px 3px 0;
+    color:#39393a;
+    font-size:14.5px;
+    font-weight:800;
+    line-height:1.3;
+  }
+
+  #derat-teaser .dt-tx{
+    color:#6b6b6c;
+    font-size:12.5px;
+    font-weight:500;
+    line-height:1.5;
+  }
+
+  #derat-teaser .dt-tx b{
+    color:#297373;
+    font-weight:800;
+  }
+
+  #derat-teaser .dt-x{
+    position:absolute;
+    top:7px;
+    right:8px;
+    width:20px;
+    height:20px;
+    padding:0;
+    border:0;
+    border-radius:50%;
+    background:#eef1ef;
+    color:#7c857a;
+    font-size:14px;
+    line-height:1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    pointer-events:none;
+    transition:background .2s,color .2s;
+  }
+
+  #derat-teaser.derat-show .dt-x{
+    pointer-events:auto;
+  }
+
+  #derat-teaser .dt-x:hover{
+    background:#dfe6e2;
+    color:#39393a;
+  }
+
+  #derat-teaser:focus-visible{
+    outline:3px solid rgba(41,115,115,.28);
+    outline-offset:3px;
+  }
+
+  @media (max-width:768px){
+    #derat-frame{
+      width:122px;
+      height:130px;
+    }
+
+    #derat-frame.derat-open{
+      width:100%;
+      height:100vh;
+      height:100dvh;
+    }
+
+    #derat-teaser{
+      display:none!important;
+    }
+  }
+
+  @media (hover:none),(pointer:coarse){
+    #derat-teaser{
+      display:none!important;
+    }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    #derat-frame,
+    #derat-teaser{
+      transition:none!important;
+    }
+  }
 </style>
-<div id="derat-teaser" role="button" tabindex="0" aria-hidden="true" aria-label="Otvoriť kalkulačku DERAT">
+
+<div
+  id="derat-teaser"
+  role="button"
+  tabindex="0"
+  aria-hidden="true"
+  aria-label="Otvoriť kalkulačku DERAT"
+>
   <button class="dt-x" type="button" aria-label="Zavrieť">&times;</button>
   <div class="dt-tt">Zistite cenu zásahu na počkanie</div>
-  <div class="dt-tx">Otvorte <b>kalkulačku</b> — orientačnú cenu deratizácie či dezinsekcie máte do minúty. Poradí aj náš <b>AI asistent</b>.</div>
+  <div class="dt-tx">
+    Otvorte <b>kalkulačku</b> — orientačnú cenu deratizácie či
+    dezinsekcie máte do minúty. Poradí aj náš <b>AI asistent</b>.
+  </div>
 </div>
-<iframe id="derat-frame" src="https://derat-chatbot-backend.vercel.app/?v=compact-scroll-3" title="DERAT — AI asistent a kalkulačka" allow="clipboard-write" loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+
+<iframe
+  id="derat-frame"
+  src="https://derat-chatbot-backend.vercel.app/?v=compact-scroll-4"
+  title="DERAT — AI asistent a kalkulačka"
+  allow="clipboard-write"
+  loading="eager"
+  referrerpolicy="strict-origin-when-cross-origin"
+></iframe>
+
 <script>
-(function(){
-  var f=document.getElementById('derat-frame'),t=document.getElementById('derat-teaser'),x=t?t.querySelector('.dt-x'):null;
-  if(!f)return;
-  var widgetOrigin=new URL(f.src,document.baseURI).origin,dismissed=false,pendingOpen=false,showTimer=0;
-  function hideTeaser(){if(showTimer){clearTimeout(showTimer);showTimer=0;}if(t){t.classList.remove('derat-show');t.setAttribute('aria-hidden','true');}}
-  function queueTeaser(delay){if(showTimer)clearTimeout(showTimer);showTimer=setTimeout(function(){showTimer=0;if(!dismissed&&t&&!f.classList.contains('derat-open')){t.classList.add('derat-show');t.setAttribute('aria-hidden','false');}},delay);}
-  function sendOpen(){try{f.contentWindow.postMessage({source:'derat-parent',type:'open-calc'},widgetOrigin);}catch(err){}}
-  function openCalculator(){pendingOpen=true;f.classList.add('derat-open');hideTeaser();sendOpen();setTimeout(sendOpen,120);}
-  queueTeaser(2500);
-  if(x)x.addEventListener('click',function(e){e.stopPropagation();dismissed=true;hideTeaser();});
-  if(t){
-    t.addEventListener('click',openCalculator);
-    t.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openCalculator();}});
+(function () {
+  var frame = document.getElementById('derat-frame');
+  var teaser = document.getElementById('derat-teaser');
+  var closeButton = teaser ? teaser.querySelector('.dt-x') : null;
+
+  if (!frame) return;
+
+  var widgetOrigin = new URL(frame.src, document.baseURI).origin;
+  var dismissed = false;
+  var pendingOpen = false;
+  var widgetReady = false;
+  var teaserTimer = 0;
+  var readyFallbackTimer = 0;
+
+  function markReady() {
+    if (widgetReady) return;
+    widgetReady = true;
+    frame.classList.add('derat-ready');
+
+    if (!dismissed && !frame.classList.contains('derat-open')) {
+      showTeaserLater(1400);
+    }
   }
-  window.addEventListener('message',function(e){
-    if(e.source!==f.contentWindow||e.origin!==widgetOrigin)return;
-    var d=e.data||{};if(d.source!=='derat-chat')return;
-    if(d.type==='ready'){if(pendingOpen)sendOpen();return;}
-    if(d.open){pendingOpen=false;f.classList.add('derat-open');hideTeaser();}
-    else if(d.type==='close'||d.open===false){pendingOpen=false;f.classList.remove('derat-open');if(!dismissed)queueTeaser(600);}
+
+  function hideTeaser() {
+    if (teaserTimer) {
+      clearTimeout(teaserTimer);
+      teaserTimer = 0;
+    }
+
+    if (teaser) {
+      teaser.classList.remove('derat-show');
+      teaser.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  function showTeaserLater(delay) {
+    if (!widgetReady || dismissed || !teaser) return;
+
+    if (teaserTimer) clearTimeout(teaserTimer);
+
+    teaserTimer = setTimeout(function () {
+      teaserTimer = 0;
+
+      if (!dismissed && !frame.classList.contains('derat-open')) {
+        teaser.classList.add('derat-show');
+        teaser.setAttribute('aria-hidden', 'false');
+      }
+    }, delay);
+  }
+
+  function sendOpenMessage() {
+    try {
+      frame.contentWindow.postMessage(
+        { source:'derat-parent', type:'open-calc' },
+        widgetOrigin
+      );
+    } catch (error) {}
+  }
+
+  function openCalculator() {
+    pendingOpen = true;
+    frame.classList.add('derat-open');
+    hideTeaser();
+    sendOpenMessage();
+    setTimeout(sendOpenMessage, 120);
+  }
+
+  frame.addEventListener('load', function () {
+    clearTimeout(readyFallbackTimer);
+    readyFallbackTimer = setTimeout(markReady, 250);
+  }, { once:true });
+
+  readyFallbackTimer = setTimeout(markReady, 4000);
+
+  if (closeButton) {
+    closeButton.addEventListener('click', function (event) {
+      event.stopPropagation();
+      dismissed = true;
+      hideTeaser();
+    });
+  }
+
+  if (teaser) {
+    teaser.addEventListener('click', openCalculator);
+
+    teaser.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openCalculator();
+      }
+    });
+  }
+
+  window.addEventListener('message', function (event) {
+    if (event.source !== frame.contentWindow || event.origin !== widgetOrigin) {
+      return;
+    }
+
+    var data = event.data || {};
+    if (data.source !== 'derat-chat') return;
+
+    if (data.type === 'ready') {
+      clearTimeout(readyFallbackTimer);
+      markReady();
+
+      if (pendingOpen) sendOpenMessage();
+      return;
+    }
+
+    if (data.open === true) {
+      pendingOpen = false;
+      frame.classList.add('derat-open');
+      hideTeaser();
+      return;
+    }
+
+    if (data.type === 'close' || data.open === false) {
+      pendingOpen = false;
+      frame.classList.remove('derat-open');
+
+      if (!dismissed) showTeaserLater(600);
+    }
   });
 })();
 </script>
