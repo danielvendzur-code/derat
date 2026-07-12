@@ -61,10 +61,11 @@
         }
 
         #derat-frame.derat-open {
-          right: 0;
-          bottom: 0;
-          width: min(470px, 100vw);
-          height: 100%;
+          right: 12px;
+          bottom: 10px;
+          width: min(470px, calc(100vw - 24px));
+          height: calc(100% - 20px);
+          max-height: calc(100% - 20px);
         }
 
         #derat-teaser {
@@ -172,7 +173,13 @@
 
         @media (max-width: 768px) {
           #derat-frame { width: 122px; height: 130px; }
-          #derat-frame.derat-open { right: 0; bottom: 0; width: 100vw; height: 100%; }
+          #derat-frame.derat-open {
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100%;
+            max-height: 100%;
+          }
           #derat-teaser { display: none !important; }
         }
 
