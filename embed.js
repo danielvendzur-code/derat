@@ -4,7 +4,7 @@
   function bootDeratWidget(){
     if(document.getElementById('derat-widget-host')) return;
 
-    var WIDGET_URL='https://derat-chatbot-backend.vercel.app/?v=compact-scroll-6';
+    var WIDGET_URL='https://derat-chatbot-backend.vercel.app/?v=compact-scroll-7';
     var WIDGET_ORIGIN=new URL(WIDGET_URL,document.baseURI).origin;
     var MOBILE_QUERY='(max-width:768px)';
 
@@ -23,6 +23,7 @@
     host.style.setProperty('z-index','2147483000','important');
     host.style.setProperty('pointer-events','none','important');
     host.style.setProperty('overflow','visible','important');
+    host.style.setProperty('overscroll-behavior','none','important');
     host.style.setProperty('background','transparent','important');
     host.style.setProperty('margin','0','important');
     host.style.setProperty('padding','0','important');
@@ -134,7 +135,7 @@
           display:none;
           position:absolute;
           right:6px;
-          bottom:10px;
+          bottom:4px;
           width:96px;
           height:96px;
           margin:0;
@@ -170,9 +171,7 @@
           display:flex;
           align-items:center;
           justify-content:center;
-          box-shadow:
-            0 0 0 5px rgba(255,255,255,.90),
-            0 0 20px 5px rgba(255,126,71,.22);
+          box-shadow:0 0 0 5px rgba(255,255,255,.90),0 0 20px 5px rgba(255,126,71,.22);
           transition:transform .2s ease,background .2s ease,box-shadow .2s ease;
         }
 
@@ -210,11 +209,12 @@
 
           #derat-frame.derat-open,
           #derat-frame.derat-ready.derat-open{
-            right:0;
-            bottom:0;
-            width:100vw;
+            inset:0;
+            right:auto;
+            bottom:auto;
+            width:100%;
             height:100%;
-            max-width:100vw;
+            max-width:100%;
             max-height:100%;
             opacity:1;
             visibility:visible;
@@ -256,8 +256,85 @@
     var dismissed=false;
     var teaserTimer=0;
     var readyFallbackTimer=0;
+    var pageLocked=false;
+    var savedScrollX=0;
+    var savedScrollY=0;
+    var savedHtmlStyles=null;
+    var savedBodyStyles=null;
 
     function isMobile(){return mobileMedia.matches}
+
+    function saveInlineStyles(element,names){
+      var values={};
+      names.forEach(function(name){values[name]=element.style.getPropertyValue(name)});
+      return values;
+    }
+
+    function restoreInlineStyles(element,values){
+      Object.keys(values||{}).forEach(function(name){
+        if(values[name]) element.style.setProperty(name,values[name]);
+        else element.style.removeProperty(name);
+      });
+    }
+
+    function lockParentPage(){
+      if(pageLocked||!isMobile()) return;
+      pageLocked=true;
+      savedScrollX=window.scrollX||window.pageXOffset||0;
+      savedScrollY=window.scrollY||window.pageYOffset||0;
+      savedHtmlStyles=saveInlineStyles(document.documentElement,['overflow','overscroll-behavior']);
+      savedBodyStyles=saveInlineStyles(document.body,['position','top','left','right','width','overflow','overscroll-behavior','touch-action']);
+      document.documentElement.style.setProperty('overflow','hidden');
+      document.documentElement.style.setProperty('overscroll-behavior','none');
+      document.body.style.setProperty('position','fixed');
+      document.body.style.setProperty('top',(-savedScrollY)+'px');
+      document.body.style.setProperty('left',(-savedScrollX)+'px');
+      document.body.style.setProperty('right','0');
+      document.body.style.setProperty('width','100%');
+      document.body.style.setProperty('overflow','hidden');
+      document.body.style.setProperty('overscroll-behavior','none');
+      document.body.style.setProperty('touch-action','none');
+    }
+
+    function unlockParentPage(){
+      if(!pageLocked) return;
+      pageLocked=false;
+      restoreInlineStyles(document.documentElement,savedHtmlStyles);
+      restoreInlineStyles(document.body,savedBodyStyles);
+      requestAnimationFrame(function(){window.scrollTo(savedScrollX,savedScrollY)});
+    }
+
+    function resetHostViewport(){
+      host.style.setProperty('inset','0','important');
+      host.style.removeProperty('top');
+      host.style.removeProperty('left');
+      host.style.removeProperty('right');
+      host.style.removeProperty('bottom');
+      host.style.setProperty('width','100vw','important');
+      host.style.setProperty('height','100vh','important');
+      host.style.setProperty('height','100dvh','important');
+    }
+
+    function syncVisualViewport(){
+      if(!isMobile()||!frame.classList.contains('derat-open')){
+        resetHostViewport();
+        return;
+      }
+
+      var viewport=window.visualViewport;
+      var top=viewport?viewport.offsetTop:0;
+      var left=viewport?viewport.offsetLeft:0;
+      var width=viewport?viewport.width:window.innerWidth;
+      var height=viewport?viewport.height:window.innerHeight;
+
+      host.style.setProperty('inset','auto','important');
+      host.style.setProperty('top',Math.round(top)+'px','important');
+      host.style.setProperty('left',Math.round(left)+'px','important');
+      host.style.setProperty('right','auto','important');
+      host.style.setProperty('bottom','auto','important');
+      host.style.setProperty('width',Math.round(width)+'px','important');
+      host.style.setProperty('height',Math.round(height)+'px','important');
+    }
 
     function hideTeaser(){
       if(teaserTimer){clearTimeout(teaserTimer);teaserTimer=0}
@@ -295,11 +372,21 @@
 
     function setOpen(open){
       frame.classList.toggle('derat-open',Boolean(open));
+
       if(open){
         hideTeaser();
-      }else if(!dismissed&&!isMobile()){
-        showTeaserLater(600);
+        if(isMobile()){
+          lockParentPage();
+          requestAnimationFrame(syncVisualViewport);
+          setTimeout(syncVisualViewport,80);
+          setTimeout(syncVisualViewport,260);
+        }
+      }else{
+        unlockParentPage();
+        resetHostViewport();
+        if(!dismissed&&!isMobile()) showTeaserLater(600);
       }
+
       syncMobileBubble();
     }
 
@@ -353,11 +440,21 @@
       }
     });
 
-    function handleViewportChange(){syncMobileBubble()}
+    function handleViewportChange(){
+      syncMobileBubble();
+      syncVisualViewport();
+    }
+
     if(typeof mobileMedia.addEventListener==='function') mobileMedia.addEventListener('change',handleViewportChange);
     else if(typeof mobileMedia.addListener==='function') mobileMedia.addListener(handleViewportChange);
-    window.addEventListener('orientationchange',handleViewportChange);
+    window.addEventListener('orientationchange',function(){setTimeout(handleViewportChange,80)});
 
+    if(window.visualViewport){
+      window.visualViewport.addEventListener('resize',syncVisualViewport);
+      window.visualViewport.addEventListener('scroll',syncVisualViewport);
+    }
+
+    window.addEventListener('pagehide',unlockParentPage);
     frame.addEventListener('load',function(){setTimeout(markReady,80)},{once:true});
     readyFallbackTimer=setTimeout(markReady,5000);
     frame.src=WIDGET_URL;
