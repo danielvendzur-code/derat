@@ -133,8 +133,8 @@
           all:unset;
           display:none;
           position:absolute;
-          right:14px;
-          bottom:18px;
+          right:6px;
+          bottom:10px;
           width:96px;
           height:96px;
           margin:0;
