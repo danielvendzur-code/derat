@@ -44,7 +44,7 @@
         .dt-close:hover{background:#dfe6e2;color:#39393a}
         #derat-teaser:focus-visible,.dt-close:focus-visible{outline:3px solid rgba(41,115,115,.3);outline-offset:3px}
         @media(max-width:768px){
-          #derat-frame{right:14px;bottom:24px;width:122px;height:130px;clip-path:inset(5px 5px 5px 5px round 999px)}
+          #derat-frame{right:0;bottom:0;width:122px;height:130px;clip-path:inset(10px 10px 10px 10px round 999px)}
           #derat-frame.derat-open{right:0;bottom:0;width:100vw;height:100%;max-height:100%;clip-path:none}
           #derat-teaser{display:none!important}
         }
