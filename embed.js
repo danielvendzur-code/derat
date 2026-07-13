@@ -32,7 +32,7 @@
         :host,*,*::before,*::after{box-sizing:border-box}
         #derat-frame{position:absolute;right:24px;bottom:18px;width:138px;height:148px;max-width:100vw;max-height:100%;margin:0;padding:0;border:0;background:transparent;display:block;opacity:0;visibility:hidden;pointer-events:none;z-index:1;transform:translateZ(0);backface-visibility:hidden;transition:opacity .16s ease}
         #derat-frame.derat-ready{opacity:1;visibility:visible;pointer-events:auto}
-        #derat-frame.derat-open{right:12px;bottom:10px;width:min(470px,calc(100vw - 24px));height:calc(100% - 20px);max-height:calc(100% - 20px);clip-path:none}
+        #derat-frame.derat-open{right:12px;bottom:10px;width:min(470px,calc(100vw - 24px));height:calc(100% - 20px);max-height:calc(100% - 20px);clip-path:none;filter:none}
         #derat-teaser{position:absolute;right:46px;bottom:132px;width:280px;max-width:calc(100vw - 32px);padding:15px 17px 16px;margin:0;border:1px solid #e6e6e6;border-radius:20px 20px 6px 20px;background:#fff;box-shadow:0 18px 46px rgba(57,57,58,.22);color:#39393a;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-style:normal;text-align:left;opacity:0;visibility:hidden;transform:translateY(12px) scale(.95);transform-origin:bottom right;transition:opacity .35s ease,transform .35s cubic-bezier(.2,.85,.25,1),border-color .2s ease,box-shadow .2s ease;pointer-events:none;cursor:pointer;z-index:2;-webkit-tap-highlight-color:transparent}
         #derat-teaser.derat-show{opacity:1;visibility:visible;transform:translateY(0) scale(1);pointer-events:auto}
         #derat-teaser.derat-show:hover{border-color:rgba(41,115,115,.28);box-shadow:0 22px 52px rgba(57,57,58,.24);transform:translateY(-2px) scale(1)}
@@ -44,8 +44,8 @@
         .dt-close:hover{background:#dfe6e2;color:#39393a}
         #derat-teaser:focus-visible,.dt-close:focus-visible{outline:3px solid rgba(41,115,115,.3);outline-offset:3px}
         @media(max-width:768px){
-          #derat-frame{right:0;bottom:0;width:122px;height:130px;clip-path:inset(10px 10px 10px 10px round 999px)}
-          #derat-frame.derat-open{right:0;bottom:0;width:100vw;height:100%;max-height:100%;clip-path:none}
+          #derat-frame{right:-2px;bottom:-6px;width:122px;height:130px;clip-path:circle(46px at 62px 70px);filter:drop-shadow(0 0 7px rgba(255,126,71,.24))}
+          #derat-frame.derat-open{right:0;bottom:0;width:100vw;height:100%;max-height:100%;clip-path:none;filter:none}
           #derat-teaser{display:none!important}
         }
         @media(hover:none),(pointer:coarse){#derat-teaser{display:none!important}}
