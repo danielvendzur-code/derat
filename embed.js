@@ -30,10 +30,13 @@
     shadow.innerHTML=`
       <style>
         :host,*,*::before,*::after{box-sizing:border-box}
-        #derat-frame{position:absolute;right:24px;bottom:18px;width:138px;height:148px;max-width:100vw;max-height:100%;margin:0;padding:0;border:0;background:transparent;display:block;opacity:0;visibility:hidden;pointer-events:none;z-index:1;transform:translateZ(0);backface-visibility:hidden;transition:opacity .16s ease}
+        #derat-frame{position:absolute;right:24px;bottom:18px;width:138px;height:148px;max-width:100vw;max-height:100%;margin:0;padding:0;border:0;background:transparent;display:block;opacity:0;visibility:hidden;pointer-events:none;z-index:2;transform:translateZ(0);backface-visibility:hidden;transition:opacity .16s ease}
         #derat-frame.derat-ready{opacity:1;visibility:visible;pointer-events:auto}
         #derat-frame.derat-open{right:12px;bottom:10px;width:min(470px,calc(100vw - 24px));height:calc(100% - 20px);max-height:calc(100% - 20px);clip-path:none;filter:none}
-        #derat-teaser{position:absolute;right:46px;bottom:132px;width:280px;max-width:calc(100vw - 32px);padding:15px 17px 16px;margin:0;border:1px solid #e6e6e6;border-radius:20px 20px 6px 20px;background:#fff;box-shadow:0 18px 46px rgba(57,57,58,.22);color:#39393a;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-style:normal;text-align:left;opacity:0;visibility:hidden;transform:translateY(12px) scale(.95);transform-origin:bottom right;transition:opacity .35s ease,transform .35s cubic-bezier(.2,.85,.25,1),border-color .2s ease,box-shadow .2s ease;pointer-events:none;cursor:pointer;z-index:2;-webkit-tap-highlight-color:transparent}
+        #derat-mobile-glow{display:none;position:absolute;pointer-events:none;border-radius:50%;z-index:1;opacity:0;transition:opacity .16s ease}
+        #derat-frame.derat-ready:not(.derat-open)+#derat-mobile-glow{opacity:1}
+        #derat-frame.derat-open+#derat-mobile-glow{display:none!important}
+        #derat-teaser{position:absolute;right:46px;bottom:132px;width:280px;max-width:calc(100vw - 32px);padding:15px 17px 16px;margin:0;border:1px solid #e6e6e6;border-radius:20px 20px 6px 20px;background:#fff;box-shadow:0 18px 46px rgba(57,57,58,.22);color:#39393a;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-style:normal;text-align:left;opacity:0;visibility:hidden;transform:translateY(12px) scale(.95);transform-origin:bottom right;transition:opacity .35s ease,transform .35s cubic-bezier(.2,.85,.25,1),border-color .2s ease,box-shadow .2s ease;pointer-events:none;cursor:pointer;z-index:3;-webkit-tap-highlight-color:transparent}
         #derat-teaser.derat-show{opacity:1;visibility:visible;transform:translateY(0) scale(1);pointer-events:auto}
         #derat-teaser.derat-show:hover{border-color:rgba(41,115,115,.28);box-shadow:0 22px 52px rgba(57,57,58,.24);transform:translateY(-2px) scale(1)}
         #derat-teaser::after{content:"";position:absolute;right:28px;bottom:-8px;width:16px;height:16px;background:#fff;border-right:1px solid #e6e6e6;border-bottom:1px solid #e6e6e6;border-radius:0 0 2px 0;transform:rotate(45deg)}
@@ -44,12 +47,13 @@
         .dt-close:hover{background:#dfe6e2;color:#39393a}
         #derat-teaser:focus-visible,.dt-close:focus-visible{outline:3px solid rgba(41,115,115,.3);outline-offset:3px}
         @media(max-width:768px){
-          #derat-frame{right:10px;bottom:20px;width:140px;height:140px;clip-path:circle(46px at 80px 80px);filter:drop-shadow(0 0 8px rgba(255,126,71,.28))}
+          #derat-frame{right:-4px;bottom:0;width:124px;height:124px;clip-path:circle(45px at 64px 64px);filter:none}
+          #derat-mobile-glow{display:block;right:16px;bottom:20px;width:80px;height:80px;background:transparent;box-shadow:0 0 0 5px rgba(255,255,255,.90),0 0 18px 6px rgba(255,126,71,.22)}
           #derat-frame.derat-open{right:0;bottom:0;width:100vw;height:100%;max-height:100%;clip-path:none;filter:none}
           #derat-teaser{display:none!important}
         }
         @media(hover:none),(pointer:coarse){#derat-teaser{display:none!important}}
-        @media(prefers-reduced-motion:reduce){#derat-frame,#derat-teaser{transition:none!important}}
+        @media(prefers-reduced-motion:reduce){#derat-frame,#derat-teaser,#derat-mobile-glow{transition:none!important}}
       </style>
       <div id="derat-teaser" role="button" tabindex="0" aria-hidden="true" aria-label="Otvoriť kalkulačku DERAT">
         <button class="dt-close" type="button" aria-label="Zavrieť upozornenie">&times;</button>
@@ -57,6 +61,7 @@
         <span class="dt-text">Otvorte <b>kalkulačku</b> — orientačnú cenu deratizácie či dezinsekcie máte do minúty. Poradí aj náš <b>AI asistent</b>.</span>
       </div>
       <iframe id="derat-frame" title="DERAT — AI asistent a kalkulačka" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <div id="derat-mobile-glow" aria-hidden="true"></div>
     `;
 
     document.body.appendChild(host);
