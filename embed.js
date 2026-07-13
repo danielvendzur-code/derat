@@ -4,7 +4,7 @@
   function bootDeratWidget(){
     if(document.getElementById('derat-widget-host')) return;
 
-    var WIDGET_URL='https://derat-chatbot-backend.vercel.app/?v=compact-scroll-8';
+    var WIDGET_URL='https://derat-chatbot-backend.vercel.app/?v=compact-scroll-9';
     var WIDGET_ORIGIN=new URL(WIDGET_URL,document.baseURI).origin;
     var MOBILE_QUERY='(max-width:768px)';
 
@@ -56,7 +56,7 @@
         #derat-mobile-bubble:focus-visible{outline:3px solid rgba(41,115,115,.35);outline-offset:2px}
         @media(max-width:768px){
           #derat-frame,#derat-frame.derat-ready{right:0;bottom:0;width:1px;height:1px;max-width:1px;max-height:1px;opacity:0;visibility:hidden;pointer-events:none}
-          #derat-frame.derat-open,#derat-frame.derat-ready.derat-open{inset:0;right:auto;bottom:auto;width:100%;height:100%;max-width:100%;max-height:100%;opacity:1;visibility:visible;pointer-events:auto}
+          #derat-frame.derat-open,#derat-frame.derat-ready.derat-open{top:0;right:0;bottom:auto;left:0;width:100%;height:100%;max-width:100%;max-height:100%;opacity:1;visibility:visible;pointer-events:auto}
           #derat-mobile-bubble{display:block}
           #derat-teaser{display:none!important}
         }
@@ -71,7 +71,7 @@
       <button id="derat-mobile-bubble" type="button" aria-label="Otvoriť kalkulačku DERAT" aria-hidden="true">
         <span class="dmb-core"><img src="https://derat-chatbot-backend.vercel.app/img/derat-logo-mouse.png" alt=""></span>
       </button>
-      <iframe id="derat-frame" title="DERAT — AI asistent a kalkulačka" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      <iframe id="derat-frame" scrolling="no" title="DERAT — AI asistent a kalkulačka" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin"></iframe>
     `;
 
     document.body.appendChild(host);
@@ -127,16 +127,13 @@
     function syncVisualViewport(){
       if(!isMobile()||!frame.classList.contains('derat-open')){resetHostViewport();return}
       var viewport=window.visualViewport;
-      var top=viewport?viewport.offsetTop:0;
-      var left=viewport?viewport.offsetLeft:0;
-      var width=viewport?viewport.width:window.innerWidth;
-      var height=viewport?viewport.height:window.innerHeight;
-      host.style.setProperty('top',Math.round(top)+'px','important');
-      host.style.setProperty('left',Math.round(left)+'px','important');
-      host.style.setProperty('right','auto','important');
+      var visibleHeight=viewport?viewport.height:window.innerHeight;
+      host.style.setProperty('top','0','important');
+      host.style.setProperty('right','0','important');
       host.style.setProperty('bottom','auto','important');
-      host.style.setProperty('width',Math.round(width)+'px','important');
-      host.style.setProperty('height',Math.round(height)+'px','important');
+      host.style.setProperty('left','0','important');
+      host.style.setProperty('width','100vw','important');
+      host.style.setProperty('height',Math.max(1,Math.round(visibleHeight))+'px','important');
     }
 
     function hideTeaser(){if(teaserTimer){clearTimeout(teaserTimer);teaserTimer=0}teaser.classList.remove('derat-show');teaser.setAttribute('aria-hidden','true')}
