@@ -14,6 +14,7 @@ const LABELS = {
   sluzba: 'Služba', skodca: 'Škodca / problém', priestor: 'Typ priestoru', rozloha: 'Rozloha',
   objem: 'Objem', zamorenie: 'Miera zamorenia', pocet: 'Počet priestorov', doplnky: 'Doplnky',
   zlava: 'Zľava', cestovne: 'Cestovné', termin: 'Želaný termín', kontakt: 'Preferovaný kontakt',
+  poziadavka: 'Požiadavka', rozsah: 'Približný rozsah',
 };
 
 function paramsRows(params) {
@@ -68,15 +69,15 @@ function buildHtml(q, c) {
 
       ${recapRows ? `<table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:12px;">${recapRows}</table>` : ''}
 
-      <table style="width:100%;border-collapse:collapse;margin-top:8px;">
+      ${q.custom ? `<div style="margin-top:12px;padding:12px 14px;border-radius:10px;background:#ff7e47;color:#fff;font-weight:800;text-align:center;">Cenu vypracovať individuálne</div>` : `<table style="width:100%;border-collapse:collapse;margin-top:8px;">
         <tr><td style="padding:12px 10px;background:#ff7e47;color:#fff;font-weight:800;font-size:15px;border-radius:10px 0 0 10px;">Celkom (s DPH)</td>
         <td style="padding:12px 10px;background:#ff7e47;color:#fff;font-weight:900;font-size:18px;text-align:right;border-radius:0 10px 10px 0;">${eur(q.total)}</td></tr>
-      </table>
+      </table>`}
 
       ${paramsRows(q.params) ? `<h3 style="margin:18px 0 6px;color:#297373;font-size:14px;">Parametre</h3>
       <table style="width:100%;border-collapse:collapse;font-size:12.5px;">${paramsRows(q.params)}</table>` : ''}
 
-      <div style="margin-top:16px;font-size:11px;color:#9a9a9b;">Orientačný odhad z kalkulačky DERAT — presnú cenu potvrďte po obhliadke / telefonicky.</div>
+      <div style="margin-top:16px;font-size:11px;color:#9a9a9b;">${q.custom?'Individuálny dopyt — cenu pripravte podľa opisu, rozsahu a prípadnej obhliadky.':'Orientačný odhad z kalkulačky DERAT — presnú cenu potvrďte po obhliadke / telefonicky.'}</div>
     </div>
   </div>`;
 }
@@ -97,7 +98,7 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const GMAIL_USER = process.env.GMAIL_USER, GMAIL_PASS = process.env.GMAIL_APP_PASSWORD;
-  const MAIL_TO = process.env.MAIL_TO || 'dopyt.chatbot@gmail.com';
+  const MAIL_TO = process.env.MAIL_TO || 'info@derat.sk';
   if (!GMAIL_USER || !GMAIL_PASS) return res.status(503).json({ error: 'E-mail not configured' });
 
   try {
