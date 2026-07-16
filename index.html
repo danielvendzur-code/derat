@@ -1677,7 +1677,7 @@ function render(keep){
   calc.innerHTML=`
   <div class="dr-chead"><div class="dr-tabs"><button class="dr-tab on" type="button"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg>Kalkulačka</button><button class="dr-tab" type="button" onclick="DERAT.closeCalc()"><svg viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/></svg>AI asistent</button></div></div>
   <div class="dr-prog"><button class="dr-back" onclick="DERAT.prev()" ${first?'disabled':''}>‹</button><div class="dr-step-dots" style="--steps:${n}">${ST.map((_,i)=>`<i class="dr-step-dot${i<state.step?' done':''}${i===state.step?' active':''}" data-step="${i+1}"></i>`).join('')}</div><div class="dr-prog-n">${state.step+1}/${n}</div></div>
-  <div class="dr-body ${last||k==='area'||(k==='sub'&&state.c.sub==='ine')?'can-scroll':'no-scroll'}" tabindex="0">
+  <div class="dr-body ${last||k==='area'||k==='custom'||(k==='sub'&&state.c.sub==='ine')?'can-scroll':'no-scroll'}" tabindex="0">
     <h3 class="dr-q">${title}</h3><div class="dr-q-sub">${q[1]}</div>
     <div class="dr-stepbox" style="animation:drStepIn .42s cubic-bezier(.2,.85,.3,1)">${stepInner()}</div>
     <div class="dr-more" aria-hidden="true"><span>ďalej nižšie ▾</span></div>
