@@ -33,7 +33,7 @@ DÔLEŽITÉ FAKTY:
 - Ceny sú orientačné a závisia od služby, druhu škodcu, plochy (m²) a miery zamorenia; minimálny výjazd 60 €. Príklady: deratizácia bytu od ~60–90 €, dezinsekcia od ~90 €, ploštice v byte ~160 €. Presnú cenu potvrdíme po obhliadke alebo telefonicky.
 - Niektorých škodcov (ploštice, šváby, blchy, hlodavce) NEJDE spoľahlivo odstrániť na jediný raz – z vajíčok a lariev sa liahnu nové jedince, preto je súčasťou aj opakované/kontrolné ošetrenie (cena to už zahŕňa).
 - Používame certifikované prípravky, poskytujeme garanciu a na požiadanie písomný protokol o zásahu (vhodné pre gastro/HACCP).
-- Kontakt: telefón +421 905 648 129, WhatsApp, e-mail farkas.ivan@centrum.sk.
+- Kontakt: telefón +421 905 648 129, WhatsApp, e-mail info@derat.sk.
 
 ŠTÝL ODPOVEDÍ:
 - Odpovedaj po slovensky, priateľsky a stručne (max 2–4 vety). Bez markdownu.

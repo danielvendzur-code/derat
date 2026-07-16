@@ -60,7 +60,7 @@ a dajte **Save**.
 |-----|-------|-------------|
 | `GMAIL_USER` | `dopyt.chatbot@gmail.com` | odosielateľ e-mailov dopytov |
 | `GMAIL_APP_PASSWORD` | *(16-znakový App Password z Kroku 3)* | prihlásenie odosielateľa |
-| `MAIL_TO` | *(kam majú chodiť dopyty; zatiaľ hocičo — napr. `dopyt.chatbot@gmail.com`)* | príjemca dopytov |
+| `MAIL_TO` | *(kam majú chodiť dopyty; predvolene `info@derat.sk`)* | príjemca dopytov |
 | `ADMIN_KEY` | *(vymyslené silné heslo, napr. `derat-2025-XY7k`)* | prístup do admin prehľadu histórie |
 | `KV_REST_API_URL` | *(z Upstash, ak sa nepridalo automaticky)* | história — pripojenie na Redis |
 | `KV_REST_API_TOKEN` | *(z Upstash, ak sa nepridalo automaticky)* | história — token Redis |
@@ -124,7 +124,7 @@ Widget sa ukotví vpravo dole; po kliknutí sa rozbalí. Na mobile je na celú o
 ```
 GMAIL_USER=dopyt.chatbot@gmail.com
 GMAIL_APP_PASSWORD=xxxxxxxxxxxxxxxx
-MAIL_TO=dopyt.chatbot@gmail.com        # zatiaľ hocičo, neskôr reálny príjemca
+MAIL_TO=info@derat.sk                  # príjemca dopytov
 ADMIN_KEY=vymyslene-silne-heslo
 KV_REST_API_URL=https://....upstash.io
 KV_REST_API_TOKEN=....

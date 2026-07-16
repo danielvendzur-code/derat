@@ -27,8 +27,10 @@
     opacity:0; transform:translateY(8px) scale(.96); transform-origin:bottom right;
     transition:opacity .45s ease, transform .45s cubic-bezier(.34,1.4,.64,1);
     pointer-events:none;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
   }
-  #derat-teaser.derat-show{ opacity:1; transform:translateY(0) scale(1); }
+  #derat-teaser.derat-show{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
   #derat-teaser::after{
     content:""; position:absolute; right:56px; bottom:-7px;
     width:15px; height:15px; background:#F2FEF8;
@@ -54,32 +56,70 @@
   @media (hover:none),(pointer:coarse){ #derat-teaser{ display:none !important; } }
 </style>
 
-<div id="derat-teaser" aria-hidden="true">
-  <button class="dt-x" aria-label="Zavrieť">&times;</button>
+<div id="derat-teaser" role="button" tabindex="0" aria-hidden="true" aria-label="Otvoriť kalkulačku DERAT">
+  <button class="dt-x" type="button" aria-label="Zavrieť">&times;</button>
   <div class="dt-tt"><span class="dt-price-highlight">Zistite cenu zásahu na počkanie</span></div>
   <div class="dt-tx">Otvorte <strong>kalkulačku</strong> — orientačnú cenu máte do minúty. <b>AI chatbot</b> poradí ďalší postup.</div>
 </div>
 
 <iframe id="derat-frame" src="https://derat-chatbot-backend.vercel.app/"
-  title="DERAT — AI asistent a kalkulačka" allow="clipboard-write" scrolling="no"></iframe>
+  title="DERAT — AI asistent a kalkulačka" allow="clipboard-write" scrolling="no" loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 <script>
 (function(){
   var f = document.getElementById('derat-frame');
   var t = document.getElementById('derat-teaser');
   var x = t ? t.querySelector('.dt-x') : null;
+  var widgetOrigin = new URL(f.src, document.baseURI).origin;
   var dismissed = false;
-  setTimeout(function(){ if(!dismissed && t) t.classList.add('derat-show'); }, 2500);
-  if(x) x.addEventListener('click', function(){ dismissed = true; if(t) t.classList.remove('derat-show'); });
+  var pendingOpen = false;
+  var teaserTimer = 0;
+  function hideTeaser(){
+    if(teaserTimer){ clearTimeout(teaserTimer); teaserTimer = 0; }
+    if(t){ t.classList.remove('derat-show'); t.setAttribute('aria-hidden','true'); }
+  }
+  function showTeaserLater(delay){
+    if(teaserTimer) clearTimeout(teaserTimer);
+    teaserTimer = setTimeout(function(){
+      teaserTimer = 0;
+      if(!dismissed && t && !f.classList.contains('derat-open')){
+        t.classList.add('derat-show');
+        t.setAttribute('aria-hidden','false');
+      }
+    }, delay);
+  }
+  function sendOpenMessage(){
+    try{ f.contentWindow.postMessage({source:'derat-parent',type:'open-calc'}, widgetOrigin); }catch(error){}
+  }
+  function openCalculator(){
+    pendingOpen = true;
+    f.classList.add('derat-open');
+    hideTeaser();
+    sendOpenMessage();
+    setTimeout(sendOpenMessage,120);
+  }
+  showTeaserLater(2500);
+  if(x) x.addEventListener('click', function(e){ e.stopPropagation(); dismissed = true; hideTeaser(); });
+  if(t){
+    t.addEventListener('click',openCalculator);
+    t.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openCalculator(); } });
+  }
   window.addEventListener('message', function(e){
+    if(e.source !== f.contentWindow || e.origin !== widgetOrigin) return;
     var d = e.data || {};
     if(d.source !== 'derat-chat') return;
+    if(d.type === 'ready'){
+      if(pendingOpen) sendOpenMessage();
+      return;
+    }
     if(d.open){
+      pendingOpen = false;
       f.classList.add('derat-open');
-      if(t) t.classList.remove('derat-show');
-    }else{
+      hideTeaser();
+    }else if(d.type === 'close' || d.open === false){
+      pendingOpen = false;
       f.classList.remove('derat-open');
-      if(!dismissed && t) setTimeout(function(){ t.classList.add('derat-show'); }, 600);
+      if(!dismissed) showTeaserLater(600);
     }
   });
 })();

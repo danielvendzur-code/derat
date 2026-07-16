@@ -30,7 +30,7 @@ Na začiatku `<script>` je objekt `CONFIG` — upravte podľa firmy:
 ```js
 const CONFIG = {
   phone:'+421905648129', phoneText:'+421 905 648 129',
-  email:'farkas.ivan@centrum.sk', whatsapp:'421905648129',
+  email:'info@derat.sk', whatsapp:'421905648129',
   leadEndpoint:'',            // URL kam sa POST-ne dopyt z formulára (alebo nechajte EmailJS / mailto)
   chatApi:'',                 // URL AI backendu, napr. '/api/chat' (prázdne = lokálne odpovede)
   travelPerKm:0.45, travelFreeKm:30,   // cestovné podľa PSČ (sídlo Bratislava)
@@ -125,7 +125,7 @@ Po vyplnení kontaktu widget odošle `POST /api/send-email` s `quote_data` (čí
 profesionálny HTML e-mail cez Gmail SMTP. História sa **neposiela**.
 
 - ENV: `GMAIL_USER`, `GMAIL_APP_PASSWORD` ([App Password](https://myaccount.google.com/apppasswords)),
-  `MAIL_TO` (predvolene `dopyt.chatbot@gmail.com`).
+  `MAIL_TO` (predvolene `info@derat.sk`).
 - Závislosť `nodemailer` je v `package.json` (Vercel ju nainštaluje automaticky).
 
 > Zhrnutie ENV premenných na backende: `ANTHROPIC_API_KEY`, `KV_REST_API_URL`,
