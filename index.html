@@ -646,16 +646,35 @@ img{max-width:100%}
 .dr-addon b{display:block;padding-right:22px;font:800 10.5px/1.2 var(--font)}.dr-addon span{display:block;margin-top:4px;color:var(--accent-dk);font:900 11px var(--font)}
 .dr-addon.sel:after{content:"✓";position:absolute;right:7px;top:7px;width:19px;height:19px;border-radius:50%;display:grid;place-items:center;background:var(--g);color:#fff;font:900 11px var(--font)}
 .dr-addon-custom{width:100%;height:46px;margin-top:7px;resize:none;border:1.5px solid var(--line);border-radius:12px;padding:9px 10px;font:600 11px var(--font);outline:none}
-.dr-custom-cta{width:100%;min-height:48px;border:1.5px dashed rgba(41,115,115,.42);border-radius:14px;background:linear-gradient(135deg,#f7fffb,#eaf8f2);color:var(--g-dk);padding:9px 12px;display:flex;align-items:center;gap:10px;text-align:left;cursor:pointer;transition:transform .22s,background .22s,border-color .22s,box-shadow .22s}
-.dr-custom-cta:hover{transform:translateY(-1px);background:#e1f5eb;border-color:var(--g);box-shadow:0 8px 18px rgba(41,115,115,.13)}
-.dr-custom-cta .dr-custom-plus{width:30px;height:30px;border-radius:10px;background:var(--g);color:#fff;display:grid;place-items:center;flex:0 0 auto;font:900 20px/1 var(--font)}
-.dr-custom-cta b{display:block;font:800 12px/1.2 var(--font)}
-.dr-custom-cta small{display:block;margin-top:2px;color:var(--muted);font:600 10px/1.3 var(--font)}
+.dr-custom-cta{width:100%;min-height:76px;border:1.7px solid var(--line);border-radius:16px;background:linear-gradient(135deg,#fff,#f3fcf8);color:var(--g-dk);padding:12px 14px;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;box-shadow:0 6px 16px rgba(41,115,115,.07);transition:transform .2s,background .2s,border-color .2s,box-shadow .2s}
+.dr-custom-cta:hover{transform:translateY(-1px);background:var(--g-50);border-color:var(--g);box-shadow:0 8px 18px rgba(41,115,115,.13)}
+.dr-custom-cta .dr-custom-plus{width:42px;height:42px;border-radius:13px;background:var(--g);color:#fff;display:grid;place-items:center;flex:0 0 auto;font:900 25px/1 var(--font);box-shadow:0 5px 12px rgba(41,115,115,.2)}
+.dr-custom-cta b{display:block;font:800 13.5px/1.2 var(--font)}
+.dr-custom-cta small{display:block;margin-top:3px;color:var(--muted);font:600 10.6px/1.3 var(--font)}
 .dr-custom-cta.area{margin-top:8px}
-.dr-custom-form{display:grid;gap:9px}
-.dr-custom-form textarea{width:100%;min-height:92px;resize:vertical;border:1.5px solid var(--line);border-radius:13px;background:#fafbfa;padding:11px 12px;color:var(--ink);font:600 12.5px/1.45 var(--font);outline:none}
-.dr-custom-form textarea:focus{border-color:var(--g);background:#fff;box-shadow:0 0 0 3px rgba(41,115,115,.1)}
-.dr-custom-back{border:0;background:transparent;color:var(--g);padding:3px 2px;text-align:left;font:800 10.5px var(--font);cursor:pointer}
+.dr-custom-form{display:flex;flex-direction:column;gap:8px;min-height:0}
+.dr-custom-intro{display:flex;align-items:center;gap:12px;padding:12px 13px;border:1px solid rgba(41,115,115,.18);border-radius:15px;background:linear-gradient(135deg,#effcf6,#e1f7ec)}
+.dr-custom-intro-ic{width:42px;height:42px;flex:0 0 42px;border-radius:13px;display:grid;place-items:center;background:var(--g);box-shadow:0 6px 14px rgba(41,115,115,.18)}
+.dr-custom-intro-ic svg{width:23px;height:23px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.dr-custom-intro b{display:block;color:var(--g-dk);font:900 13px/1.2 var(--font)}
+.dr-custom-intro small{display:block;margin-top:3px;color:#55605c;font:600 10.5px/1.35 var(--font)}
+.dr-custom-types{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.dr-custom-type{min-height:72px;padding:10px 11px;gap:9px;text-align:left;animation:none}
+.dr-custom-type .dr-rb{width:21px;height:21px;flex-basis:21px}
+.dr-custom-type .dr-rb:after{width:10px!important;height:10px!important}
+.dr-custom-type .dr-opt-m b{font-size:12.2px;line-height:1.15}
+.dr-custom-type .dr-opt-m span{font-size:9.8px;line-height:1.3;margin-top:3px}
+.dr-custom-field{display:grid;gap:5px}
+.dr-custom-field>span{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 2px}
+.dr-custom-field>span b{color:var(--ink);font:800 11.5px/1.2 var(--font)}
+.dr-custom-field>span small{color:var(--muted);font:700 9px/1.2 var(--font)}
+.dr-custom-form textarea,.dr-custom-form input{width:100%;border:1.5px solid var(--line);border-radius:13px;background:#fff;padding:11px 12px;color:var(--ink);font:600 12.2px/1.4 var(--font);outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
+.dr-custom-form textarea{height:80px;min-height:80px;resize:none}
+.dr-custom-form input{height:46px}
+.dr-custom-form textarea:focus,.dr-custom-form input:focus{border-color:var(--g);background:#fff;box-shadow:0 0 0 3px rgba(41,115,115,.1)}
+.dr-custom-back{align-self:flex-start;display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--g);padding:6px 9px;text-align:left;font:800 9.8px var(--font);cursor:pointer;transition:.18s}
+.dr-custom-back:hover{border-color:var(--g-lt);background:var(--g-50);transform:translateX(-1px)}
+.dr-custom-back svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .dr-custom-result{padding:14px;border:1px solid rgba(41,115,115,.22);border-radius:16px;background:linear-gradient(135deg,#effcf6,#dbf6ea);text-align:center}
 .dr-custom-result b{display:block;color:var(--g-dk);font-size:15px;margin-bottom:4px}.dr-custom-result span{display:block;color:#55605c;font:500 12px/1.45 var(--font)}
 .dr-b.bot{border:1px solid #dcefe6;border-left:3px solid var(--g-100);background:linear-gradient(145deg,#fff,#f7fbf9);border-radius:6px 16px 16px 16px}
@@ -802,6 +821,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
 /* služby: riadky vyplnia výšku */
 .dr-body.no-scroll .dr-stepbox>.dr-rows{flex:1;gap:10px}
 .dr-body.no-scroll .dr-rows .dr-rowcard{flex:1;max-height:150px}
+.dr-body.no-scroll .dr-stepbox>.dr-custom-form{flex:1}
 /* priestory (6 kariet) + doplnky: presne vyplnia, nikdy nepretečú/nerežú sa */
 .dr-body.no-scroll .dr-stepbox>.dr-grid,
 .dr-body.no-scroll .dr-stepbox>.dr-addon-grid{flex:1;grid-auto-rows:1fr;gap:10px!important}
@@ -1124,7 +1144,7 @@ function flow(){const c=state.c;
   });}
 const QUESTIONS={
   service:['Čo riešite?','Vyberte službu.'],
-  custom:['Ponuka na mieru','Stručne opíšte neštandardnú prácu alebo väčší rozsah.'],
+  custom:['Akú ponuku potrebujete?','Vyberte typ zákazky a doplňte základné údaje.'],
   sub:['Aký škodca?','Ak neviete, zvoľte „Iné“.'],
   place:['Kde je problém?','Vyberte priestor.'],
   area:['Aká rozloha?','Stačí odhad.'],
@@ -1134,7 +1154,14 @@ const QUESTIONS={
   result:['Zhrnutie dopytu','Cenu vám zobrazíme hneď po odoslaní.']
 };
 
-const state={open:false,step:0,photo:null,priceGross:false,priceAnim:0,hist:[],sent:null,c:{service:'deratizacia',sub:'potkany',place:'byt',area:70,severity:'stredne',visit:'weekday',loc:'',psc:'',addons:[],addonText:'',ineSize:1,ineText:'',count:1,customQuote:false,customText:'',customSize:''}};
+const CUSTOM_TYPES={
+  large:{n:'Veľký priestor',d:'nad limit kalkulačky'},
+  multi:{n:'Viac objektov',d:'bytovka, areál alebo sieť'},
+  repeat:{n:'Pravidelný servis',d:'opakované alebo sezónne zásahy'},
+  other:{n:'Iná požiadavka',d:'špecifická práca na mieru'}
+};
+
+const state={open:false,step:0,photo:null,priceGross:false,priceAnim:0,hist:[],sent:null,c:{service:'deratizacia',sub:'potkany',place:'byt',area:70,severity:'stredne',visit:'weekday',loc:'',psc:'',addons:[],addonText:'',ineSize:1,ineText:'',count:1,customQuote:false,customKind:'other',customText:'',customSize:''}};
 
 /* =========================================================
    3) POMOCNÉ
@@ -1460,7 +1487,7 @@ let TIPS=[];
 function ihint(t){const i=TIPS.push(t)-1;return `<span class="dr-ih" role="button" tabindex="0" aria-label="Vysvetlenie" onclick="DERAT.tip(event,${i})">i</span>`;}
 
 function rService(){return `<div class="dr-first-min"><span>€</span>Minimálna cena výjazdu a práce je 60 € bez DPH.</div>`+Object.keys(SERVICES).map((id,i)=>{const s=SERVICES[id],sel=state.c.service===id;
-  return `<button class="dr-rowcard${sel?' sel':''}" data-grp="service" data-id="${id}" style="animation-delay:${i*60}ms" onclick="DERAT.pickService('${id}',this)"><span class="dr-rowcard-img" style="background-image:url('${IMG[id]}')"></span><span class="dr-rowcard-bd"><b>${s.name}</b><span>${s.desc}</span></span><span class="dr-rowcard-pr">${eur(s.base)}<small>od</small></span></button>`;}).join('')+`<button class="dr-custom-cta" type="button" onclick="DERAT.customQuote('')"><span class="dr-custom-plus">+</span><span><b>Iná alebo neštandardná práca</b><small>Požiadajte o individuálnu ponuku na mieru</small></span></button>`;}
+  return `<button class="dr-rowcard${sel?' sel':''}" data-grp="service" data-id="${id}" style="animation-delay:${i*60}ms" onclick="DERAT.pickService('${id}',this)"><span class="dr-rowcard-img" style="background-image:url('${IMG[id]}')"></span><span class="dr-rowcard-bd"><b>${s.name}</b><span>${s.desc}</span></span><span class="dr-rowcard-pr">${eur(s.base)}<small>od</small></span></button>`;}).join('');}
 function rSub(){const sv=SERVICES[state.c.service];return Object.keys(sv.subs).map((id,i)=>{const it=sv.subs[id],sel=state.c.sub===id;
   return `<button class="dr-scard${sel?' sel':''}" data-grp="sub" data-id="${id}" onclick="DERAT.pickSub('${id}',this)"><span class="dr-scard-ic">${I[it.ic]||I.spray}</span><b>${it.n}</b></button>`;}).join('');}
 function rPlace(){return Object.keys(PLACES).map((id,i)=>{const p=PLACES[id],sel=state.c.place===id;
@@ -1506,7 +1533,7 @@ function rAreaSmart(){
     <div class="dr-scale"><span>${min} ${u}</span><span>${max}+ ${u}</span></div>
     ${volCalc}
     <div class="dr-quick">${quick.map(v=>`<button data-v="${v}" class="${v===a?'on':''}" onclick="setAreaValue(${v})">${quickLabel(v)}</button>`).join('')}</div>
-    <button class="dr-custom-cta area" type="button" onclick="DERAT.customQuote('Rozsah je väčší ako ${max} ${u}.')"><span class="dr-custom-plus">+</span><span><b>Väčší rozsah ako ${max} ${u}?</b><small>Nechajte si vypracovať ponuku na mieru</small></span></button>
+    <button class="dr-custom-cta area" type="button" onclick="DERAT.customQuote('Rozsah je väčší ako ${max} ${u}.','large')"><span class="dr-custom-plus">+</span><span><b>Väčší rozsah ako ${max} ${u}?</b><small>Nechajte si vypracovať ponuku na mieru</small></span></button>
     <div class="dr-count">
       <div class="dr-count-l"><b>Počet rovnakých priestorov</b><span>viac bytov/prevádzok od 1 zákazníka = zľava</span></div>
       <div class="dr-count-r"><button type="button" onclick="DERAT.count(-1)" aria-label="menej">−</button><b id="dr-cnt">${state.c.count||1}</b><button type="button" onclick="DERAT.count(1)" aria-label="viac">+</button></div>
@@ -1544,9 +1571,10 @@ function rLocation(){const c=state.c,t=travelForPsc(c.psc);return `<div class="d
 </div>`;}
 function rAddons(){cleanAddons();const set=new Set(state.c.addons),ids=allowedAddons();return `<div class="dr-addon-grid">`+ids.map(id=>{const a=ADDONS[id],sel=set.has(id);
   return `<button class="dr-addon${sel?' sel':''}" data-grp="addon" data-id="${id}" onclick="DERAT.addon('${id}',this)"><b>${a.n}</b><span>+${eur(a.p)} bez DPH</span></button>`;}).join('')+`</div><textarea class="dr-addon-custom" placeholder="Doplňujúca požiadavka..." oninput="DERAT.addonText(this.value)">${esc(state.c.addonText)}</textarea>`;}
-function rCustomResult(){const c=state.c;return `<div class="dr-result">
+function rCustomResult(){const c=state.c,type=(CUSTOM_TYPES[c.customKind]||CUSTOM_TYPES.other).n;return `<div class="dr-result">
     <div class="dr-custom-result"><b>Pripravíme vám ponuku na mieru</b><span>Pri tomto rozsahu by automatická cena nemusela byť presná. Po odoslaní požiadavku individuálne posúdime a ozveme sa s riešením.</span></div>
     <div class="dr-bd">
+      <div class="dr-bd-r"><span>Typ zákazky</span><b>${esc(type)}</b></div>
       <div class="dr-bd-r"><span>Požiadavka</span><b>${esc(c.customText)||'Individuálna práca'}</b></div>
       <div class="dr-bd-r"><span>Približný rozsah</span><b>${esc(c.customSize)||'neuvedený'}</b></div>
     </div>
@@ -1649,7 +1677,7 @@ function render(keep){
   calc.innerHTML=`
   <div class="dr-chead"><div class="dr-tabs"><button class="dr-tab on" type="button"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg>Kalkulačka</button><button class="dr-tab" type="button" onclick="DERAT.closeCalc()"><svg viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/></svg>AI asistent</button></div></div>
   <div class="dr-prog"><button class="dr-back" onclick="DERAT.prev()" ${first?'disabled':''}>‹</button><div class="dr-step-dots" style="--steps:${n}">${ST.map((_,i)=>`<i class="dr-step-dot${i<state.step?' done':''}${i===state.step?' active':''}" data-step="${i+1}"></i>`).join('')}</div><div class="dr-prog-n">${state.step+1}/${n}</div></div>
-  <div class="dr-body ${last||(k==='sub'&&state.c.sub==='ine')?'can-scroll':'no-scroll'}" tabindex="0">
+  <div class="dr-body ${last||k==='area'||(k==='sub'&&state.c.sub==='ine')?'can-scroll':'no-scroll'}" tabindex="0">
     <h3 class="dr-q">${title}</h3><div class="dr-q-sub">${q[1]}</div>
     <div class="dr-stepbox" style="animation:drStepIn .42s cubic-bezier(.2,.85,.3,1)">${stepInner()}</div>
     <div class="dr-more" aria-hidden="true"><span>ďalej nižšie ▾</span></div>
@@ -1669,10 +1697,11 @@ function softPulse(el,cls){if(!el)return;
   if(cls){el.classList.remove(cls);requestAnimationFrame(()=>el.classList.add(cls));}
 }
 function rCustom(){const c=state.c;return `<div class="dr-custom-form">
-  <div class="dr-info"><div class="dr-info-b"><b>Individuálna ponuka bez nepresného odhadu</b><span>Popíšte, čo potrebujete. Technik posúdi rozsah a ozve sa s vhodným riešením a cenou.</span></div></div>
-  <textarea id="dr-custom-text" placeholder="Napr. veľký sklad nad 1 000 m², celý bytový dom, pravidelný servis alebo iná práca…" oninput="DERAT.customText(this.value)">${esc(c.customText)}</textarea>
-  <input class="dr-ine-txt" placeholder="Približný rozsah (napr. 1 500 m²)" value="${attr(c.customSize)}" oninput="DERAT.customSize(this.value)">
-  <button class="dr-custom-back" type="button" onclick="DERAT.regularQuote()">← Späť na bežnú kalkulačku</button>
+  <div class="dr-custom-intro"><span class="dr-custom-intro-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h10a2 2 0 0 1 2 2v5"></path><path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8"></path><path d="M7 8h6M7 12h4"></path><path d="m14 18 5-5 2 2-5 5-3 1 1-3Z"></path></svg></span><span><b>Presná cena po posúdení rozsahu</b><small>Pri väčšej alebo neštandardnej zákazke pripraví technik riešenie individuálne.</small></span></div>
+  <div class="dr-custom-types" role="group" aria-label="Typ zákazky">${Object.entries(CUSTOM_TYPES).map(([id,it])=>`<button class="dr-opt dr-custom-type${c.customKind===id?' sel':''}" type="button" data-grp="custom-kind" data-id="${id}" onclick="DERAT.customKind('${id}',this)"><span class="dr-rb"></span><span class="dr-opt-m"><b>${it.n}</b><span>${it.d}</span></span></button>`).join('')}</div>
+  <label class="dr-custom-field"><span><b>Čo potrebujete vyriešiť?</b><small>Povinné</small></span><textarea id="dr-custom-text" placeholder="Stručne opíšte priestor, problém a požadovanú prácu…" oninput="DERAT.customText(this.value)">${esc(c.customText)}</textarea></label>
+  <label class="dr-custom-field"><span><b>Približný rozsah</b><small>Nepovinné</small></span><input placeholder="Napr. 1 500 m², 3 vchody alebo celý areál" value="${attr(c.customSize)}" oninput="DERAT.customSize(this.value)"></label>
+  <button class="dr-custom-back" type="button" onclick="DERAT.regularQuote()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>Späť na bežnú kalkulačku</button>
 </div>`;}
 function countUp(){const el=$('dr-price');if(!el)return;const token=++state.priceAnim,t=+el.dataset.t,t0=performance.now(),dur=900;
   (function tick(now){if(token!==state.priceAnim)return;const p=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-p,4),v=Math.round(t*e);el.textContent=v.toLocaleString('sk-SK')+' €';
@@ -1716,9 +1745,10 @@ window.DERAT={
     tb.style.left=x+'px';tb.style.top=y+'px';},
   _markOne(grp,el){document.querySelectorAll('.dr-body [data-grp="'+grp+'"]').forEach(b=>b.classList.toggle('sel',b===el));},
   _livePrice(){if(state.c.customQuote)return;const lp=document.querySelector('.dr-live-price b');if(lp){const k=flow()[state.step];lp.textContent=eur(k==='place'||k==='sub'?MIN:compute().total);softPulse(lp,'bump');}},
-  customQuote(prefill){state.c.customQuote=true;if(prefill&&!state.c.customText.trim())state.c.customText=prefill;state.step=0;state.sent=null;render(false);},
-  openCustomQuote(){this.openCalc();this.customQuote('');},
+  customQuote(prefill,kind){state.c.customQuote=true;if(prefill&&!state.c.customText.trim())state.c.customText=prefill;if(kind&&CUSTOM_TYPES[kind])state.c.customKind=kind;else if(!CUSTOM_TYPES[state.c.customKind])state.c.customKind='other';state.step=0;state.sent=null;render(false);},
+  openCustomQuote(){this.openCalc();this.customQuote('','other');},
   regularQuote(){state.c.customQuote=false;state.step=0;state.sent=null;render(false);},
+  customKind(id,el){if(!CUSTOM_TYPES[id])return;state.c.customKind=id;this._markOne('custom-kind',el);},
   customText(v){state.c.customText=v;},
   customSize(v){state.c.customSize=v;},
   pickService(id,el){state.c.customQuote=false;state.c.service=id;state.c.sub=Object.keys(SERVICES[id].subs)[0];state.c.area=defaultQty(state.c.place,id);cleanAddons();this._markOne('service',el);this._livePrice();},
@@ -1762,10 +1792,11 @@ window.DERAT={
     visit:r.visit.n,visitSurcharge:r.surcharge,travelKm:r.travel.km||0,travelPrice:r.travel.price,travelNote:r.travel.label,
     addons:addonNames.join(', ')||'žiadne',price:r.total,priceNet:r.total,priceVat:r.vat,priceShown:state.priceGross?r.vat:r.total,priceMode:state.priceGross?'gross':'net',
     priceRange:eur(r.low)+' – '+eur(r.high),priceRangeGross:eur(Math.round(r.low*(1+VAT)))+' – '+eur(Math.round(r.high*(1+VAT))),
-    priceEstimate:eur(r.total)+' bez DPH / '+eur(r.vat)+' s DPH',customQuote:!!c.customQuote,customRequest:c.customText.trim(),customSize:c.customSize.trim()};
-    if(p.customQuote)Object.assign(p,{service:'Ponuka na mieru',pest:p.customRequest||'Neštandardná práca',place:'Individuálny rozsah',size:p.customSize||'neuvedený',count:1,discountPct:0,severity:'-',multi:false,method:'-',materialQty:0,materialPrice:0,addons:'podľa dohody',price:null,priceNet:null,priceVat:null,priceShown:null,priceRange:'individuálne',priceRangeGross:'individuálne',priceEstimate:'Cenu vypracujeme individuálne'});
+    priceEstimate:eur(r.total)+' bez DPH / '+eur(r.vat)+' s DPH',customQuote:!!c.customQuote,customType:(CUSTOM_TYPES[c.customKind]||CUSTOM_TYPES.other).n,customRequest:c.customText.trim(),customSize:c.customSize.trim()};
+    if(p.customQuote)Object.assign(p,{service:'Ponuka na mieru',pest:p.customType,place:'Individuálny rozsah',size:p.customSize||'neuvedený',count:1,discountPct:0,severity:'-',multi:false,method:'-',materialQty:0,materialPrice:0,addons:'podľa dohody',price:null,priceNet:null,priceVat:null,priceShown:null,priceRange:'individuálne',priceRangeGross:'individuálne',priceEstimate:'Cenu vypracujeme individuálne'});
     p.configuration=p.customQuote?[
       'Typ dopytu: Ponuka na mieru',
+      'Typ zákazky: '+p.customType,
       'Požiadavka: '+p.customRequest,
       'Približný rozsah: '+p.size,
       'Lokalita: '+(p.loc||'-')+(p.psc?' '+p.psc:''),
@@ -1779,7 +1810,7 @@ window.DERAT={
       'Doprava: '+p.travelNote+(p.travelPrice?' · '+eur(p.travelPrice)+' bez DPH':''),
       'Cena: '+p.priceEstimate
     ].join('\n');
-    p.quoteData={sessionId:p.sessionId,customQuote:p.customQuote,customRequest:p.customRequest,customSize:p.customSize,service:p.service,pest:p.pest,place:p.place,size:p.size,count:p.count,discountPct:p.discountPct,severity:p.severity,material:p.method,materialQty:p.materialQty,addons:p.customQuote?[]:addonNames,visit:p.visit,travelKm:p.travelKm,travelPrice:p.travelPrice,priceNet:p.priceNet,priceVat:p.priceVat,priceRangeNet:p.priceRange,priceRangeGross:p.priceRangeGross,source:p.source,page:p.page,createdAt:p.createdAt};
+    p.quoteData={sessionId:p.sessionId,customQuote:p.customQuote,customType:p.customType,customRequest:p.customRequest,customSize:p.customSize,service:p.service,pest:p.pest,place:p.place,size:p.size,count:p.count,discountPct:p.discountPct,severity:p.severity,material:p.method,materialQty:p.materialQty,addons:p.customQuote?[]:addonNames,visit:p.visit,travelKm:p.travelKm,travelPrice:p.travelPrice,priceNet:p.priceNet,priceVat:p.priceVat,priceRangeNet:p.priceRange,priceRangeGross:p.priceRangeGross,source:p.source,page:p.page,createdAt:p.createdAt};
     /* Číslo dopytu + telo pre /api/send-email (ceny s DPH, históriu NEposiela) */
     p.quoteNum=derQuoteNum();
     const G=v=>Math.round(v*(1+VAT)*100)/100; // netto → brutto (s DPH)
@@ -1788,9 +1819,9 @@ window.DERAT={
     const addonsList=p.customQuote?[]:c.addons.filter(id=>okAdds.has(id)).map(id=>({n:ADDONS[id].n,p:G(ADDONS[id].p||0)}));
     if(!p.customQuote&&r.surcharge)addonsList.push({n:r.visit.n+' (príplatok)',p:G(r.surcharge)});
     p.emailBody={
-      from_name:p.name,from_email:p.email,phone:p.phone,message:p.customQuote?[p.customRequest,p.customSize?('Rozsah: '+p.customSize):'',p.note].filter(Boolean).join('\n'):(p.note||''),
+      from_name:p.name,from_email:p.email,phone:p.phone,message:p.customQuote?['Typ zákazky: '+p.customType,p.customRequest,p.customSize?('Rozsah: '+p.customSize):'',p.note].filter(Boolean).join('\n'):(p.note||''),
       quote_data:{
-        num:p.quoteNum,custom:p.customQuote,productName:p.customQuote?'Ponuka na mieru':r.sv.name+' – '+r.sub.n,items,
+        num:p.quoteNum,custom:p.customQuote,productName:p.customQuote?'Ponuka na mieru – '+p.customType:r.sv.name+' – '+r.sub.n,items,
         matTotal:p.customQuote?null:G(r.perObj*r.count),
         discPct:p.customQuote?0:(r.discPct||0),discAmount:!p.customQuote&&r.save?G(r.save):0,
         addonsList,
@@ -1798,7 +1829,7 @@ window.DERAT={
         total:p.customQuote?null:r.vat,
         lokacia:(p.loc+(p.psc?' '+p.psc:'')).trim(),
         lang:'sk',
-        params:p.customQuote?{poziadavka:p.customRequest,rozsah:p.customSize||null,termin:p.term||null,kontakt:p.pref||null}:{
+        params:p.customQuote?{typZakazky:p.customType,poziadavka:p.customRequest,rozsah:p.customSize||null,termin:p.term||null,kontakt:p.pref||null}:{
           sluzba:r.sv.name,skodca:r.sub.n,priestor:r.pl.n,
           [r.unit==='m³'?'objem':'rozloha']:r.qty+' '+r.unit,
           zamorenie:r.sub.pricing==='fixed'?null:r.sev.n,
@@ -1813,6 +1844,7 @@ window.DERAT={
     p.summary=this._summary(p);p.message=p.summary;return p;},
   _summary(p){if(p.customQuote)return `DOPYT NA PONUKU NA MIERU – DERAT.sk
 ID dopytu: ${p.sessionId}
+Typ zákazky: ${p.customType}
 Požiadavka: ${p.customRequest||'-'}
 Približný rozsah: ${p.customSize||'-'}
 Lokalita: ${p.loc||'-'}${p.psc?' '+p.psc:''}
@@ -1868,7 +1900,7 @@ Stránka: ${p.page}
     </div>`;
     add(p.customQuote?'Žiadosť o <b>ponuku na mieru</b> je pripravená. Ozveme sa vám po individuálnom posúdení rozsahu.':'Dopyt je pripravený. Orientačná cena zásahu: <b>'+eur(p.priceNet)+' bez DPH</b> ('+eur(p.priceVat)+' s DPH).','bot');
   },
-  newCalc(){state.step=0;state.sent=null;state.priceGross=false;state.c.count=1;state.c.customQuote=false;state.c.customText='';state.c.customSize='';render(false);},
+  newCalc(){state.step=0;state.sent=null;state.priceGross=false;state.c.count=1;state.c.customQuote=false;state.c.customKind='other';state.c.customText='';state.c.customSize='';render(false);},
   send(){const p=this._payload();if(!this._valid(p))return;const st=$('dr-stat'),btn=document.querySelector('.dr-submit');
     const orig=btn.innerHTML;
     btn.innerHTML='<svg class="dr-spinner" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="31.4 31.4" stroke-linecap="round"></circle></svg> Odosielam...';
