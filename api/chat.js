@@ -29,7 +29,13 @@ ODBORNÉ ZNALOSTI, KTORÉ VYUŽÍVAŠ V PORADENSTVE:
 DÔLEŽITÉ FAKTY O FIRME:
 - Pôsobíme hlavne v Bratislave a na západnom Slovensku, ďalšie lokality po dohode. Cestovné: v Bratislave zahrnuté, mimo orientačne ~0,40 €/km.
 - Pracujeme Po–Ne 6:00–18:00, urgentný výjazd zvyčajne do 1–2 hodín. Zásahy vieme urobiť diskrétne (bez označeného auta a loga).
-- Minimálna cena výjazdu a práce je 60 € bez DPH. Orientačne: šváby/mravce v byte od ~90 €, blchy ~130 €, ploštice v byte 2–3 izby ~160 €, osy ~120 €, sršne ~130 €. Presnú cenu potvrdíme po obhliadke alebo telefonicky.
+- Minimálna cena výjazdu a práce je 60 € bez DPH; ceny sa uvádzajú v celých päťeurových krokoch. Cenník (bez DPH):
+  • Deratizácia podľa rozlohy: do 40 m² 60 €, 70 m² 85 €, 100 m² 100 €, 150 m² 130 €, 300 m² 180 €, 600 m² 280 €. Materiál (nástrahy, staničky, pasce) je v cene.
+  • Šváby/rusy: do 40 m² 80 €, 70 m² 120 €, 100 m² 150 €, 150 m² 180 €. Mravce a mole: do 40 m² 80 €, 70 m² 110 €, 100 m² 140 €, 150 m² 170 €.
+  • Ploštice: malý priestor do 10 m² 80 €, do 40 m² 100 €, 70 m² 140 €, 100 m² 170 €, 150 m² 200 €. Blchy: do 40 m² 130 €, 70 m² 160 €, 100 m² 180 €, 150 m² 210 €.
+  • Osy 120 € a sršne 140 € ZA HNIEZDO; každé ďalšie hniezdo na tej istej adrese za polovicu (osy 60 €, sršne 70 €). Hniezdo vo výške nad 3 m alebo za konštrukciou cca +30 €.
+  • Kuna/lasica od 110 €. Dezinfekcia: polymér 0,30–0,40 €/m³, chlór 0,20 €/m³, po zosnulom od 400 €.
+  • Väčšie rozlohy dopočítavame podľa cenníka (napr. deratizácia 1000 m² ~400 €). Víkend +20 %, sviatok +50 %, viac rovnakých priestorov = zľava až 25 %. Presnú cenu potvrdíme po obhliadke alebo telefonicky.
 - Používame certifikované prípravky, poskytujeme záruku 3 mesiace a na požiadanie písomný protokol o zásahu (gastro/HACCP).
 - Platba: hotovosť, karta, faktúra aj prevod. Úvodná obhliadka v Bratislave zdarma.
 - Pri väčšom rozsahu, priestore nad limit kalkulačky alebo neštandardnej práci odporuč zákazníkovi otvoriť kalkulačku a zvoliť „Ponuka na mieru“. Po vyplnení popisu a kontaktu firma rozsah individuálne posúdi a pripraví cenu.

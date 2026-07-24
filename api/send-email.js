@@ -12,7 +12,8 @@ const eur = n => (Math.round(Number(n) * 100) / 100).toLocaleString('sk-SK', { m
 
 const LABELS = {
   sluzba: 'Služba', skodca: 'Škodca / problém', priestor: 'Typ priestoru', rozloha: 'Rozloha',
-  objem: 'Objem', zamorenie: 'Miera zamorenia', pocet: 'Počet priestorov', doplnky: 'Doplnky',
+  objem: 'Objem', hniezda: 'Počet hniezd', material: 'Materiál',
+  zamorenie: 'Miera zamorenia', pocet: 'Počet priestorov', doplnky: 'Doplnky',
   zlava: 'Zľava', cestovne: 'Cestovné', termin: 'Želaný termín', kontakt: 'Preferovaný kontakt',
   poziadavka: 'Požiadavka', rozsah: 'Približný rozsah',
 };

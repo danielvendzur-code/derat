@@ -38,8 +38,17 @@ const CONFIG = {
 };
 ```
 
-Ďalej v JS môžete upraviť: **`SERVICES`** (služby, škodcovia, ceny `base`/`rate`/`m`),
-**`PLACES`**, **`SEVERITY`**, **`ADDONS`**, **`IMG`** (fotky) a **`reply()`** (lokálne odpovede chatu).
+Ďalej v JS môžete upraviť: **`AREA_PRICES`** (cenník podľa rozlohy — body `[m², €]`,
+medzi nimi sa interpoluje), **`SERVICES`** (služby, škodcovia, priradená krivka `curve`,
+resp. `perNest`/`nextNest` pri osách a sršňoch), **`PLACES`**, **`SEVERITY`**,
+**`ADDONS`**, **`IMG`** (fotky) a **`reply()`** (lokálne odpovede chatu).
+
+Pravidlá cenníka, ktoré kalkulačka drží automaticky:
+
+- minimálna cena výjazdu a práce **`MIN` = 60 € bez DPH** — žiadna cena neklesne pod ňu,
+- každá zobrazená cena je zaokrúhlená na **celých 5 €** (`PRICE_STEP`),
+- cena v cenníku je zároveň spodná hranica odhadu (miera zamorenia ju už neznižuje),
+- osy a sršne sa počítajú **za hniezdo**, nie za m².
 
 ---
 
