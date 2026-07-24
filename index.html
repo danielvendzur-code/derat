@@ -214,7 +214,7 @@ img{max-width:100%}
 .dr-rowcard-bd b{font-size:14.5px;font-weight:800;color:var(--ink);display:block;line-height:1.15}
 .dr-rowcard-bd span{font-size:11px;font-weight:500;color:var(--muted);line-height:1.3;display:block;margin-top:2px}
 .dr-rowcard-pr{flex:0 0 auto;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding:0 14px;font:900 14px var(--font);color:var(--g);white-space:nowrap}
-.dr-rowcard-pr small{font:600 9px var(--font);color:var(--muted);letter-spacing:.3px;margin-top:1px}
+.dr-rowcard-pr small{font:600 9px var(--font);color:var(--muted);letter-spacing:.3px;margin-bottom:1px}
 .dr-rowcard.sel:after{content:"✓";position:absolute;left:8px;top:8px;z-index:3;width:21px;height:21px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;font:900 12px var(--font);animation:drPop .3s ease;box-shadow:0 2px 6px rgba(0,0,0,.4)}
 .dr-pcard{position:relative;border:1.8px solid var(--line);background:#fff;border-radius:15px;overflow:hidden;cursor:pointer;text-align:left;transition:.16s;animation:drStep .35s ease both;display:flex;flex-direction:column;height:122px}
 .dr-pcard:hover{border-color:var(--g-lt);transform:translateY(-2px);box-shadow:0 10px 20px rgba(41,115,115,.12)}
@@ -1507,7 +1507,7 @@ let TIPS=[];
 function ihint(t){const i=TIPS.push(t)-1;return `<span class="dr-ih" role="button" tabindex="0" aria-label="Vysvetlenie" onclick="DERAT.tip(event,${i})">i</span>`;}
 
 function rService(){return `<div class="dr-first-min"><span>€</span>Minimálna cena výjazdu a práce je ${eur(MIN)} bez DPH.</div>`+Object.keys(SERVICES).map((id,i)=>{const s=SERVICES[id],sel=state.c.service===id;
-  return `<button class="dr-rowcard${sel?' sel':''}" data-grp="service" data-id="${id}" style="animation-delay:${i*60}ms" onclick="DERAT.pickService('${id}',this)"><span class="dr-rowcard-img" style="background-image:url('${IMG[id]}')"></span><span class="dr-rowcard-bd"><b>${s.name}</b><span>${s.desc}</span></span><span class="dr-rowcard-pr">${eur(s.base)}<small>od</small></span></button>`;}).join('');}
+  return `<button class="dr-rowcard${sel?' sel':''}" data-grp="service" data-id="${id}" style="animation-delay:${i*60}ms" onclick="DERAT.pickService('${id}',this)"><span class="dr-rowcard-img" style="background-image:url('${IMG[id]}')"></span><span class="dr-rowcard-bd"><b>${s.name}</b><span>${s.desc}</span></span><span class="dr-rowcard-pr"><small>už od</small>${eur(s.base)}</span></button>`;}).join('');}
 function rSub(){const sv=SERVICES[state.c.service];return Object.keys(sv.subs).map((id,i)=>{const it=sv.subs[id],sel=state.c.sub===id;
   return `<button class="dr-scard${sel?' sel':''}" data-grp="sub" data-id="${id}" onclick="DERAT.pickSub('${id}',this)"><span class="dr-scard-ic">${I[it.ic]||I.spray}</span><b>${it.n}</b></button>`;}).join('');}
 function rPlace(){return Object.keys(PLACES).map((id,i)=>{const p=PLACES[id],sel=state.c.place===id;
