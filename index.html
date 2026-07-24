@@ -214,7 +214,7 @@ img{max-width:100%}
 .dr-rowcard-bd b{font-size:14.5px;font-weight:800;color:var(--ink);display:block;line-height:1.15}
 .dr-rowcard-bd span{font-size:11px;font-weight:500;color:var(--muted);line-height:1.3;display:block;margin-top:2px}
 .dr-rowcard-pr{flex:0 0 auto;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding:0 14px;font:900 14px var(--font);color:var(--g);white-space:nowrap}
-.dr-rowcard-pr small{font:600 9px var(--font);color:var(--muted);letter-spacing:.3px;margin-top:1px}
+.dr-rowcard-pr small{font:600 9px var(--font);color:var(--muted);letter-spacing:.3px;margin-bottom:1px}
 .dr-rowcard.sel:after{content:"✓";position:absolute;left:8px;top:8px;z-index:3;width:21px;height:21px;border-radius:50%;background:var(--g);color:#fff;display:flex;align-items:center;justify-content:center;font:900 12px var(--font);animation:drPop .3s ease;box-shadow:0 2px 6px rgba(0,0,0,.4)}
 .dr-pcard{position:relative;border:1.8px solid var(--line);background:#fff;border-radius:15px;overflow:hidden;cursor:pointer;text-align:left;transition:.16s;animation:drStep .35s ease both;display:flex;flex-direction:column;height:122px}
 .dr-pcard:hover{border-color:var(--g-lt);transform:translateY(-2px);box-shadow:0 10px 20px rgba(41,115,115,.12)}
@@ -1032,36 +1032,58 @@ const I={
 
 /* =========================================================
    2) DÁTA – 3 hlavné služby derat.sk (Deratizácia, Dezinsekcia, Dezinfekcia)
-   Ceny ORIENTAČNÉ (€, bez DPH): base=výjazd, rate=€/jednotku, m=násobiteľ
+   Ceny ORIENTAČNÉ (€, bez DPH): base = cena „od" na prvom slide, curve = cenníková
+   krivka podľa rozlohy (AREA_PRICES), perNest/nextNest = cena za hniezdo (osy, sršne)
    ========================================================= */
-const MIN=60, VAT=.23;
+const MIN=60, VAT=.23, PRICE_STEP=5;
+/* Ceny sa vždy posúvajú po 5 € (väčšie skoky po 10 €) — nikdy nie „87 €". */
+const step5=n=>Math.round(Math.max(0,+n||0)/PRICE_STEP)*PRICE_STEP;
+/* Cenové krivky podľa rozlohy (m², bez DPH). Body sú z cenníka, medzi nimi sa
+   interpoluje a nad posledným bodom pokračuje sadzba posledného úseku.
+   Žiadna cena nikdy neklesne pod minimálny výjazd MIN (60 €). */
+const AREA_PRICES={
+  hlodavce:[[40,60],[70,85],[100,100],[150,130],[300,180],[600,280],[1000,400]],
+  plostice:[[10,80],[40,100],[70,140],[100,170],[150,200],[300,260],[600,350],[1000,450]],
+  svaby:[[40,80],[70,120],[100,150],[150,180],[300,230],[600,320],[1000,420]],
+  hmyz:[[40,80],[70,110],[100,140],[150,170],[300,220],[600,310],[1000,410]],
+  blchy:[[40,130],[70,160],[100,180],[150,210],[300,270],[600,360],[1000,460]]
+};
+function curvePrice(key,qty){
+  const pts=AREA_PRICES[key]||AREA_PRICES.hmyz,last=pts.length-1;
+  if(qty<=pts[0][0])return pts[0][1];
+  for(let i=1;i<=last;i++){const x0=pts[i-1][0],y0=pts[i-1][1],x1=pts[i][0],y1=pts[i][1];
+    if(qty<=x1)return y0+(qty-x0)*(y1-y0)/(x1-x0);}
+  const x0=pts[last-1][0],y0=pts[last-1][1],x1=pts[last][0],y1=pts[last][1];
+  return y1+(qty-x1)*(y1-y0)/(x1-x0);
+}
+const nestWord=n=>n===1?'hniezdo':(n<5?'hniezda':'hniezd');
 const SERVICES={
-  deratizacia:{name:'Deratizácia',desc:'Hlodavce, kuna a lasica',base:MIN,unit:'m²',
+  deratizacia:{name:'Deratizácia',desc:'Hlodavce, kuna a lasica',base:60,unit:'m²',
     q:'Ktorého škodcu chcete vyriešiť?',
-    info:'Pri hlodavcoch automaticky zvolíme vhodný materiál a počet kusov podľa rozlohy, druhu škodcu a miery zamorenia.',
+    info:'Cena sa riadi rozlohou: <b>do 40 m² 60 €, 70 m² 85 €, 100 m² 100 €, 150 m² 130 €, 300 m² 180 € a 600 m² 280 €</b> bez DPH. Materiál a počet kusov nástrah zvolíme automaticky podľa rozlohy, druhu škodcu a miery zamorenia — sú už v cene.',
     subs:{
-      potkany:{n:'Potkany',ic:'rat',pricing:'material',coverage:35,v:2},
-      mysi:{n:'Myši',ic:'mouse',pricing:'material',coverage:25,v:2},
-      hrabose:{n:'Hraboše',ic:'vole',pricing:'material',coverage:40,v:1},
-      kuna:{n:'Kuna / lasica',ic:'marten',pricing:'fixed',fixed:110,low:100,high:120,v:1},
-      ine:{n:'Iné / neviem',ic:'spray',pricing:'material',coverage:30,ine:true}
+      potkany:{n:'Potkany',ic:'rat',pricing:'material',curve:'hlodavce',coverage:35,v:2},
+      mysi:{n:'Myši',ic:'mouse',pricing:'material',curve:'hlodavce',coverage:25,v:2},
+      hrabose:{n:'Hraboše',ic:'vole',pricing:'material',curve:'hlodavce',coverage:40,v:1},
+      kuna:{n:'Kuna / lasica',ic:'marten',pricing:'fixed',fixed:110,low:110,high:150,v:1},
+      ine:{n:'Iné / neviem',ic:'spray',pricing:'material',curve:'hlodavce',coverage:30,ine:true}
     }},
-  dezinsekcia:{name:'Dezinsekcia',desc:'Ploštice, šváby a ďalší hmyz',base:MIN,unit:'m²',
+  dezinsekcia:{name:'Dezinsekcia',desc:'Ploštice, šváby a ďalší hmyz',base:80,unit:'m²',
     q:'Ktorý hmyz potrebujete vyriešiť?',
-    info:'Cenník pre bežný byt: <b>mravce 90 €, šváby 90 €, mole 90 €, blchy 130 €, osy 120 € a sršne 130 €</b>. Pri plošticiach rozhoduje najmä rozloha. Kancelárie, sklady a obchody sa počítajú sadzbou 0,10–0,20 €/m².',
+    info:'Cenník pre byt do 40 m²: <b>šváby, mravce a mole od 80 €, blchy od 130 €, ploštice od 100 €</b> (malý priestor do 10 m² od 80 €). Pri 100 m² sú to <b>šváby 150 €</b> a <b>ploštice 170 €</b>. <b>Osy 120 € a sršne 140 € za hniezdo</b> — každé ďalšie hniezdo na tej istej adrese za polovicu. Ceny sú bez DPH.',
     subs:{
-      plostice:{n:'Ploštice',ic:'bug',pricing:'bedbugs',v:2},
-      svaby:{n:'Šváby / rusy',ic:'roach',pricing:'fixedArea',fixed:90,v:2},
-      mravce:{n:'Mravce',ic:'ant',pricing:'fixedArea',fixed:90,v:1},
-      mole:{n:'Mole',ic:'fly',pricing:'fixedArea',fixed:90,v:1},
-      blchy:{n:'Blchy',ic:'flea',pricing:'fixedArea',fixed:130,v:2},
-      osy:{n:'Osy',ic:'wasp',pricing:'fixedArea',fixed:120,v:1},
-      srsne:{n:'Sršne',ic:'hornet',pricing:'fixedArea',fixed:130,v:1},
-      ine:{n:'Iné / neviem',ic:'spray',pricing:'area',ine:true,v:1}
+      plostice:{n:'Ploštice',ic:'bug',pricing:'areaCurve',curve:'plostice',v:2},
+      svaby:{n:'Šváby / rusy',ic:'roach',pricing:'areaCurve',curve:'svaby',v:2},
+      mravce:{n:'Mravce',ic:'ant',pricing:'areaCurve',curve:'hmyz',v:1},
+      mole:{n:'Mole',ic:'fly',pricing:'areaCurve',curve:'hmyz',v:1},
+      blchy:{n:'Blchy',ic:'flea',pricing:'areaCurve',curve:'blchy',v:2},
+      osy:{n:'Osy',ic:'wasp',pricing:'nest',perNest:120,nextNest:60,v:1},
+      srsne:{n:'Sršne',ic:'hornet',pricing:'nest',perNest:140,nextNest:70,v:1},
+      ine:{n:'Iné / neviem',ic:'spray',pricing:'areaCurve',curve:'hmyz',ine:true,v:1}
     }},
-  dezinfekcia:{name:'Dezinfekcia',desc:'Polymér, chlór, dezinfekcia po zosnulom',base:MIN,unit:'m³',
+  dezinfekcia:{name:'Dezinfekcia',desc:'Polymér, chlór, dezinfekcia po zosnulom',base:60,unit:'m³',
     q:'Aký typ dezinfekcie potrebujete?',
-    info:'Polymérová dezinfekcia stojí <b>0,30–0,40 €/m³</b>, chlórová <b>0,20 €/m³</b> a dezinfekcia po zosnulom je <b>od 400 €</b> podľa objemu a náročnosti priestoru.',
+    info:'Polymérová dezinfekcia stojí <b>0,30–0,40 €/m³</b>, chlórová <b>0,20 €/m³</b> (vždy minimálne 60 € za výjazd) a dezinfekcia po zosnulom je <b>od 400 €</b> podľa objemu a náročnosti priestoru.',
     subs:{
       polymer:{n:'Polymér',ic:'mold',pricing:'volume',rates:[.30,.35,.40],v:1},
       chlor:{n:'Chlór',ic:'virus',pricing:'volume',rates:[.20,.20,.20],v:1},
@@ -1072,9 +1094,9 @@ const SERVICES={
 const PLACES={
   byt:{n:'Byt',d:'cena sa počíta podľa rozlohy',a:60},
   dom:{n:'Rodinný dom',d:'vrátane okolia',a:120},
-  prevadzka:{n:'Firma / obchod',d:'kancelárie, predajňa',a:200,business:true},
-  horeca:{n:'Reštaurácia',d:'kuchyňa, gastro prevádzka',a:150,business:true},
-  sklad:{n:'Sklad / hala',d:'väčšie priestory',a:400,business:true},
+  prevadzka:{n:'Firma / obchod',d:'kancelárie, predajňa',a:200},
+  horeca:{n:'Reštaurácia',d:'kuchyňa, gastro prevádzka',a:150},
+  sklad:{n:'Sklad / hala',d:'väčšie priestory',a:400},
   exterier:{n:'Exteriér',d:'pozemok, dvor',a:300}
 };
 const RODENT_METHODS={
@@ -1084,8 +1106,10 @@ const RODENT_METHODS={
   glue:{n:'Lepová pasca',d:'6,00 €/ks',price:6,low:6,high:6},
   glueStation:{n:'Lepová pasca v staničke',d:'cenník 8,00–10,00 €/ks',price:10,low:8,high:10}
 };
+/* Cenníková cena platí pre bežný aj občasný výskyt — nikdy neklesá pod cenník.
+   Pri silnom zamorení treba viac prípravku a času, preto +25 %. */
 const SEVERITY={
-  mierne:{n:'Občas',d:'Jeden kus alebo pár stôp.',m:.9,lvl:1,points:.75},
+  mierne:{n:'Občas',d:'Jeden kus alebo pár stôp.',m:1,lvl:1,points:.75},
   stredne:{n:'Pravidelne',d:'Objavuje sa opakovane.',m:1,lvl:2,points:1},
   silne:{n:'Silno',d:'Viac kusov alebo miest.',m:1.25,lvl:3,points:1.4}
 };
@@ -1135,11 +1159,14 @@ const POSTAL_KM={
 };
 const POSTAL_FALLBACK={'01':210,'02':245,'03':260,'04':395,'05':350,'06':450,'07':480,'08':450,'09':460,'90':45,'91':125,'92':75,'93':60,'94':110,'95':120,'96':210,'97':215,'98':275,'99':275};
 const PROCESS='<b>Ako prebieha zásah:</b> obhliadka a konzultácia → návrh riešenia a cena → zásah certifikovaným prípravkom → protokol a podľa potreby kontrolný zásah. Na zásahy poskytujeme garanciu.';
-const STEPS=['service','sub','place','area','severity','location','addons','result'];
+const STEPS=['service','sub','place','nest','area','severity','location','addons','result'];
 function flow(){const c=state.c;
   if(c.customQuote)return ['custom','location','result'];
+  const pricing=SERVICES[c.service].subs[c.sub].pricing;
   return STEPS.filter(s=>{
-    if(s==='severity')return !['fixed','postmortem'].includes(SERVICES[c.service].subs[c.sub].pricing);
+    if(s==='nest')return pricing==='nest';          /* osy a sršne: počet hniezd namiesto rozlohy */
+    if(s==='area')return pricing!=='nest';
+    if(s==='severity')return !['fixed','postmortem','nest'].includes(pricing);
     return true;
   });}
 const QUESTIONS={
@@ -1147,6 +1174,7 @@ const QUESTIONS={
   custom:['Akú ponuku potrebujete?','Vyberte typ zákazky a doplňte základné údaje.'],
   sub:['Aký škodca?','Ak neviete, zvoľte „Iné“.'],
   place:['Kde je problém?','Vyberte priestor.'],
+  nest:['Koľko hniezd?','Cena sa počíta za každé hniezdo.'],
   area:['Aká rozloha?','Stačí odhad.'],
   severity:['Aký výskyt?','Vyberte najbližšiu možnosť.'],
   location:['Kde a kedy?','BA hlavná oblasť, mimo nej dojazd.'],
@@ -1161,7 +1189,7 @@ const CUSTOM_TYPES={
   other:{n:'Iná požiadavka',d:'špecifická práca na mieru'}
 };
 
-const state={open:false,step:0,photo:null,priceGross:false,priceAnim:0,hist:[],sent:null,c:{service:'deratizacia',sub:'potkany',place:'byt',area:70,severity:'stredne',visit:'weekday',loc:'',psc:'',addons:[],addonText:'',ineSize:1,ineText:'',count:1,customQuote:false,customKind:'other',customText:'',customSize:''}};
+const state={open:false,step:0,photo:null,priceGross:false,priceAnim:0,hist:[],sent:null,c:{service:'deratizacia',sub:'potkany',place:'byt',area:70,severity:'stredne',visit:'weekday',loc:'',psc:'',addons:[],addonText:'',ineSize:1,ineText:'',count:1,nests:1,customQuote:false,customKind:'other',customText:'',customSize:''}};
 
 /* =========================================================
    3) POMOCNÉ
@@ -1319,7 +1347,7 @@ function travelForPsc(value){
   if(km==null&&/^8[1-5]/.test(p2))km=0;
   if(km==null)km=POSTAL_FALLBACK[p2];
   if(km==null)return{known:false,km:0,price:0,label:'Mimo Bratislavy sa pripočíta doplatok za dojazd. Presnú sumu potvrdíme podľa adresy.'};
-  const price=Math.round(km*2*CONFIG.travelRate);
+  const price=step5(km*2*CONFIG.travelRate);
   return{known:true,km,price,label:km===0?'Bratislava je naša hlavná oblasť. Dojazd je zahrnutý v minimálnej cene.':'Mimo Bratislavy sa k zásahu pripočíta doplatok za dojazd podľa vzdialenosti.'};
 }
 
@@ -1354,11 +1382,11 @@ const BOT_REPLIES=[
   {rx:/(protokol|haccp|gastro|potvrden|papier)/,text:'Áno, na požiadanie vystavíme <b>písomný protokol o zásahu</b>, napríklad pre gastro alebo HACCP.'},
   {rx:/(obhliad|obhliadka|úvodn|uvodn|zdarma|spoplatnen)/,text:'Úvodná obhliadka je v Bratislave <b>zdarma</b>. Mimo BA ju potvrdíme podľa adresy a dojazdu.'},
   {rx:/(firm|firma|reštaur|restaur|hotel|bytovk|prevádzk|prevadzk|objekt)/,text:'Áno, robíme byty, domy, firmy, reštaurácie, hotely, bytovky aj ďalšie objekty.'},
-  {rx:/(kun|kuna|lasic|odchyt|osie hniezd|osích hniezd|osich hniezd|likvidáci|likvidaci)/,text:'Áno, riešime aj likvidáciu osích hniezd a odchyt kún alebo lasíc.'},
-  {rx:/(cena|stoj|koľko|kolko|cenn|lacn)/,text:'Minimálna cena výjazdu a práce je <b>60 € bez DPH</b>. Bratislava je naša hlavná oblasť; mimo nej sa pripočíta doplatok za dojazd. Presnejší odhad získate v kalkulačke.'},
+  {rx:/(kun|kuna|lasic|odchyt|osie hniezd|osích hniezd|osich hniezd|likvidáci|likvidaci)/,text:'Áno, riešime aj likvidáciu osích hniezd (<b>120 €/hniezdo</b>, sršne <b>140 €</b>) a odchyt kún alebo lasíc (<b>od 110 €</b> bez DPH).'},
+  {rx:/(cena|stoj|koľko|kolko|cenn|lacn)/,text:'Minimálna cena výjazdu a práce je <b>60 € bez DPH</b>. Orientačne: deratizácia bytu do 40 m² 60 €, pri 100 m² 100 €; šváby, mravce a mole od 80 €, blchy od 130 €, ploštice od 100 €; osy 120 € a sršne 140 € za hniezdo. Bratislava je naša hlavná oblasť; mimo nej sa pripočíta doplatok za dojazd. Presnejší odhad získate v kalkulačke.'},
   {rx:/(my[šs]|potkan|hlodav|hraboš|hrabos|hryz)/,text:'Hlodavce (potkany, myši, hraboše) riešime <b>deratizáciou</b> — chemickými nástrahami alebo odchytovými klietkami a pascami. V kalkulačke vyberte Deratizáciu.'},
   {rx:/(šváb|svab|rus|hmyz|mravc|ploštic|plostic|blch|much)/,text:'Lezúci aj lietajúci hmyz likvidujeme <b>dezinsekciou</b> — postrekom, zadymovaním, plynovaním či nástrahami. Pri plošticiach odporúčame opakovaný zásah.'},
-  {rx:/(os[ay]|sršn|srsn|včel|hniezd)/,text:'Hniezda ôs a sršňov odstraňujeme bezpečne. V kalkulačke zvoľte Dezinsekcia → Osy alebo Sršne; orientačná cena podľa cenníka je 120 € pri osách a 130 € pri sršňoch bez DPH.'},
+  {rx:/(os[ay]|sršn|srsn|včel|hniezd)/,text:'Hniezda ôs a sršňov odstraňujeme bezpečne. Cena je <b>za hniezdo</b>: <b>osy 120 €</b> a <b>sršne 140 € bez DPH</b>, každé ďalšie hniezdo na tej istej adrese za polovicu. V kalkulačke zvoľte Dezinsekcia → Osy alebo Sršne.'},
   {rx:/(plesn|baktér|bakter|vírus|virus|dezinf|covid|holub|kanaliz)/,text:'Robíme <b>polymérovú dezinfekciu</b> proti plesniam, vírusom a baktériám — vhodnú aj počas COVID-19, po havárii kanalizácie či pri výskyte holubov.'},
   {rx:/(postup|prebieha|ako to|zásah|zasah)/,text:PROCESS},
   {rx:/(bezpeč|bezpec|deti|dieťa|dieta|zviera|domác|pes|mač)/,text:'Počas zásahu nesmú byť v priestore <b>deti ani domáce zvieratá</b>. Technik vám povie, kedy je bezpečné sa vrátiť.'},
@@ -1396,49 +1424,39 @@ function askBot(text){
 /* =========================================================
    4) VÝPOČET – cena za 1 zásah × počet zásahov (rozsah)
    ========================================================= */
-function discountPct(qty,count,u){
-  let q=0;const t=(u==='m³')?[650,1500]:[250,600];
-  if(qty>=t[1])q=.10;else if(qty>=t[0])q=.05;
-  let cc=0;if(count>=10)cc=.20;else if(count>=4)cc=.15;else if(count>=2)cc=.08;
-  return Math.min(.25,q+cc);
+/* Zľava sa dáva iba za počet rovnakých priestorov. Väčšia rozloha je už
+   zohľadnená v cenníku (klesajúca sadzba za m²), aby cena za 300 alebo
+   600 m² sedela presne s cenníkom. */
+function discountPct(count){
+  if(count>=10)return .20;
+  if(count>=4)return .15;
+  if(count>=2)return .08;
+  return 0;
 }
 function compute(){
   const c=state.c,sv=SERVICES[c.service],sub=sv.subs[c.sub],pl=PLACES[c.place],sev=SEVERITY[c.severity];
-  const isIne=!!sub.ine,qty=Math.max(1,c.area),count=Math.max(1,c.count||1),multi=(sub.v||1)>1;
+  const isNest=sub.pricing==='nest',isIne=!!sub.ine;
+  const qty=isNest?Math.max(1,c.nests||1):Math.max(1,c.area);
+  const count=isNest?1:Math.max(1,c.count||1),multi=(sub.v||1)>1;
   const chosenSub=isIne?{...sub,n:c.ineText.trim()||'Iné / neviem'}:sub;
+  /* pri voľbe „Iné" posúva cenu zvolená veľkosť škodcu */
+  const ineM=(isIne&&c.service!=='dezinfekcia')?((ANIMALS[c.ineSize]||{}).m||1):1;
   let work=MIN,workLow=MIN,workHigh=MIN,material=null,materialQty=0,materialTotal=0,rate=null;
 
   if(sub.pricing==='material'){
     const autoMethod=c.severity==='mierne'?(c.sub==='mysi'?'glue':'box'):'station';
     material=RODENT_METHODS[autoMethod];
     materialQty=Math.max(2,Math.ceil(qty/(sub.coverage||30)*sev.points));
-    materialTotal=materialQty*material.price;
-    work=MIN+materialTotal;
-    workLow=MIN+materialQty*material.low;
-    workHigh=MIN+materialQty*material.high;
-  }else if(sub.pricing==='bedbugs'){
-    const floor=c.place==='dom'?200:0;
-    const areaPrice=qty<=40?130:qty<=70?130+(qty-40):qty<=100?160+(qty-70)*(2/3):180+(qty-100)*.7;
-    work=Math.max(MIN,floor,areaPrice*sev.m);
-    workLow=Math.max(MIN,floor,areaPrice*.9);
-    workHigh=Math.max(work,areaPrice*1.2);
-  }else if(sub.pricing==='fixedArea'){
-    if(pl.business){
-      rate=sev.lvl===1?.10:sev.lvl===3?.20:.15;
-      work=Math.max(MIN,qty*rate);
-      workLow=Math.max(MIN,qty*.10);
-      workHigh=Math.max(work,qty*.20);
-    }else{
-      const areaExtra=Math.max(0,qty-60)*.15;
-      work=Math.max(MIN,sub.fixed,(sub.fixed+areaExtra)*sev.m);
-      workLow=Math.max(MIN,sub.fixed);
-      workHigh=Math.max(work,(sub.fixed+areaExtra)*1.2);
-    }
-  }else if(sub.pricing==='area'){
-    rate=sev.lvl===1?.10:sev.lvl===3?.20:.15;
-    work=Math.max(MIN,qty*rate);
-    workLow=Math.max(MIN,qty*.10);
-    workHigh=Math.max(work,qty*.20);
+    materialTotal=materialQty*material.price;   /* materiál je zahrnutý v cene zásahu */
+    const base=curvePrice(sub.curve,qty)*ineM;
+    work=base*sev.m;workLow=work;workHigh=work*1.35;
+  }else if(sub.pricing==='areaCurve'){
+    const base=curvePrice(sub.curve,qty)*ineM;
+    work=base*sev.m;workLow=work;workHigh=work*1.35;
+  }else if(sub.pricing==='nest'){
+    /* osy a sršne sa počítajú za hniezdo, každé ďalšie za polovicu */
+    const base=sub.perNest+(qty-1)*sub.nextNest;
+    work=base;workLow=base;workHigh=base+30*qty;   /* +30 € za hniezdo vo výške / za konštrukciou */
   }else if(sub.pricing==='volume'){
     const idx=Math.max(0,Math.min(2,sev.lvl-1));
     rate=sub.rates[idx];
@@ -1457,25 +1475,27 @@ function compute(){
     workHigh=Math.max(work,sub.high==null?sub.fixed:sub.high);
   }
 
-  const baseWork=work,baseWorkLow=workLow,baseWorkHigh=workHigh;
-  const disc=sub.noDisc?0:discountPct(qty,count,sv.unit),save=Math.round(baseWork*count*disc);
-  work=Math.max(MIN,baseWork*count*(1-disc));
-  workLow=Math.max(MIN,baseWorkLow*count*(1-disc));
-  workHigh=Math.max(work,baseWorkHigh*count*(1-disc));
+  /* každá cena zaokrúhlená na 5 € a nikdy nie pod minimálny výjazd */
+  const baseWork=step5(Math.max(MIN,work)),baseWorkLow=step5(Math.max(MIN,workLow)),baseWorkHigh=step5(Math.max(baseWork,workHigh));
+  const disc=sub.noDisc?0:discountPct(count),save=step5(baseWork*count*disc);
+  work=step5(Math.max(MIN,baseWork*count*(1-disc)));
+  workLow=step5(Math.max(MIN,baseWorkLow*count*(1-disc)));
+  workHigh=step5(Math.max(work,baseWorkHigh*count*(1-disc)));
   const okAdds=new Set(allowedAddons());
   const activeAdds=c.addons.filter(id=>okAdds.has(id));
   const pricedAdds=activeAdds.reduce((a,id)=>a+(ADDONS[id]?.p||0),0);
   const customAdds=c.addonText.trim()?[c.addonText.trim()]:[];
   const visit=VISITS[c.visit]||VISITS.weekday;
-  const surcharge=Math.round((work+pricedAdds)*visit.pct);
-  const surchargeLow=Math.round((workLow+pricedAdds)*visit.pct);
-  const surchargeHigh=Math.round((workHigh+pricedAdds)*visit.pct);
+  const surcharge=step5((work+pricedAdds)*visit.pct);
+  const surchargeLow=step5((workLow+pricedAdds)*visit.pct);
+  const surchargeHigh=step5((workHigh+pricedAdds)*visit.pct);
   const travel=travelForPsc(c.psc);
-  const total=Math.round(work+pricedAdds+surcharge+travel.price);
-  const low=Math.round(workLow+pricedAdds+surchargeLow+travel.price);
-  const high=Math.round(workHigh+pricedAdds+surchargeHigh+travel.price);
-  const m=Math.round(25+Math.min(qty,500)*.25+(multi?20:0)),dur=m<55?'30–60 min':m<95?'1–2 hod':'2–4 hod';
-  return{sv,sub:chosenSub,pl,sev,qty,unit:sv.unit,count,disc,discPct:Math.round(disc*100),save,perObj:Math.round(baseWork),multi,dur,work:Math.round(work),workLow:Math.round(workLow),workHigh:Math.round(workHigh),
+  const total=step5(work+pricedAdds+surcharge+travel.price);
+  const low=step5(Math.min(total,workLow+pricedAdds+surchargeLow+travel.price));
+  const high=step5(Math.max(total,workHigh+pricedAdds+surchargeHigh+travel.price));
+  const m=isNest?Math.round(30+(qty-1)*15):Math.round(25+Math.min(qty,500)*.25+(multi?20:0)),dur=m<55?'30–60 min':m<95?'1–2 hod':'2–4 hod';
+  return{sv,sub:chosenSub,pl,sev,qty,unit:isNest?'hniezdo':sv.unit,qtyLabel:isNest?qty+' '+nestWord(qty):qty+' '+sv.unit,nest:isNest,
+    count,disc,discPct:Math.round(disc*100),save,perObj:baseWork,multi,dur,work,workLow,workHigh,
     material,materialQty,materialTotal:Math.round(materialTotal),rate,pricedAdds,customAdds,visit,surcharge,travel,total,low,high,vat:Math.round(total*(1+VAT))};
 }
 
@@ -1486,8 +1506,8 @@ function info(html){return `<div class="dr-info"><button type="button" class="dr
 let TIPS=[];
 function ihint(t){const i=TIPS.push(t)-1;return `<span class="dr-ih" role="button" tabindex="0" aria-label="Vysvetlenie" onclick="DERAT.tip(event,${i})">i</span>`;}
 
-function rService(){return `<div class="dr-first-min"><span>€</span>Minimálna cena výjazdu a práce je 60 € bez DPH.</div>`+Object.keys(SERVICES).map((id,i)=>{const s=SERVICES[id],sel=state.c.service===id;
-  return `<button class="dr-rowcard${sel?' sel':''}" data-grp="service" data-id="${id}" style="animation-delay:${i*60}ms" onclick="DERAT.pickService('${id}',this)"><span class="dr-rowcard-img" style="background-image:url('${IMG[id]}')"></span><span class="dr-rowcard-bd"><b>${s.name}</b><span>${s.desc}</span></span><span class="dr-rowcard-pr">${eur(s.base)}<small>od</small></span></button>`;}).join('');}
+function rService(){return `<div class="dr-first-min"><span>€</span>Minimálna cena výjazdu a práce je ${eur(MIN)} bez DPH.</div>`+Object.keys(SERVICES).map((id,i)=>{const s=SERVICES[id],sel=state.c.service===id;
+  return `<button class="dr-rowcard${sel?' sel':''}" data-grp="service" data-id="${id}" style="animation-delay:${i*60}ms" onclick="DERAT.pickService('${id}',this)"><span class="dr-rowcard-img" style="background-image:url('${IMG[id]}')"></span><span class="dr-rowcard-bd"><b>${s.name}</b><span>${s.desc}</span></span><span class="dr-rowcard-pr"><small>už od</small>${eur(s.base)}</span></button>`;}).join('');}
 function rSub(){const sv=SERVICES[state.c.service];return Object.keys(sv.subs).map((id,i)=>{const it=sv.subs[id],sel=state.c.sub===id;
   return `<button class="dr-scard${sel?' sel':''}" data-grp="sub" data-id="${id}" onclick="DERAT.pickSub('${id}',this)"><span class="dr-scard-ic">${I[it.ic]||I.spray}</span><b>${it.n}</b></button>`;}).join('');}
 function rPlace(){return Object.keys(PLACES).map((id,i)=>{const p=PLACES[id],sel=state.c.place===id;
@@ -1541,6 +1561,19 @@ function rAreaSmart(){
   </div>`;
 }
 rArea=rAreaSmart;
+/* Osy a sršne — cena za hniezdo, nie za m² */
+function rNest(){const sub=SERVICES[state.c.service].subs[state.c.sub],n=Math.max(1,state.c.nests||1);
+  return `<div class="dr-area">
+    <div class="dr-area-v" id="dr-nest-v">${n} <small>${nestWord(n)}</small></div>
+    <div class="dr-quick">${[1,2,3,4].map(v=>`<button data-n="${v}" class="${v===n?'on':''}" onclick="DERAT.setNests(${v})">${v} ${nestWord(v)}</button>`).join('')}</div>
+    <div class="dr-count">
+      <div class="dr-count-l"><b>Počet hniezd</b><span>prvé ${eur(sub.perNest)}, každé ďalšie ${eur(sub.nextNest)} bez DPH</span></div>
+      <div class="dr-count-r"><button type="button" onclick="DERAT.nests(-1)" aria-label="menej">−</button><b id="dr-nest-n">${n}</b><button type="button" onclick="DERAT.nests(1)" aria-label="viac">+</button></div>
+    </div>
+    <button class="dr-custom-cta area" type="button" onclick="DERAT.customQuote('Viac ako 8 hniezd ôs/sršňov alebo celý objekt.','multi')"><span class="dr-custom-plus">+</span><span><b>Viac ako 8 hniezd alebo celý objekt?</b><small>Nechajte si vypracovať ponuku na mieru</small></span></button>
+  </div>`;}
+function nestInfoText(){const sub=SERVICES[state.c.service].subs[state.c.sub];
+  return `Cena je <b>za hniezdo</b> — ${eur(sub.perNest)} bez DPH za prvé a ${eur(sub.nextNest)} za každé ďalšie na tej istej adrese. Zahŕňa postrek, odstránenie hniezda aj ošetrenie miesta. Pri hniezde vo výške nad 3 m alebo za konštrukciou (rebrík, plošina) cena stúpne približne o 30 € — potvrdíme ju na mieste.`;}
 function areaInfoText(){
   if(state.c.service==='dezinfekcia')return '<b>Objem v m³</b> je hlavný údaj. Ak poznáte iba podlahovú plochu, použite rýchly výpočet m² × výška miestnosti.';
   if(state.c.place==='exterier')return '<b>Exteriér rátame podľa veľkosti zasiahnutej časti</b> — malý dvor, okolie domu, pozemok alebo areál. Technik to potom spresní podľa prístupu a rozsahu.';
@@ -1610,8 +1643,8 @@ function rResult(){const r=compute(),c=state.c;
     <div class="dr-bd">
       <div class="dr-bd-r"><span>Služba</span><b>${r.sv.name} – ${r.sub.n}</b></div>
       <div class="dr-bd-r"><span>Priestor</span><b>${r.pl.n}${r.count>1?' · '+r.count+'×':''}</b></div>
-      <div class="dr-bd-r"><span>${r.unit==='m³'?'Objem':'Rozloha'}</span><b>${r.qty} ${r.unit}</b></div>
-      ${!['fixed','postmortem'].includes(r.sub.pricing)?`<div class="dr-bd-r"><span>Miera zamorenia</span><b>${r.sev.n}</b></div>`:''}
+      <div class="dr-bd-r"><span>${r.nest?'Počet hniezd':(r.unit==='m³'?'Objem':'Rozloha')}</span><b>${r.qtyLabel}</b></div>
+      ${!['fixed','postmortem','nest'].includes(r.sub.pricing)?`<div class="dr-bd-r"><span>Miera zamorenia</span><b>${r.sev.n}</b></div>`:''}
       <div class="dr-bd-r"><span>Trvanie zásahu na mieste</span><b>~ ${r.dur}</b></div>
     </div>
     ${r.multi?`<div class="dr-plan-note">${c.service==='deratizacia'
@@ -1661,6 +1694,7 @@ function stepInnerSmart(){const k=flow()[state.step];
   if(k==='custom')return rCustom();
   if(k==='sub')return info(SERVICES[state.c.service].info)+'<div class="dr-grid tri">'+rSub()+'</div><div id="dr-ine-wrap">'+(state.c.sub==='ine'?rIne():'')+'</div>';
   if(k==='place')return '<div class="dr-grid">'+rPlace()+'</div>';
+  if(k==='nest')return info(nestInfoText())+rNest();
   if(k==='area')return info(areaInfoText())+rArea();
   if(k==='severity')return info('Stačí odhad miery zamorenia — pomôže určiť náročnosť a cenu zásahu. Pri silnejšom zamorení je často potrebné opakovanie.')+rSeverity();
   if(k==='location')return rLocation();
@@ -1677,13 +1711,13 @@ function render(keep){
   calc.innerHTML=`
   <div class="dr-chead"><div class="dr-tabs"><button class="dr-tab on" type="button"><svg viewBox="0 0 24 24"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm0 4v3h10V6H7Zm0 5v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Zm-8 4v2h2v-2H7Zm4 0v2h2v-2h-2Zm4 0v2h2v-2h-2Z"/></svg>Kalkulačka</button><button class="dr-tab" type="button" onclick="DERAT.closeCalc()"><svg viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/></svg>AI asistent</button></div></div>
   <div class="dr-prog"><button class="dr-back" onclick="DERAT.prev()" ${first?'disabled':''}>‹</button><div class="dr-step-dots" style="--steps:${n}">${ST.map((_,i)=>`<i class="dr-step-dot${i<state.step?' done':''}${i===state.step?' active':''}" data-step="${i+1}"></i>`).join('')}</div><div class="dr-prog-n">${state.step+1}/${n}</div></div>
-  <div class="dr-body ${last||k==='area'||k==='custom'||(k==='sub'&&state.c.sub==='ine')?'can-scroll':'no-scroll'}" tabindex="0">
+  <div class="dr-body ${last||k==='area'||k==='nest'||k==='custom'||(k==='sub'&&state.c.sub==='ine')?'can-scroll':'no-scroll'}" tabindex="0">
     <h3 class="dr-q">${title}</h3><div class="dr-q-sub">${q[1]}</div>
     <div class="dr-stepbox" style="animation:drStepIn .42s cubic-bezier(.2,.85,.3,1)">${stepInner()}</div>
     <div class="dr-more" aria-hidden="true"><span>ďalej nižšie ▾</span></div>
   </div>
   <div class="dr-actions">
-    ${state.step>=1&&!last&&!state.c.customQuote?`<div class="dr-live-price"><small>bez DPH od</small><b>${eur(k==='place'||k==='sub'?MIN:r.total)}</b></div>`:''}
+    ${state.step>=1&&!last&&!state.c.customQuote?`<div class="dr-live-price"><small>bez DPH od</small><b>${eur(k==='place'||k==='sub'?SERVICES[state.c.service].base:r.total)}</b></div>`:''}
     <button class="dr-next" onclick="DERAT.next()">${last?'↺ Začať odznova':'Pokračovať ›'}</button>
   </div>`;
   const nb=calc.querySelector('.dr-body');if(nb){nb.scrollTop=sc;nb.onscroll=()=>scrollHint(nb);requestAnimationFrame(()=>scrollHint(nb));}
@@ -1728,7 +1762,7 @@ window.DERAT={
     const ch=document.querySelector('.dr-chips');if(ch)ch.classList.remove('reveal','gone');
     botType(WELCOME,()=>{if(ch)ch.classList.add('reveal');});},
   close(){state.open=false;chat.classList.remove('show','calc');setHeaderLogo('chat');chat.setAttribute('aria-hidden','true');$('derat-bubble').classList.remove('open');postParent('close');},
-  openCalc(){this.open();chat.classList.add('calc');setHeaderLogo('calc');state.step=0;state.sent=null;state.priceGross=false;state.c.count=1;state.c.customQuote=false;render();postParent('open-calc');},
+  openCalc(){this.open();chat.classList.add('calc');setHeaderLogo('calc');state.step=0;state.sent=null;state.priceGross=false;state.c.count=1;state.c.nests=1;state.c.customQuote=false;render();postParent('open-calc');},
   closeCalc(){chat.classList.remove('calc');setHeaderLogo('chat');this._showChips();postParent('open');},
   _hideChips(){const ch=document.querySelector('.dr-chips');if(ch)ch.classList.add('gone');},
   submit(e){if(e&&e.preventDefault)e.preventDefault();const v=inp.value.trim();if(!v)return;inp.value='';chat.classList.add('dr-has-user');add(esc(v),'me');this._hideChips();scheduleLog();askBot(v);},
@@ -1744,7 +1778,7 @@ window.DERAT={
     let y=r.bottom+8;if(y+h>window.innerHeight-8)y=Math.max(8,r.top-h-8);
     tb.style.left=x+'px';tb.style.top=y+'px';},
   _markOne(grp,el){document.querySelectorAll('.dr-body [data-grp="'+grp+'"]').forEach(b=>b.classList.toggle('sel',b===el));},
-  _livePrice(){if(state.c.customQuote)return;const lp=document.querySelector('.dr-live-price b');if(lp){const k=flow()[state.step];lp.textContent=eur(k==='place'||k==='sub'?MIN:compute().total);softPulse(lp,'bump');}},
+  _livePrice(){if(state.c.customQuote)return;const lp=document.querySelector('.dr-live-price b');if(lp){const k=flow()[state.step];lp.textContent=eur(k==='place'||k==='sub'?SERVICES[state.c.service].base:compute().total);softPulse(lp,'bump');}},
   customQuote(prefill,kind){state.c.customQuote=true;if(prefill&&!state.c.customText.trim())state.c.customText=prefill;if(kind&&CUSTOM_TYPES[kind])state.c.customKind=kind;else if(!CUSTOM_TYPES[state.c.customKind])state.c.customKind='other';state.step=0;state.sent=null;render(false);},
   openCustomQuote(){this.openCalc();this.customQuote('','other');},
   regularQuote(){state.c.customQuote=false;state.step=0;state.sent=null;render(false);},
@@ -1775,6 +1809,12 @@ window.DERAT={
   photoClear(){state.photo=null;const i=$('dr-photo');if(i)i.value='';const box=$('dr-photo-prev');if(box)box.innerHTML='';},
   area(v){state.c.area=v;const u=unit(),el=$('dr-av');if(el){el.innerHTML=v+' <small>'+u+'</small>';const s=document.querySelector('.dr-slider');if(s){const vol=u==='m³',min=vol?20:10,max=vol?2000:1000;s.style.setProperty('--p',Math.round((v-min)/(max-min)*100)+'%');s.value=v;}document.querySelectorAll('.dr-quick button').forEach(b=>b.classList.toggle('on',b.textContent.trim()===v+' '+u));this._livePrice();}},
   count(d){state.c.count=Math.max(1,Math.min(99,(state.c.count||1)+d));const el=$('dr-cnt');if(el)el.textContent=state.c.count;this._livePrice();},
+  nests(d){this.setNests(Math.max(1,Math.min(8,(state.c.nests||1)+d)));},
+  setNests(v){state.c.nests=Math.max(1,Math.min(8,v|0||1));const n=state.c.nests;
+    const b=$('dr-nest-n');if(b)b.textContent=n;
+    const t=$('dr-nest-v');if(t)t.innerHTML=n+' <small>'+nestWord(n)+'</small>';
+    document.querySelectorAll('.dr-quick button[data-n]').forEach(x=>x.classList.toggle('on',+x.dataset.n===n));
+    this._livePrice();},
   addon(id,el){if(!allowedAddons().includes(id))return;const a=state.c.addons,i=a.indexOf(id);i>=0?a.splice(i,1):a.push(id);if(el)el.classList.toggle('sel',i<0);this._livePrice();},
   addonText(v){state.c.addonText=v;},
   next(){if(flow()[state.step]==='custom'&&!state.c.customText.trim()){const el=$('dr-custom-text');if(el){el.focus();el.style.borderColor='#c63a27';el.placeholder='Prosím, stručne opíšte požadovanú prácu.';}return;}state.step<flow().length-1?state.step++:(state.step=0);state.sent=null;render(false);},
@@ -1787,7 +1827,7 @@ window.DERAT={
     name:val('dr-name'),phone:val('dr-phone'),email:val('dr-email'),
     loc:c.loc.trim(),psc:c.psc.trim(),note:val('dr-note'),
     term:raw('dr-term'),pref:raw('dr-pref'),photo:state.photo,
-    service:r.sv.name,pest:r.sub.n,place:r.pl.n,size:r.qty+' '+r.unit,count:r.count,discountPct:r.discPct,severity:r.sub.pricing==='fixed'?'-':r.sev.n,multi:r.multi,
+    service:r.sv.name,pest:r.sub.n,place:r.pl.n,size:r.qtyLabel,count:r.count,discountPct:r.discPct,severity:['fixed','postmortem','nest'].includes(r.sub.pricing)?'-':r.sev.n,multi:r.multi,
     method:r.material?r.material.n:'-',materialQty:r.materialQty||0,materialPrice:r.materialTotal||0,
     visit:r.visit.n,visitSurcharge:r.surcharge,travelKm:r.travel.km||0,travelPrice:r.travel.price,travelNote:r.travel.label,
     addons:addonNames.join(', ')||'žiadne',price:r.total,priceNet:r.total,priceVat:r.vat,priceShown:state.priceGross?r.vat:r.total,priceMode:state.priceGross?'gross':'net',
@@ -1814,8 +1854,7 @@ window.DERAT={
     /* Číslo dopytu + telo pre /api/send-email (ceny s DPH, históriu NEposiela) */
     p.quoteNum=derQuoteNum();
     const G=v=>Math.round(v*(1+VAT)*100)/100; // netto → brutto (s DPH)
-    const items=p.customQuote?[]:[{n:r.sv.name+' – '+r.sub.n,q:r.count,u:r.count>1?'priestory':'priestor',up:G(r.perObj),sub:G(r.perObj*r.count)}];
-    if(!p.customQuote&&r.materialQty&&r.material)items.push({n:'Materiál: '+r.material.n,q:r.materialQty,u:'ks',up:G(r.material.price),sub:G(r.materialTotal)});
+    const items=p.customQuote?[]:[{n:r.sv.name+' – '+r.sub.n+(r.materialQty?' (vrátane materiálu)':''),q:r.nest?r.qty:r.count,u:r.nest?nestWord(r.qty):(r.count>1?'priestory':'priestor'),up:G(r.nest?r.perObj/r.qty:r.perObj),sub:G(r.perObj*r.count)}];
     const addonsList=p.customQuote?[]:c.addons.filter(id=>okAdds.has(id)).map(id=>({n:ADDONS[id].n,p:G(ADDONS[id].p||0)}));
     if(!p.customQuote&&r.surcharge)addonsList.push({n:r.visit.n+' (príplatok)',p:G(r.surcharge)});
     p.emailBody={
@@ -1831,8 +1870,9 @@ window.DERAT={
         lang:'sk',
         params:p.customQuote?{typZakazky:p.customType,poziadavka:p.customRequest,rozsah:p.customSize||null,termin:p.term||null,kontakt:p.pref||null}:{
           sluzba:r.sv.name,skodca:r.sub.n,priestor:r.pl.n,
-          [r.unit==='m³'?'objem':'rozloha']:r.qty+' '+r.unit,
-          zamorenie:r.sub.pricing==='fixed'?null:r.sev.n,
+          [r.nest?'hniezda':(r.unit==='m³'?'objem':'rozloha')]:r.qtyLabel,
+          zamorenie:['fixed','postmortem','nest'].includes(r.sub.pricing)?null:r.sev.n,
+          material:r.materialQty&&r.material?(r.material.n+' · '+r.materialQty+' ks (v cene zásahu)'):null,
           pocet:r.count>1?String(r.count):null,
           doplnky:addonNames.join(', ')||null,
           zlava:r.discPct?('−'+r.discPct+' %'):null,
@@ -1865,7 +1905,7 @@ Služba: ${p.service} – ${p.pest}
 Priestor: ${p.place}, ${p.size}${p.count>1?' · '+p.count+' priestorov':''}
 Zľava: ${p.discountPct||0} %
 Miera zamorenia: ${p.severity}${p.multi?' (spravidla potrebné opakované ošetrenie)':''}
-Automaticky zvolený materiál: ${p.method}${p.materialQty?' · odhad '+p.materialQty+' ks · '+eur(p.materialPrice):''}
+Automaticky zvolený materiál: ${p.method}${p.materialQty?' · odhad '+p.materialQty+' ks (zahrnuté v cene)':''}
 Doplnky: ${p.addons}
 Termín zásahu: ${p.visit}${p.visitSurcharge?' · príplatok '+eur(p.visitSurcharge):''}
 Doprava: ${p.travelNote}${p.travelPrice?' · '+eur(p.travelPrice)+' bez DPH':''}
@@ -1900,7 +1940,7 @@ Stránka: ${p.page}
     </div>`;
     add(p.customQuote?'Žiadosť o <b>ponuku na mieru</b> je pripravená. Ozveme sa vám po individuálnom posúdení rozsahu.':'Dopyt je pripravený. Orientačná cena zásahu: <b>'+eur(p.priceNet)+' bez DPH</b> ('+eur(p.priceVat)+' s DPH).','bot');
   },
-  newCalc(){state.step=0;state.sent=null;state.priceGross=false;state.c.count=1;state.c.customQuote=false;state.c.customKind='other';state.c.customText='';state.c.customSize='';render(false);},
+  newCalc(){state.step=0;state.sent=null;state.priceGross=false;state.c.count=1;state.c.nests=1;state.c.customQuote=false;state.c.customKind='other';state.c.customText='';state.c.customSize='';render(false);},
   send(){const p=this._payload();if(!this._valid(p))return;const st=$('dr-stat'),btn=document.querySelector('.dr-submit');
     const orig=btn.innerHTML;
     btn.innerHTML='<svg class="dr-spinner" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="31.4 31.4" stroke-linecap="round"></circle></svg> Odosielam...';
