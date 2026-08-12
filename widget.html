@@ -15,10 +15,16 @@
   (function(){
     'use strict';
 
+    /* Pozor na `max-width:520px`: vnútri iframu meria šírku IFRAMU, nie displeja.
+       Na desktope má iframe ~470 px, takže by sa na widget nasadil telefónny
+       layout (celoplošný, hranaté rohy). Preto sú telefónne pravidlá vypnuté
+       triedou `derat-wide-host`, ktorú JS nastaví, keď ide o rám na väčšom
+       zariadení. Ak by JS nezbehol, trieda chýba a správanie ostáva ako doteraz. */
     var MOBILE_CSS = String.raw`
 /* === DERAT IOS KEYBOARD FIX v3 === */
 @media (max-width:520px){
-  html,body{
+  html:not(.derat-wide-host),
+  html:not(.derat-wide-host) body{
     width:100%!important;
     height:100%!important;
     min-height:100%!important;
@@ -27,7 +33,7 @@
     -webkit-text-size-adjust:100%!important;
   }
 
-  #derat-chat{
+  html:not(.derat-wide-host) #derat-chat{
     position:fixed!important;
     top:var(--derat-vv-top,0px)!important;
     right:0!important;
@@ -41,13 +47,13 @@
     overflow:hidden!important;
   }
 
-  .dr-msgs,
-  .dr-calc,
-  .dr-body{
+  html:not(.derat-wide-host) .dr-msgs,
+  html:not(.derat-wide-host) .dr-calc,
+  html:not(.derat-wide-host) .dr-body{
     min-height:0!important;
   }
 
-  .dr-inbar{
+  html:not(.derat-wide-host) .dr-inbar{
     flex:0 0 auto!important;
     margin-bottom:max(8px,env(safe-area-inset-bottom))!important;
   }
@@ -62,9 +68,23 @@
     font-size:16px!important;
   }
 
-  body.dr-keyboard-open .dr-cbar,
-  body.dr-keyboard-open .dr-chips{
+  html:not(.derat-wide-host) body.dr-keyboard-open .dr-cbar,
+  html:not(.derat-wide-host) body.dr-keyboard-open .dr-chips{
     display:none!important;
+  }
+
+  /* Rám na desktope: karta ostáva zaoblená a s tieňom, nie hranatý blok. */
+  html.derat-wide-host #derat-chat{
+    top:12px!important;
+    right:12px!important;
+    bottom:12px!important;
+    left:12px!important;
+    width:auto!important;
+    max-width:none!important;
+    height:auto!important;
+    max-height:none!important;
+    border-radius:28px!important;
+    overflow:hidden!important;
   }
 }
 `;
@@ -79,6 +99,23 @@
   var mobile=window.matchMedia('(max-width:520px)');
   var timers=[];
 
+  /* Skutočný displej, nie šírka iframu — na desktope je rám úzky, ale telefón to nie je. */
+  function isPhoneDevice(){
+    try{
+      var s=window.screen;
+      if(!s||!s.width||!s.height) return true;
+      return Math.min(s.width,s.height)<=560;
+    }catch(error){return true}
+  }
+
+  function syncHostMode(){
+    root.classList.toggle('derat-wide-host',mobile.matches&&!isPhoneDevice());
+  }
+
+  function phoneMode(){
+    return mobile.matches&&isPhoneDevice();
+  }
+
   function isField(element){
     if(!element) return false;
     var tag=element.tagName;
@@ -91,7 +128,8 @@
   }
 
   function syncViewport(){
-    if(!mobile.matches){
+    syncHostMode();
+    if(!phoneMode()){
       root.style.removeProperty('--derat-vv-height');
       root.style.removeProperty('--derat-vv-top');
       document.body.classList.remove('dr-keyboard-open');
