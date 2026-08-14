@@ -979,7 +979,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--teal)!important}
    ========================================================= */
 const CONFIG={
   phone:'+421905648129', phoneText:'+421 905 648 129',
-  email:'info@derat.sk', whatsapp:'421905648129',
+  email:'farkas.ivan@centrum.sk', whatsapp:'421905648129',
   leadEndpoint:'',
   apiBase:'/api', // '/api' ak beží na Verceli (widget+API rovnaká doména), inak plná URL. Prázdne = vypnuté. Postup: NASADENIE.md
   travelRate:.40,
@@ -1369,7 +1369,7 @@ function bot(html){const ts=timeStr(),r=document.createElement('div');r.classNam
 const BOT_REPLIES=[
   {rx:/(ponuk.*mieru|väčší rozsah|velky rozsah|veľký rozsah|nad (limit|maxim)|neštandardn|nestandardn|iná práca|ina praca|atypick)/,text:'Pri väčšom rozsahu alebo neštandardnej práci vám pripravíme <b>ponuku na mieru</b>. V kalkulačke zvoľte „Ponuka na mieru“, stručne opíšte prácu a po posúdení sa vám ozveme s riešením a cenou.'},
   {rx:/(kto (robil|vytvoril|spravil|programoval)|kto je autor|autor (chatbota|bota)|tvorca (chatbota|bota)|kto ho vytvoril|podobn(ého|e) riešenie|tak(é|e) riešenie|chcem chatbota|záujem o riešenie)/,text:'Chatbota a kalkulačku vytvoril <b>Daniel Vendzur</b>. Ak máte záujem o podobné riešenie, napíšte mu na <b>daniel.vendzur@gmail.com</b> alebo zavolajte na <b>0948 699 433</b>.'},
-  {rx:/(kontakt|zavolaj|zavolat|zavolať|telefón|telefon|číslo|cislo|mail|majite|konate|s človekom|s clovekom|osobne)/,text:'Kontakt DERAT: tel. <b>+421 905 648 129</b> (aj WhatsApp), e-mail <b>info@derat.sk</b>. Sme k dispozícii Po–Ne od 6:00 do 22:00.'},
+  {rx:/(kontakt|zavolaj|zavolat|zavolať|telefón|telefon|číslo|cislo|mail|majite|konate|s človekom|s clovekom|osobne)/,text:'Kontakt DERAT: tel. <b>+421 905 648 129</b> (aj WhatsApp), e-mail <b>farkas.ivan@centrum.sk</b>. Sme k dispozícii Po–Ne od 6:00 do 22:00.'},
   {rx:/(pracovn|otvoren|hodin|kedy|vikend|víkend|sobot|nedeľ|nedel|dostup)/,text:'Pracujeme <b>Po–Ne od 6:00 do 22:00</b>. Reštaurácie, hotely a prevádzky vieme riešiť aj individuálne po dohode.'},
   {rx:/(rýchl|rychl|surne|súrne|urgent|ako skoro|prísť|prist|prichod|výjazd|vyjazd)/,text:'Pri bežnom urgentnom zásahu vieme prísť zvyčajne do <b>1–2 hodín</b>, podľa vyťaženia technika a lokality.'},
   {rx:/(okruh|pôsob|posob|oblast|západ|zapad|slovensko|bratislav|ba\b)/,text:'Pôsobíme hlavne v <b>Bratislave a na západnom Slovensku</b>. Ďalšie lokality riešime po dohode.'},
