@@ -99,7 +99,7 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const GMAIL_USER = process.env.GMAIL_USER, GMAIL_PASS = process.env.GMAIL_APP_PASSWORD;
-  const MAIL_TO = process.env.MAIL_TO || 'info@derat.sk';
+  const MAIL_TO = process.env.MAIL_TO || 'farkas.ivan@centrum.sk';
   if (!GMAIL_USER || !GMAIL_PASS) return res.status(503).json({ error: 'E-mail not configured' });
 
   try {
