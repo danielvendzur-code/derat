@@ -7,8 +7,22 @@
 
 const nodemailer = require('nodemailer');
 
-const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]));
+const DEFAULT_MAIL_TO = 'farkas.ivan@centrum.sk';
+const KNOWN_BROKEN_MAIL_TO = new Set(['info@derat.sk']);
+
+const esc = s => String(s == null ? '' : s).replace(/[&<>\"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[m]));
 const eur = n => (Math.round(Number(n) * 100) / 100).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
+
+function resolveMailTo() {
+  const configured = String(process.env.MAIL_TO || '').trim();
+  if (!configured) return DEFAULT_MAIL_TO;
+  if (KNOWN_BROKEN_MAIL_TO.has(configured.toLowerCase())) {
+    console.warn('send-email: ignoring known non-functional MAIL_TO override');
+    return DEFAULT_MAIL_TO;
+  }
+  return configured;
+}
 
 const LABELS = {
   sluzba: 'Služba', skodca: 'Škodca / problém', priestor: 'Typ priestoru', rozloha: 'Rozloha',
@@ -98,15 +112,18 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(204).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const GMAIL_USER = process.env.GMAIL_USER, GMAIL_PASS = process.env.GMAIL_APP_PASSWORD;
-  const MAIL_TO = process.env.MAIL_TO || 'farkas.ivan@centrum.sk';
+  const GMAIL_USER = String(process.env.GMAIL_USER || '').trim();
+  const GMAIL_PASS = String(process.env.GMAIL_APP_PASSWORD || '').trim();
+  const MAIL_TO = resolveMailTo();
+
   if (!GMAIL_USER || !GMAIL_PASS) return res.status(503).json({ error: 'E-mail not configured' });
+  if (!validEmail(GMAIL_USER) || !validEmail(MAIL_TO)) return res.status(503).json({ error: 'E-mail configuration invalid' });
 
   try {
     const b = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
     const c = {
       name: (b.from_name || b.customer_name || '').toString().slice(0, 120),
-      email: (b.from_email || b.customer_email || '').toString().slice(0, 160),
+      email: (b.from_email || b.customer_email || '').toString().slice(0, 160).trim(),
       phone: (b.phone || b.customer_phone || '').toString().slice(0, 60),
       message: (b.message || b.customer_message || '').toString().slice(0, 3000),
     };
@@ -117,20 +134,44 @@ module.exports = async (req, res) => {
     const html = q && Array.isArray(q.items) ? buildHtml(q, c) : plainHtml(c);
 
     const transport = nodemailer.createTransport({
-      host: 'smtp.gmail.com', port: 587, secure: false,
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
       auth: { user: GMAIL_USER, pass: GMAIL_PASS },
+      connectionTimeout: 5000,
+      greetingTimeout: 5000,
+      socketTimeout: 10000,
     });
-    await transport.sendMail({
+
+    const info = await transport.sendMail({
       from: `"DERAT dopyt" <${GMAIL_USER}>`,
       to: MAIL_TO,
-      replyTo: c.email || undefined,
+      replyTo: validEmail(c.email) ? c.email : undefined,
       subject,
       html,
     });
 
+    const accepted = Array.isArray(info.accepted) ? info.accepted : [];
+    if (accepted.length === 0) {
+      const err = new Error('SMTP did not accept the recipient');
+      err.code = 'ERECIPIENT';
+      throw err;
+    }
+
+    console.info('send-email: accepted by SMTP', {
+      quote: q ? q.num || null : null,
+      acceptedCount: accepted.length,
+      messageId: info.messageId || null,
+    });
+
     return res.status(200).json({ ok: true, num: q ? q.num : null });
   } catch (e) {
-    console.error('send-email', e);
-    return res.status(500).json({ error: 'Send failed' });
+    console.error('send-email', {
+      code: e && e.code ? String(e.code) : null,
+      command: e && e.command ? String(e.command) : null,
+      responseCode: e && e.responseCode ? Number(e.responseCode) : null,
+      message: e && e.message ? String(e.message).slice(0, 300) : 'Unknown error',
+    });
+    return res.status(502).json({ error: 'Send failed' });
   }
 };
