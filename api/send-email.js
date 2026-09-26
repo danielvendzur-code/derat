@@ -2,27 +2,16 @@
 //  DERAT — /api/send-email  (odoslanie dopytu z kalkulačky na firemný e-mail)
 //  Profesionálny HTML e-mail s číslom dopytu #DER-XXXXXX, tabuľkou položiek,
 //  rekapituláciou (s DPH) a všetkými parametrami. Históriu NEposiela.
-//  ENV: GMAIL_USER, GMAIL_APP_PASSWORD (App Password), MAIL_TO
+//  ENV: GMAIL_USER, GMAIL_APP_PASSWORD (App Password)
 // ============================================================================
 
 const nodemailer = require('nodemailer');
 
-const DEFAULT_MAIL_TO = 'farkas.ivan@centrum.sk';
-const KNOWN_BROKEN_MAIL_TO = new Set(['info@derat.sk']);
+const MAIL_TO = ['farkas.ivan@centrum.sk', 'info@derat.sk'];
 
 const esc = s => String(s == null ? '' : s).replace(/[&<>\"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[m]));
 const eur = n => (Math.round(Number(n) * 100) / 100).toLocaleString('sk-SK', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
 const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
-
-function resolveMailTo() {
-  const configured = String(process.env.MAIL_TO || '').trim();
-  if (!configured) return DEFAULT_MAIL_TO;
-  if (KNOWN_BROKEN_MAIL_TO.has(configured.toLowerCase())) {
-    console.warn('send-email: ignoring known non-functional MAIL_TO override');
-    return DEFAULT_MAIL_TO;
-  }
-  return configured;
-}
 
 const LABELS = {
   sluzba: 'Služba', skodca: 'Škodca / problém', priestor: 'Typ priestoru', rozloha: 'Rozloha',
@@ -114,10 +103,8 @@ module.exports = async (req, res) => {
 
   const GMAIL_USER = String(process.env.GMAIL_USER || '').trim();
   const GMAIL_PASS = String(process.env.GMAIL_APP_PASSWORD || '').trim();
-  const MAIL_TO = resolveMailTo();
-
   if (!GMAIL_USER || !GMAIL_PASS) return res.status(503).json({ error: 'E-mail not configured' });
-  if (!validEmail(GMAIL_USER) || !validEmail(MAIL_TO)) return res.status(503).json({ error: 'E-mail configuration invalid' });
+  if (!validEmail(GMAIL_USER) || !MAIL_TO.every(validEmail)) return res.status(503).json({ error: 'E-mail configuration invalid' });
 
   try {
     const b = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
