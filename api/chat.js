@@ -10,7 +10,7 @@
 //      (alebo plnú URL, ak je backend na inej doméne).
 // ============================================================================
 
-const MODEL = 'claude-haiku-4-5-20251001'; // rýchly a lacný; pre vyššiu kvalitu: 'claude-sonnet-4-6'
+const MODEL = 'claude-haiku-5-5'; // rýchly a lacný; pre vyššiu kvalitu: 'claude-sonnet-4-6'
 
 const SYSTEM = `Si DERAT AI — odborný online poradca slovenskej firmy DERAT, ktorá poskytuje profesionálnu DERATIZÁCIU, DEZINSEKCIU a DEZINFEKCIU. Vystupuješ ako skúsený technik s dlhoročnou praxou v ochrane pred škodcami (DDD služby), nie ako chatbot.
 
@@ -79,7 +79,7 @@ module.exports = async (req, res) => {
         'anthropic-version': '2023-06-01',
         'content-type': 'application/json',
       },
-      body: JSON.stringify({ model: MODEL, max_tokens: 400, system: SYSTEM, messages }),
+      body: JSON.stringify({ model: MODEL, max_tokens: 400, thinking: { type: 'disabled' }, system: SYSTEM, messages }),
     });
 
     if (!r.ok) {

@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(204); exit; }
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); echo json_encode(['error' => 'Method not allowed']); exit; }
 
 $API_KEY = getenv('ANTHROPIC_API_KEY') ?: '';        // alebo: 'sk-ant-...'
-$MODEL   = 'claude-haiku-4-5-20251001';              // rýchly/lacný; kvalitnejší: 'claude-sonnet-4-6'
+$MODEL   = 'claude-haiku-5-5';              // rýchly/lacný; kvalitnejší: 'claude-sonnet-4-6'
 
 $SYSTEM = <<<TXT
 Si priateľský online asistent slovenskej firmy DERAT, ktorá poskytuje profesionálnu DERATIZÁCIU, DEZINSEKCIU a DEZINFEKCIU.
@@ -60,7 +60,7 @@ if (!$messages || !$last || $last['content'] !== $message) {
   $messages[] = ['role' => 'user', 'content' => $message];
 }
 
-$payload = ['model' => $MODEL, 'max_tokens' => 400, 'system' => $SYSTEM, 'messages' => $messages];
+$payload = ['model' => $MODEL, 'max_tokens' => 400, 'thinking' => ['type' => 'disabled'], 'system' => $SYSTEM, 'messages' => $messages];
 
 $ch = curl_init('https://api.anthropic.com/v1/messages');
 curl_setopt_array($ch, [

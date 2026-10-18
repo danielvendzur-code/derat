@@ -69,7 +69,7 @@ Pre **plnohodnotné AI odpovede** nasaďte `api/chat.js` a nastavte `CONFIG.apiB
 3. V `index.html`: `CONFIG.chatApi = 'https://vasadomena.sk/chat.php'`.
 
 > ⚠️ API kľúč **nikdy** nedávajte do frontendu — vždy len na backend.
-> Model je predvolene `claude-haiku-4-5` (rýchly a lacný); pre vyššiu kvalitu prepnite na
+> Model je predvolene `claude-haiku-5-5` (rýchly a lacný); pre vyššiu kvalitu prepnite na
 > `claude-sonnet-4-6` v backende. Systémový prompt (čo bot vie o firme) upravte v backende.
 
 ---
