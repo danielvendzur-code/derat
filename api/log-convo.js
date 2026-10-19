@@ -6,6 +6,8 @@
 
 const REDIS_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const REDIS_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+// Prefix kľúčov – derat zdieľa Redis s inými projektmi (napr. Koverta), dáta sa nesmú miešať.
+const KEY_PREFIX = process.env.REDIS_KEY_PREFIX || 'derat:';
 
 async function redis(commands) {
   const r = await fetch(`${REDIS_URL}/pipeline`, {
@@ -40,7 +42,7 @@ module.exports = async (req, res) => {
     const now = Date.now();
     let createdAt = now;
     try {
-      const ex = await redis([['GET', `convo:${sessionId}`]]);
+      const ex = await redis([['GET', `${KEY_PREFIX}convo:${sessionId}`]]);
       const prev = ex && ex[0] && ex[0].result ? JSON.parse(ex[0].result) : null;
       if (prev && prev.createdAt) createdAt = prev.createdAt;   // zachovaj pôvodný čas vzniku
     } catch (e) {}
@@ -55,8 +57,8 @@ module.exports = async (req, res) => {
     };
 
     await redis([
-      ['SET', `convo:${sessionId}`, JSON.stringify(record)],
-      ['ZADD', 'convo:index', String(createdAt), sessionId],
+      ['SET', `${KEY_PREFIX}convo:${sessionId}`, JSON.stringify(record)],
+      ['ZADD', `${KEY_PREFIX}convo:index`, String(createdAt), sessionId],
     ]);
 
     return res.status(200).json({ ok: true });
