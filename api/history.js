@@ -6,6 +6,8 @@
 
 const REDIS_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const REDIS_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+// Prefix kľúčov – derat zdieľa Redis s inými projektmi (napr. Koverta), dáta sa nesmú miešať.
+const KEY_PREFIX = process.env.REDIS_KEY_PREFIX || 'derat:';
 const ADMIN_KEY = process.env.ADMIN_KEY;
 
 async function redis(commands) {
@@ -35,7 +37,7 @@ module.exports = async (req, res) => {
     if (req.method === 'DELETE') {
       const id = String(q.id || '');
       if (!/^[a-zA-Z0-9_-]{6,64}$/.test(id)) return res.status(400).json({ error: 'Bad id' });
-      await redis([['DEL', `convo:${id}`], ['ZREM', 'convo:index', id]]);
+      await redis([['DEL', `${KEY_PREFIX}convo:${id}`], ['ZREM', `${KEY_PREFIX}convo:index`, id]]);
       return res.status(200).json({ ok: true });
     }
 
@@ -47,14 +49,14 @@ module.exports = async (req, res) => {
       const limit = Math.min(200, Math.max(1, parseInt(q.limit, 10) || 50));
       const offset = Math.max(0, parseInt(q.offset, 10) || 0);
 
-      const cnt = await redis([['ZCOUNT', 'convo:index', String(from), String(to)]]);
+      const cnt = await redis([['ZCOUNT', `${KEY_PREFIX}convo:index`, String(from), String(to)]]);
       const total = (cnt && cnt[0] && cnt[0].result) || 0;
 
-      const idsR = await redis([['ZREVRANGEBYSCORE', 'convo:index', String(to), String(from), 'LIMIT', String(offset), String(limit)]]);
+      const idsR = await redis([['ZREVRANGEBYSCORE', `${KEY_PREFIX}convo:index`, String(to), String(from), 'LIMIT', String(offset), String(limit)]]);
       const ids = (idsR && idsR[0] && idsR[0].result) || [];
       let items = [];
       if (ids.length) {
-        const mg = await redis([['MGET', ...ids.map(id => `convo:${id}`)]]);
+        const mg = await redis([['MGET', ...ids.map(id => `${KEY_PREFIX}convo:${id}`)]]);
         const arr = (mg && mg[0] && mg[0].result) || [];
         items = arr.map(s => { try { return JSON.parse(s); } catch (e) { return null; } }).filter(Boolean);
       }
